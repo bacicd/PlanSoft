@@ -29,3 +29,35 @@ c:\users\tberst\documents\visual studio 2012\Projects\MvcAdminTemplate\MvcAdminT
 c:\users\tberst\documents\visual studio 2012\Projects\MvcAdminTemplate\MvcAdminTemplate\bin\System.Web.WebPages.Razor.xml
 c:\users\tberst\documents\visual studio 2012\Projects\MvcAdminTemplate\MvcAdminTemplate\obj\Debug\MvcAdminTemplate.dll
 c:\users\tberst\documents\visual studio 2012\Projects\MvcAdminTemplate\MvcAdminTemplate\obj\Debug\MvcAdminTemplate.pdb
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\MvcAdminTemplate.dll.config
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\MvcAdminTemplate.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\MvcAdminTemplate.pdb
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\Antlr3.Runtime.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\EntityFramework.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\Microsoft.Web.Mvc.FixedDisplayModes.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\Newtonsoft.Json.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Net.Http.Formatting.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Http.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Http.WebHost.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Mvc.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Optimization.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Providers.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Razor.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.WebPages.Deployment.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.WebPages.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.WebPages.Razor.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\WebGrease.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\EntityFramework.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\Newtonsoft.Json.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Net.Http.Formatting.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Http.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Http.WebHost.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Mvc.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.Razor.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.WebPages.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.WebPages.Deployment.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\bin\System.Web.WebPages.Razor.xml
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\obj\Debug\MvcAdminTemplate.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\obj\Debug\MvcAdminTemplate.dll
+C:\Users\Administrator\Source\Repos\PlanSoft\MvcAdminTemplate\obj\Debug\MvcAdminTemplate.pdb
