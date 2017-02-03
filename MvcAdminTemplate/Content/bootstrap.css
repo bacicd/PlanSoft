@@ -4262,8 +4262,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 @media (min-width: 768px) {
   .navbar-nav {
-    float: left;
-    margin: 0;
+    float: none;
+    margin-left: 50%;
   }
   .navbar-nav > li {
     float: left;
@@ -6802,4 +6802,10 @@ td.visible-print {
   td.hidden-print {
     display: none !important;
   }
+}
+
+/*custom css for PlanSoft*/
+#subMenu {
+    display:inline-block; 
+    list-style-type:none;
 }
