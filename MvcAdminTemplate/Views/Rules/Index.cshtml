@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Rules";
+}
+@Html.Partial("_LeftMenu")
+<!-- content -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+
+@section Scripts{
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+    <script>
+    $(document).ready( function () {
+    $('#table_id').DataTable();
+} );
+    </script>
+
+}
+
+<a href="#myModal" data-toggle="modal" class="btn btn-primary">Rules Editor</a>
+
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="myModalLabel" class="modal-title">Rule Builder</h4>
+            </div>
+            <div class="modal-body">
+                Rule ID: <input id="ruleID" />
+                Rule Description: <input id="ruleID" /> 
+                <br />
+                Rule Name: <input id="ruleID" /> 
+                <br />
+                Created By: <input id="ruleID" />                
+                Rule Status: 
+                <select id="select01" class="chzn-select" style="width: 150px">
+                    <option>Active</option>
+                    <option>In Process</option>
+                    <option>Retired</option>
+                </select>
+                <br />
+                <br />
+                <select id="select02" class="chzn-select" style="width: 70px">
+                    <option>IF</option>
+                    <option>THEN</option>
+                    <option>ELSE</option>
+                </select>
+                <br />
+                <select id="select02" class="chzn-select" style="width: 200px">
+                    <option>Meaningful Measure</option>
+                    <option>Measures Meaningfulness</option>
+                </select>
+                <select id="select02" class="chzn-select" style="width: 50px">
+                    <option>=</option>
+                    <option>></option>
+                    <option><</option>
+                </select>
+                <select id="select02" class="chzn-select" style="width: 200px">
+                    <option>Meaningful Measure</option>
+                    <option>Measures Meaningfulness</option>
+                </select>
+                <br />
+                <select id="select02" class="chzn-select" style="width: 70px">
+                    <option>IF</option>
+                    <option>THEN</option>
+                    <option>ELSE</option>
+                </select>
+                <br />
+                <select id="select02" class="chzn-select" style="width: 200px">
+                    <option>Meaningful Measure</option>
+                    <option>Measures Meaningfulness</option>
+                </select>
+                <select id="select02" class="chzn-select" style="width: 50px">
+                    <option>=</option>
+                    <option>></option>
+                    <option><</option>
+                </select>   
+                <select id="select02" class="chzn-select" style="width: 150px">
+                    <option>GOOD</option>
+                    <option>BAD</option>
+                    <option>WHAT</option>
+                </select>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-10">
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="text-muted bootstrap-admin-box-title">Rules Table</div>
+            </div>
+            <div class="bootstrap-admin-panel-content">
+                <table class="table table-hover" id="table_id">
+                    <thead>
+                        <tr>
+                            <th>Rule Code</th>
+                            <th>Rule Name</th>
+                            <th>Marked Field</th>
+                            <th>Rule Status</th>
+                            <th>Created By</th>
+                            <th>Date Added</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>100</td>
+                            <td>Meaningful Measures</td>
+                            <td>Measure Meaningfulness</td>
+                            <td>Active</td>
+                            <td>Username</td>
+                            <td>11/21/2015</td>
+                            <td><a href="">Edit </a> | <a href=""> Delete</a></td>
+                        </tr>
+                        <tr>
+                            <td>101</td>
+                            <td>Plan Ownership Type</td>
+                            <td>101</td>
+                            <td> </td>
+                            <td>Username</td>
+                            <td>11/21/2015</td>
+                            <td><a href="">Edit </a> | <a href=""> Delete</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
