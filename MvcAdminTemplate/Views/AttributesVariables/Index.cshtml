@@ -6,18 +6,146 @@
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
 
-
-
-@section Scripts{
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
-<script>
-    $(document).ready( function () {
-    $('#table_id').DataTable();
-} );
-</script>
     
-}
+@section Scripts{
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+    <script>
+        function drawTable()
+        {
+            dataTable = $('#example').dataTable({
+                destroy: true,
+                bProcessing: true,
+                sAjaxSource: '@Url.Action("LoadAttributes", "AttributesVariables")',
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button class =\"glyphicon glyphicon-pencil edit\"></button> <button class =\"glyphicon glyphicon-trash delete\"></button>"
+                }]
 
+            });
+        return true;
+        }
+
+        $(document).ready(drawTable);
+
+        $(document).on("click", ".save", function() {
+            $.ajax({
+                url: "/AttributesVariables/Add",
+                datatype: "text",
+                data: { 'AttribCode': $('#attribCode').val(), 'AttribName': $('#attribName').val(), 'varCode': $('#varCode').val(), 'varName': $('#varName').val(), 'Creator': $('#attribCreator').val() },
+                type: "POST",
+                success: function (data) {
+                    $('#testarea').html("Added some stuff");
+                    drawTable();
+                    return true;
+                },
+                error: function () {
+                    $("#testarea").html("oh no");
+                    return false;
+                }
+            });
+        });
+
+
+        $("tbody").on("click", ".edit", function () {
+            ID = $(this).closest("tr").children('td:eq(0)').text();
+            $('#editModal').modal('show');
+
+            $(document).on("click", ".update", function () {
+                $.ajax({
+                    url: "/AttributesVariables/Update",
+                    datatype: "text",
+                    data: { 'varCode': ID, 'NewAttribCode': $('#updateAttribCode').val(), 'NewAttribName': $('#updateAttribName').val(), 'NewVarCode': $('#updateVarCode').val(), 'NewVarName': $('#updateVarName').val() },
+                    type: "POST",
+                    success: function (data) {
+                        $('#testarea').html("UPDATED");
+                        drawTable();
+                        return true;
+                    },
+                    error: function () {
+                        $("#testarea").html("DID NOT UPDATE");
+                        return false;
+                    }
+                });
+            });
+        });
+
+
+
+    $("tbody").on("click", ".delete", function () {
+        $.ajax({
+            url: "/AttributesVariables/Delete",
+            datatype: "text",
+            data: { 'AttribCode': $(this).closest("tr").children('td:eq(0)').text()},
+            type: "POST",
+            success: function (data) {
+                $('#testarea').html("All OK");
+                drawTable();
+            },
+            error: function () {
+                $("#testarea").html("ERROR");
+            }
+        });
+    });
+
+    </script>
+}
+<a href="#myModal" data-toggle="modal" class="btn btn-primary">+</a>
+
+<!--BEGIN SAVE MODAL-->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="myModalLabel" class="modal-title">Add Attribute Variable</h4>
+            </div>
+            <div class="modal-body">
+                Attribute ID: <input id="attribCode" />
+                <br />
+                Attribute Name: <input id="attribName" />
+                <br />
+                Variable Name: <input id="varName" />
+                <br />
+                Variable Code Name: <input id="varCode" />
+                <br />
+                Created By: <input id="attribCreator" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END MODAL-->
+
+<!--BEGIN EDIT MODAL-->
+<div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="myModalLabel" class="modal-title">Edit Attribute Variable</h4>
+            </div>
+            <div class="modal-body">
+                Attribute Code: <input id="updateAttribCode" />
+                <br />
+                Attribute Name: <input id="updateAttribName" />
+                <br />
+                Variable Code: <input id="updateVarCode" />
+                <br />
+                Variable Name: <input id="updateVarName" />
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="update" class="btn btn-primary update" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END EDIT MODAL-->
 
 <div class="col-md-10">
     <div class="row">
@@ -26,7 +154,7 @@
                 <div class="text-muted bootstrap-admin-box-title">Attribute Variables Table</div>
             </div>
             <div class="bootstrap-admin-panel-content">
-                <table class="table table-hover" id="table_id">
+                <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
                     <thead>
                         <tr>
                             <th>Attribute Code</th>
@@ -37,37 +165,10 @@
                             <th>Created By</th>
                             <th>Action</th>
                         </tr>
-                 <!--       <tr>
-                            <th><input size="10" /></th>
-                            <th><input size="10" /></th>
-                            <th><input size="10" /></th>
-                            <th><input size="10" /></th>
-                            <th><input size="10" /></th>
-                            <th><input size="10" /></th>
-                            <th></th>
-                        </tr>
-                -->
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1008</td>
-                            <td>Plan Ownership Type</td>
-                            <td>100</td>
-                            <td>Corporate-Wide</td>
-                            <td>Username</td>
-                            <td>11/21/2015</td>
-                            <td><a href="">Edit </a> | <a href=""> Delete</a></td>
-                        </tr>
-                        <tr>
-                            <td>1008</td>
-                            <td>Plan Ownership Type</td>
-                            <td>101</td>
-                            <td>LOB Specific</td>
-                            <td>Username</td>
-                            <td>11/21/2015</td>
-                            <td><a href="">Edit </a> | <a href=""> Delete</a></td>
-                        </tr>
-                    </tbody>
+                    <tbody></tbody>
+                    <tfoot>
+                    </tfoot>
                 </table>
             </div>
         </div>
