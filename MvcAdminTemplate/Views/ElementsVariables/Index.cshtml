@@ -26,19 +26,38 @@
 
         $(document).ready(drawTable);
     
-        $(document).on("click", ".save", function() {
+        $(document).on("click", ".save", function () {
+            testStr = "([A-Za-z0-9])+"
+            var regex = new RegExp(testStr);
+            ruleCode = $("#ruleCode").val();
+            ruleName = $("#ruleName").val();
+            varCode = $("#varCode").val();
+            varName = $("#varName").val();
+            varCID = $("#varCID").val();
+            ruleCreator = $("#ruleCreator").val();
+            test1 = regex.test(ruleCode);
+            test2 = regex.test(ruleName);
+            test3 = regex.test(varCode);
+            test4 = regex.test(varName);
+            test5 = regex.test(varCID);
+            test6 = regex.test(ruleCreator);
+            if (!test1 || !test2 || !test3 || !test4 || !test5 || !test6) {
+                $('#addmessage').html("Fields must not be empty or have special characters");
+                return false;
+            }
+
             $.ajax({
                 url: "/ElementsVariables/Add",
                 datatype: "text",
                 data: { 'EleCode': $('#ruleCode').val(), 'EleName': $('#ruleName').val(), 'varCode': $('#varCode').val(), 'varName': $('#varName').val(), 'varCID': $('#varCID').val(), 'Creator': $('#ruleCreator').val() },
                 type: "POST",
                 success: function (data) {
-                    $('#testarea').html("Added some shit");
+                    $('#addmessage').html("");
+                    $('#myModal').modal('hide');
                     drawTable();
                     return true;
                 },
                 error: function () {
-                    $("#testarea").html("DONE FUCKED UP BOY");
                     return false;
                 }
             });
@@ -46,22 +65,42 @@
 
 
         $("tbody").on("click", ".edit", function () {
+            $('#editMessage').html("");
             ID = $(this).closest("tr").children('td:eq(0)').text();
+            Name = $(this).closest("tr").children('td:eq(1)').text();
+            CID = $(this).closest("tr").children('td:eq(4)').text();
+            varCode = $(this).closest("tr").children('td:eq(2)').text();
+            varName = $(this).closest("tr").children('td:eq(3)').text();
             $('#editModal').modal('show');
+            $("#updateCode").val(ID);
+            $("#updateEleName").val(Name);
+            $("#updateVarCID").val(CID);
+            $("#updateVarCode").val(varCode);
+            $("#updateVarName").val(varName);
 
             $(document).on("click", ".update", function () {
+                testStr = "([A-Za-z0-9])+"
+                var regex = new RegExp(testStr);
+                test1 = regex.test($('#updateCode').val());
+                test2 = regex.test($('#updateEleName').val());
+                test3 = regex.test($('#updateVarCID').val());
+                test4 = regex.test($('#updateVarCode').val());
+                test5 = regex.test($('#updateVarName').val());
+                if (!test1 || !test2 || !test3 || !test4 || !test5) {
+                    $('#editMessage').html("Fields must not be empty or have special characters");
+                    return false;
+                }
                 $.ajax({
                     url: "/ElementsVariables/Update",
                     datatype: "text",
                     data: { 'VarCode': ID, 'NewEleCode': $('#updateCode').val(), 'NewEleName': $('#updateEleName').val(), 'NewVarCode': $('#updateVarCode').val(), 'NewVarName': $('#updateVarName').val(), 'NewVarCID': $('#updateVarCID').val() },
                     type: "POST",
                     success: function (data) {
-                        $('#testarea').html("UPDATED");
                         drawTable();
+                        $('#editModal').modal('hide');
                         return true;
                     },
                     error: function () {
-                        $("#testarea").html("DID NOT UPDATE");
                         return false;
                     }
                 });
@@ -70,18 +109,22 @@
 
 
 
-    $("tbody").on("click", ".delete", function () {
+        $("tbody").on("click", ".delete", function () {
+            delID = $(this).closest("tr").children('td:eq(0)').text();
+            $('#deleteModal').modal('show');
+        });
+        $(document).on("click", ".confirm", function () {
         $.ajax({
             url: "/ElementsVariables/Delete",
             datatype: "text",
-            data: { 'EleCode': $(this).closest("tr").children('td:eq(0)').text()},
+            data: { 'EleCode': delID},
             type: "POST",
             success: function (data) {
-                $('#testarea').html("All OK");
                 drawTable();
+                return true;
             },
             error: function () {
-                $("#testarea").html("ERROR");
+                return false;
             }
         });
     });
@@ -91,7 +134,6 @@
 }
 
 <!-- content -->
-<div id="testarea">TESTAREA</div>
 <a href="#myModal" data-toggle="modal" class="btn btn-primary">+</a>
 
 <!--BEGIN SAVE MODAL-->
@@ -103,6 +145,7 @@
                 <h4 id="myModalLabel" class="modal-title">Add Element</h4>
             </div>
             <div class="modal-body">
+                <div id="addmessage"></div>                
                 Element ID: <input id="ruleCode" />
                 <br />
                 Element Name: <input id="ruleName" />
@@ -118,7 +161,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save changes</button>
+                <button type="button" id="save" class="btn btn-primary save">Save changes</button>
             </div>
         </div>
     </div>
@@ -133,6 +176,7 @@
                 <h4 id="myModalLabel" class="modal-title">Add Element</h4>
             </div>
             <div class="modal-body">
+                <div id="editMessage"></div>
                 Element Code: <input id="updateCode" />
                 <br />
                 Element Name: <input id="updateEleName" />
@@ -146,13 +190,25 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="update" class="btn btn-primary update" data-dismiss="modal">Save changes</button>
+                <button type="button" id="update" class="btn btn-primary update">Save changes</button>
             </div>
         </div>
     </div>
 </div>
 <!--END EDIT MODAL-->
-
+<!--BEGIN DELETE MODAL-->
+<div id="deleteModal" class="modal fade bs-example-modal-sm deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-footer">
+                <h4 style="float:left" id="myModalLabel" class="modal-title">Confirm Delete</h4>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="confirm" class="btn btn-primary confirm" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END DELETE MODAL-->
 
 <div class="col-md-10">
     <div class="row">
