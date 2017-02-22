@@ -23,53 +23,48 @@
                     </button>
                     <a class="navbar-brand" href="/"><img src="~/Content/Theme/images/logo.PNG" /></a>
                 </div>
-                        <!--<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-hover="dropdown">Dropdown <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li role="presentation" class="dropdown-header">Dropdown header</li>
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li role="presentation" class="dropdown-header">Dropdown header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
+                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm">
+                    <ul class="nav navbar-nav" style="margin-top:2.5%; margin-left:12%;">
+                        <li>@Html.ActionLink("Instance", "Index")</li>
+                        <li>@Html.ActionLink("Security", "Index")</li>
+                        <li>@Html.ActionLink("Inventory", "Index")</li>
+                        <li>@Html.ActionLink("Documents", "Index")</li>
+                        <li>@Html.ActionLink("Analysis", "Index")</li>
+                    </ul>
+                    <!--<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-hover="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li role="presentation" class="dropdown-header">Dropdown header</li>
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Dropdown header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+                </ul>
+            </li>
+        </ul>-->
+                    <ul class="nav navbar-nav navbar-right " style="padding-top:2.5%;">
+                        <!--<li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>-->
+                        <li>
+                            <a href="#">Reminders <i class="glyphicon glyphicon-bell"></i></a>
                         </li>
-                    </ul>-->
-                    <div class="collapse navbar-collapse bootstrap-admin-navbar-sm">
-                        <ul class="nav navbar-nav navbar-right " style="padding-top:2.5%;">
-                            <!--<li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>-->
-                            <li>
-                                <a href="#">Reminders <i class="glyphicon glyphicon-bell"></i></a>
-                            </li>
-                            <!--<li>
-                                <a href="#">Go to frontend <i class="glyphicon glyphicon-share-alt"></i></a>
-                            </li>-->
-                            <li>
-                                <a href="#">Settings <i class="glyphicon glyphicon-cog"></i></a>
-                            </li>
-                            @Html.Partial("_LoginPartial")
-                        </ul>
-                    </div>
+                        <!--<li>
+                <a href="#">Go to frontend <i class="glyphicon glyphicon-share-alt"></i></a>
+            </li>-->
+                        <li>
+                            <a href="#">Settings <i class="glyphicon glyphicon-cog"></i></a>
+                        </li>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+                </div>
                 </div><!-- /.navbar-collapse -->
             </div>
         </div><!-- /.container -->
     </nav>
-    <nav class="navbar navbar-default navbar-fixed-top"style="margin-top:7.5%;">
-        <div class="container">
-            <div class="row">
-                <div class="navbar navbar-default navbar-static-top" style="margin-left:-16%; margin-right:-16%;">
-                        <button class="btn btn-lg btn-link"style="padding-left:18em">@Html.ActionLink("Instance", "Index")</button>
-                        <button class="btn btn-lg btn-link"style="padding-left:7%">@Html.ActionLink("Security", "Index")</button>
-                        <button class="btn btn-lg btn-link"style="padding-left:7%">@Html.ActionLink("Inventory", "Index")</button>
-                        <button class="btn btn-lg btn-link"style="padding-left:7%">@Html.ActionLink("Documents", "Index")</button>
-                        <button class="btn btn-lg btn-link"style="padding-left:7%;padding-right:18em;">@Html.ActionLink("Analysis", "Index")</button>
-                </div>
-            </div>
-        </div>
-    </nav>
+
     <div class="container"style="margin-top:8%;">
         <div class="row">
             @RenderBody()

@@ -25,19 +25,33 @@
             return true;
         }
 
-        $(document).on("click", ".save", function() {
+        $(document).on("click", ".save", function () {
+            testStr = "([A-Za-z0-9])+"
+            var regex = new RegExp(testStr);
+            ruleID = $("#ruleID").val();
+            ruleName = $("#ruleID").val();
+            ruleCreator = $("#ruleCreator").val();
+            test1 = regex.test(ruleID);
+            test2 = regex.test(ruleName);
+            test3 = regex.test(ruleCreator);
+            if (!test1 || !test2 || !test3)
+            {
+                $('#addmessage').html("Fields must not be empty or have special characters");
+                return false;
+            }
+
             $.ajax({
                 url: "/Elements/Add",
                 datatype: "text",
                 data: { 'EleID': $('#ruleID').val(), 'EleName': $('#ruleName').val(), 'Creator': $('#ruleCreator').val() },
                 type: "POST",
                 success: function (data) {
-                    $('#testarea').html("Added some shit");
                     drawTable();
+                    $('#addmessage').html("");
+                    $('#myModal').modal('hide');
                     return true;
                 },
                 error: function () {
-                    $("#testarea").html("DONE FUCKED UP BOY");
                     return false;
                 }
             });
@@ -46,21 +60,34 @@
        
         $("tbody").on("click", ".edit", function () {
             ID = $(this).closest("tr").children('td:eq(0)').text();
+            Name = $(this).closest("tr").children('td:eq(1)').text()
             $('#editModal').modal('show');
-            
+            $('#editMessage').html("");
+            $("#updateID").val(ID);
+            $("#updateName").val(Name);
+                
             $(document).on("click", ".update", function () {
+                testStr = "([A-Za-z0-9])+"
+                var regex = new RegExp(testStr);
+                ruleID = $("#updateID").val();
+                ruleName = $("#updateName").val();
+                test1 = regex.test(ruleID);
+                test2 = regex.test(ruleName);
+                if (!test1 || !test2) {
+                    $('#editMessage').html("Fields must not be empty or have special characters");
+                    return false;
+                }
                 $.ajax({
                     url: "/Elements/Update",
                     datatype: "text",
                     data: { 'EleID': ID, 'NewID': $('#updateID').val(), 'NewName': $('#updateName').val() },
                     type: "POST",
                     success: function (data) {
-                        $('#testarea').html("UPDATED");
                         drawTable();
+                        $('#editModal').modal('hide');
                         return true;
                     },
                     error: function () {
-                        $("#testarea").html("DID NOT UPDATE");
                         return false;
                     }
                 });
@@ -68,29 +95,32 @@
         });
 
         
-
-    $("tbody").on("click", ".delete", function () {
-        $.ajax({
-            url: "/Elements/Delete",
-            datatype: "text",
-            data: { 'EleID': $(this).closest("tr").children('td:eq(0)').text()},
-            type: "POST",
-            success: function (data) {
-                $('#testarea').html("All OK");
-                drawTable();
-            },
-            error: function () {
-                $("#testarea").html("ERROR");
-            }
+        $("tbody").on("click", ".delete", function () {
+            delID = $(this).closest("tr").children('td:eq(0)').text();
+            $('#deleteModal').modal('show');
         });
-    }); 
+            $(document).on("click", ".confirm", function () {
+                $.ajax({
+                    url: "/Elements/Delete",
+                    datatype: "text",
+                    data: { 'EleID': delID },
+                    type: "POST",
+                    success: function (data) {
+                        drawTable();
+                        return true;
+                    },
+                    error: function () {
+                        return false;
+                    }
+                });
+            });
+        
     
     </script>
 
 }
 
 <!-- content -->
-<div id="testarea">TESTAREA</div>
 <a href="#myModal" data-toggle="modal" class="btn btn-primary">+</a>
 
 <!--BEGIN NEW MODAL-->
@@ -102,6 +132,7 @@
                 <h4 id="myModalLabel" class="modal-title">Add Element</h4>
             </div>
             <div class="modal-body">
+                <div id="addmessage"></div>                
                 Element ID: <input id="ruleID" />
                 <br />
                 Element Name: <input id="ruleName" />
@@ -111,7 +142,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save changes</button>
+                <button type="button" id="save" class="btn btn-primary save">Save changes</button>
             </div>
         </div>
     </div>
@@ -127,6 +158,7 @@
                 <h4 id="myModalLabel" class="modal-title">Add Element</h4>
             </div>
             <div class="modal-body">
+                <div id="editMessage"></div>
                 Element ID: <input id="updateID" />
                 <br />
                 Element Name: <input id="updateName" />
@@ -134,12 +166,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="update" class="btn btn-primary update" data-dismiss="modal">Save changes</button>
+                <button type="button" id="update" class="btn btn-primary update">Save changes</button>
             </div>
         </div>
     </div>
 </div>
 <!--END EDIT MODAL-->
+
+<!--BEGIN DELETE MODAL-->
+<div id="deleteModal" class="modal fade bs-example-modal-sm deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-footer">
+                <h4 style="float:left" id="myModalLabel" class="modal-title">Confirm Delete</h4>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="confirm" class="btn btn-primary confirm" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END DELETE MODAL-->
 
 
 <div class="col-md-10">
