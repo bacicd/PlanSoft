@@ -30,11 +30,19 @@
 
     <script>
         $(function () {
-            $('#cp11').colorpicker('enable');
-            $('#cp12').colorpicker('enable');
+            $('#cp1').colorpicker('enable');
+            $('#cp2').colorpicker('enable');
+            $('#cp3').colorpicker('enable');
+            $('#cp4').colorpicker('enable');
+
+            $('#cp5').colorpicker('enable');
+            $('#cp6').colorpicker('enable');
+            $('#cp7').colorpicker('enable');
+            $('#cp8').colorpicker('enable');
         });
     </script>
 }
+
 <!--BEGIN CUSTOM COLOR THEME MODAL-->
 <div id="customColorsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -44,19 +52,39 @@
                 <h4 id="myModalLabel" class="modal-title">Create Custom Font Theme</h4>
             </div>
             <div class="modal-body">
-                <div id="cp11" class="input-group colorpicker-component">
+                <h4>Section A</h4>
+                <div id="cp1" class="input-group colorpicker-component">
+                    <input type="text" value="" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+                <br />
+                <h4>Section B</h4>
+                <div id="cp2" class="input-group colorpicker-component">
+                    <input type="text" value="" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+                <br />
+                <h4>Section C</h4>
+                <div id="cp3" class="input-group colorpicker-component">
+                    <input type="text" value="" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+                <br />
+                <h4>Section D</h4>
+                <div id="cp4" class="input-group colorpicker-component">
                     <input type="text" value="" class="form-control" />
                     <span class="input-group-addon"><i></i></span>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save Theme</button>
+                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save and Apply Theme</button>
             </div>
         </div>
     </div>
 </div>
 <!--END CUSTOM COLOR THEME MODAL-->
+
 <!--BEGIN CUSTOM FONT THEME MODAL-->
 <div id="customFontsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -66,14 +94,57 @@
                 <h4 id="myModalLabel" class="modal-title">Create Custom Font Theme</h4>
             </div>
             <div class="modal-body">
-                <div id="cp12" class="input-group colorpicker-component">
+                <h4>Section A</h4>
+                <select name="fontSelect1">
+                    <option disabled selected> -- Select Font -- </option>
+                    <option value="font1">Font 1</option>
+                    <option value="font2">Font 2</option>
+                    <option value="font3">Font 3</option>
+                </select>
+                <div id="cp5" class="input-group colorpicker-component">
+                    <input type="text" value="" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+                <br />
+                <h4>Section B</h4>
+                <select name="fontSelect2">
+                    <option disabled selected> -- Select Font -- </option>
+                    <option value="font1">Font 1</option>
+                    <option value="font2">Font 2</option>
+                    <option value="font3">Font 3</option>
+                </select>
+                <div id="cp6" class="input-group colorpicker-component">
+                    <input type="text" value="" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+                <br />
+                <h4>Section C</h4>
+                <select name="fontSelect3">
+                    <option disabled selected> -- Select Font -- </option>
+                    <option value="font1">Font 1</option>
+                    <option value="font2">Font 2</option>
+                    <option value="font3">Font 3</option>
+                </select>
+                <div id="cp7" class="input-group colorpicker-component">
+                    <input type="text" value="" class="form-control" />
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+                <br />
+                <h4>Section D</h4>
+                <select name="fontSelect4">
+                    <option disabled selected> -- Select Font -- </option>
+                    <option value="font1">Font 1</option>
+                    <option value="font2">Font 2</option>
+                    <option value="font3">Font 3</option>
+                </select>
+                <div id="cp8" class="input-group colorpicker-component">
                     <input type="text" value="" class="form-control" />
                     <span class="input-group-addon"><i></i></span>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save Theme</button>
+                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save and Apply Theme</button>
             </div>
         </div>
     </div>
@@ -87,16 +158,14 @@
                 <div class="text-muted bootstrap-admin-box-title">Display Customization</div>
             </div>
             <div class="bootstrap-admin-panel-content">
-                <br />
-                Upload Logo
+                <h4>Upload Logo</h4>
                 <a href="#" class="btn btn-primary" onclick="openFileDialog('logoFile');"><i class="glyphicon glyphicon-folder-open"></i>  Open File</a>
                 <input type="file" id="logoFile" style="display:none" />
                 <a href="#" class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i> Preview</a>
                 <a href="#" class="btn btn-default"><i class="glyphicon glyphicon-ok"></i> Apply</a>
                 <br />
                 <br />
-                <br />
-                Select Color Theme
+                <h4>Select Color Theme</h4>
                 <select name="colorTheme">
                     <option disabled selected> -- Select Theme -- </option>
                     <option value="theme1">Theme 1</option>
@@ -108,8 +177,7 @@
                 <a href="#" class="btn btn-default"><i class="glyphicon glyphicon-ok"></i> Apply</a>
                 <br />
                 <br />
-                <br />
-                Select Font Theme
+                <h4>Select Font Theme</h4>
                 <select name="fontTheme">
                     <option disabled selected> -- Select Theme -- </option>
                     <option value="theme1">Theme 1</option>
@@ -121,8 +189,7 @@
                 <a href="#" class="btn btn-default"><i class="glyphicon glyphicon-ok"></i> Apply</a>
                 <br />
                 <br />
-                <br />
-                Select Icon Theme
+                <h4>Select Icon Theme</h4>
                 <select name="iconTheme">
                     <option disabled selected> -- Select Theme -- </option>
                     <option value="theme1">Theme 1</option>
