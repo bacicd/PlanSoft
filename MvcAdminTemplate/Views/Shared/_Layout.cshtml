@@ -8,11 +8,14 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         .group1 {
-            margin-right: 0%;
+            margin-right: 5%;
         }
 
         .group2 {
-            margin-left: 0%;
+            margin-left: 5%;
+        }
+        .group3 {
+            margin-left: 12%;
         }
     </style>
 </head>
@@ -31,9 +34,9 @@
                     </button>
                     <a class="navbar-brand" href="/Elements"><img src="~/Content/Theme/images/logo.PNG" /></a>
                 </div>
-                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="margin-right:20%;margin-top:2%;">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Instance", "Index")</li>
+                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-right:20%;margin-top:2%;">
+                    <ul style="width:72em" class="nav navbar-nav navbar-right">
+                        <li class="group3">@Html.ActionLink("Instance", "Index")</li>
                         <li>@Html.ActionLink("Security", "Index")</li>
                         <li>@Html.ActionLink("Inventory", "Index")</li>
                         <li>@Html.ActionLink("Documents", "Index")</li>
