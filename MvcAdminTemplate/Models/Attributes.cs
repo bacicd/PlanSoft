@@ -18,5 +18,5 @@ namespace MvcAdminTemplate.Models
             {
                 new Attributes { ElementCode = "10", ElementName = "Plan", AttributeCode = "10", AttributeName = "Compensation Manager", DateSet = DateTime.Today, CreatedBy = "Username"}
             });
-    }    
+    }
 }
