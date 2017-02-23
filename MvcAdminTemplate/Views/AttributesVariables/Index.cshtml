@@ -29,18 +29,34 @@
         $(document).ready(drawTable);
 
         $(document).on("click", ".save", function() {
+            testStr = "([A-Za-z0-9])+"
+            var regex = new RegExp(testStr);
+            attribCode = $("#attribCode").val();
+            attribName = $("#attribName").val();
+            varCode = $("#varCode").val();
+            varName = $("#varName").val();
+            ruleCreator = $("#ruleCreator").val();
+            test1 = regex.test(attribCode);
+            test2 = regex.test(attribName);
+            test3 = regex.test(varCode);
+            test4 = regex.test(varName);
+            test5 = regex.test(ruleCreator);
+            if (!test1 || !test2 || !test3 || !test4 || !test5) {
+                $('#addmessage').html("Fields must not be empty or have special characters");
+                return false;
+            }
             $.ajax({
                 url: "/AttributesVariables/Add",
                 datatype: "text",
                 data: { 'AttribCode': $('#attribCode').val(), 'AttribName': $('#attribName').val(), 'varCode': $('#varCode').val(), 'varName': $('#varName').val(), 'Creator': $('#attribCreator').val() },
                 type: "POST",
                 success: function (data) {
-                    $('#testarea').html("Added some stuff");
+                    $('#addmessage').html("");
+                    $('#myModal').modal('hide');
                     drawTable();
                     return true;
                 },
                 error: function () {
-                    $("#testarea").html("oh no");
                     return false;
                 }
             });
@@ -49,21 +65,44 @@
 
         $("tbody").on("click", ".edit", function () {
             ID = $(this).closest("tr").children('td:eq(0)').text();
+            attribCode = $(this).closest("tr").children('td:eq(0)').text();
+            attribName = $(this).closest("tr").children('td:eq(1)').text()
+            varCode = $(this).closest("tr").children('td:eq(2)').text()
+            varName = $(this).closest("tr").children('td:eq(3)').text()
+            
             $('#editModal').modal('show');
+            $('#editMessage').html("");
+            $("#updateAttribCode").val(attribCode);
+            $("#updateAttribName").val(attribName);
+            $('#updateVarCode').val(varCode);
+            $('#updateVarName').val(varName);
 
             $(document).on("click", ".update", function () {
+                testStr = "([A-Za-z0-9])+"
+                var regex = new RegExp(testStr);
+                attribName = $("#updateAttribName").val();
+                attribCode = $("#updateAttribCode").val();
+                varCode = $("#updateVarCode").val();
+                varName = $("#updateVarName").val();
+                test1 = regex.test(attribName);
+                test2 = regex.test(attribCode);
+                test3 = regex.test(varCode);
+                test4 = regex.test(varName);
+                if (!test1 || !test2 || !test3 || !test4) {
+                    $('#editMessage').html("Fields must not be empty or have special characters");
+                    return false;
+                }
                 $.ajax({
                     url: "/AttributesVariables/Update",
                     datatype: "text",
                     data: { 'varCode': ID, 'NewAttribCode': $('#updateAttribCode').val(), 'NewAttribName': $('#updateAttribName').val(), 'NewVarCode': $('#updateVarCode').val(), 'NewVarName': $('#updateVarName').val() },
                     type: "POST",
                     success: function (data) {
-                        $('#testarea').html("UPDATED");
+                        $('#editModal').modal('hide');
                         drawTable();
                         return true;
                     },
                     error: function () {
-                        $("#testarea").html("DID NOT UPDATE");
                         return false;
                     }
                 });
@@ -72,18 +111,21 @@
 
 
 
-    $("tbody").on("click", ".delete", function () {
+        $("tbody").on("click", ".delete", function () {
+            delID = $(this).closest("tr").children('td:eq(0)').text();
+            $('#deleteModal').modal('show');
+        });
+
+        $(document).on("click", ".confirm", function () {
         $.ajax({
             url: "/AttributesVariables/Delete",
             datatype: "text",
-            data: { 'AttribCode': $(this).closest("tr").children('td:eq(0)').text()},
+            data: { 'AttribCode': delID},
             type: "POST",
             success: function (data) {
-                $('#testarea').html("All OK");
                 drawTable();
             },
             error: function () {
-                $("#testarea").html("ERROR");
             }
         });
     });
@@ -101,6 +143,7 @@
                 <h4 id="myModalLabel" class="modal-title">Add Attribute Variable</h4>
             </div>
             <div class="modal-body">
+                <div id="addmessage"></div>                
                 Attribute ID: <input id="attribCode" />
                 <br />
                 Attribute Name: <input id="attribName" />
@@ -113,7 +156,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save changes</button>
+                <button type="button" id="save" class="btn btn-primary save">Save changes</button>
             </div>
         </div>
     </div>
@@ -129,6 +172,7 @@
                 <h4 id="myModalLabel" class="modal-title">Edit Attribute Variable</h4>
             </div>
             <div class="modal-body">
+                <div id="editMessage"></div>
                 Attribute Code: <input id="updateAttribCode" />
                 <br />
                 Attribute Name: <input id="updateAttribName" />
@@ -140,12 +184,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="update" class="btn btn-primary update" data-dismiss="modal">Save changes</button>
+                <button type="button" id="update" class="btn btn-primary update">Save changes</button>
             </div>
         </div>
     </div>
 </div>
 <!--END EDIT MODAL-->
+
+<!--BEGIN DELETE MODAL-->
+<div id="deleteModal" class="modal fade bs-example-modal-sm deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-footer">
+                <h4 style="float:left" id="myModalLabel" class="modal-title">Confirm Delete</h4>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="confirm" class="btn btn-primary confirm" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END DELETE MODAL-->
 
 <div class="col-md-10" style="margin-top:-4%;">
     <div class="row">

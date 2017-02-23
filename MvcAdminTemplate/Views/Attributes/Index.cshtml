@@ -23,19 +23,35 @@
             return true;
         }
 
-        $(document).on("click", ".save", function() {
+        $(document).on("click", ".save", function () {
+            testStr = "([A-Za-z0-9])+"
+            var regex = new RegExp(testStr);
+            eleCode = $("#ruleCode").val();
+            eleName = $("#ruleName").val();
+            attribCode= $("#attribCode").val();
+            attribName = $("#attribName").val();
+            ruleCreator = $("#ruleCreator").val();
+            test1 = regex.test(eleCode);
+            test2 = regex.test(eleName);
+            test3 = regex.test(attribCode);
+            test4 = regex.test(attribName);
+            test5 = regex.test(ruleCreator);
+            if (!test1 || !test2 || !test3 || !test4 || !test5) {
+                $('#addmessage').html("Fields must not be empty or have special characters");
+                return false;
+            }
             $.ajax({
                 url: "/Attributes/Add",
                 datatype: "text",
                 data: { 'EleCode': $('#ruleCode').val(), 'EleName': $('#ruleName').val(), 'AttribCode': $('#attribCode').val(), 'AttribName': $('#attribName').val(), 'Creator': $('#ruleCreator').val() },
                 type: "POST",
                 success: function (data) {
-                    $('#testarea').html("Added some stuff");
                     drawTable();
+                    $('#addmessage').html("");
+                    $('#myModal').modal('hide');
                     return true;
                 },
                 error: function () {
-                    $("#testarea").html("oh no");
                     return false;
                 }
             });
@@ -44,21 +60,43 @@
 
         $("tbody").on("click", ".edit", function () {
             ID = $(this).closest("tr").children('td:eq(0)').text();
+            Name = $(this).closest("tr").children('td:eq(1)').text()
+            Code = $(this).closest("tr").children('td:eq(2)').text()
+            AttribName = $(this).closest("tr").children('td:eq(3)').text()
+
             $('#editModal').modal('show');
+            $('#editMessage').html("");
+            $("#updateEleCode").val(ID);
+            $("#updateEleName").val(Name);
+            $('#updateAttribCode').val(Code);
+            $('#updateAttribName').val(AttribName);
 
             $(document).on("click", ".update", function () {
+                testStr = "([A-Za-z0-9])+"
+                var regex = new RegExp(testStr);
+                eleCode = $("#updateEleCode").val();
+                eleName = $("#updateEleName").val();
+                attribCode = $("#updateAttribCode").val();
+                attribName = $("#updateAttribName").val();
+                test1 = regex.test(eleCode);
+                test2 = regex.test(eleName);
+                test3 = regex.test(attribCode);
+                test4 = regex.test(attribName);
+                if (!test1 || !test2 || !test3 || !test4) {
+                    $('#editMessage').html("Fields must not be empty or have special characters");
+                    return false;
+                }
                 $.ajax({
                     url: "/Attributes/Update",
                     datatype: "text",
                     data: { 'EleCode': ID, 'NewEleCode': $('#updateEleCode').val(), 'NewEleName': $('#updateEleName').val(), 'NewAttribCode': $('#updateAttribCode').val(), 'NewAttribName': $('#updateAttribName').val() },
                     type: "POST",
                     success: function (data) {
-                        $('#testarea').html("UPDATED");
                         drawTable();
+                        $('#editModal').modal('hide');
                         return true;
                     },
                     error: function () {
-                        $("#testarea").html("DID NOT UPDATE");
                         return false;
                     }
                 });
@@ -67,21 +105,23 @@
 
 
 
-    $("tbody").on("click", ".delete", function () {
-        $.ajax({
-            url: "/Attributes/Delete",
-            datatype: "text",
-            data: { 'EleCode': $(this).closest("tr").children('td:eq(0)').text()},
-            type: "POST",
-            success: function (data) {
-                $('#testarea').html("All OK");
-                drawTable();
-            },
-            error: function () {
-                $("#testarea").html("ERROR");
-            }
+        $("tbody").on("click", ".delete", function () {
+            delID = $(this).closest("tr").children('td:eq(0)').text();
+            $('#deleteModal').modal('show');
         });
-    });
+        $(document).on("click", ".confirm", function () {
+            $.ajax({
+                url: "/Attributes/Delete",
+                datatype: "text",
+                data: { 'EleCode': delID},
+                type: "POST",
+                success: function (data) {
+                    drawTable();
+                },
+                error: function () {
+                }
+            });
+        });
 
     </script>
 }
@@ -98,6 +138,7 @@
                 <h4 id="myModalLabel" class="modal-title">Add Attribute</h4>
             </div>
             <div class="modal-body">
+                <div id="addmessage"></div>                
                 Element Code: <input id="ruleCode" />
                 <br />
                 Element Name: <input id="ruleName" />
@@ -111,11 +152,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="save" class="btn btn-primary save" data-dismiss="modal">Save changes</button>
+                <button type="button" id="save" class="btn btn-primary save">Save changes</button>
             </div>
         </div>
     </div>
 </div>
+<!--END NEW MODAL-->
 
 <!--BEGIN EDIT MODAL-->
 <div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -126,6 +168,7 @@
                 <h4 id="myModalLabel" class="modal-title">Edit Attribute</h4>
             </div>
             <div class="modal-body">
+                <div id="editMessage"></div>
                 Element Code: <input id="updateEleCode" />
                 <br />
                 Element Name: <input id="updateEleName" />
@@ -136,13 +179,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="update" class="btn btn-primary update" data-dismiss="modal">Save changes</button>
+                <button type="button" id="update" class="btn btn-primary update">Save changes</button>
             </div>
         </div>
     </div>
 </div>
+<!--END EDIT MODAL-->
 
-
+<!--BEGIN DELETE MODAL-->
+<div id="deleteModal" class="modal fade bs-example-modal-sm deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-footer">
+                <h4 style="float:left" id="myModalLabel" class="modal-title">Confirm Delete</h4>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="confirm" class="btn btn-primary confirm" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END DELETE MODAL-->
 
 <div class="col-md-10" style="margin-top:-4%;">
     <div class="row">
