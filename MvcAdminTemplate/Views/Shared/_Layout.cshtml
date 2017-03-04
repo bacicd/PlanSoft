@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlanSoft</title>
+    <link href="~/Content/Theme/images/favicon.ico" rel="icon" type="image/x-icon"/>
     <!--@Styles.Render("~/Content/Theme")
     @Scripts.Render("~/bundles/modernizr")-->
     <link href="/Content/bootstrap.css" rel="stylesheet" />
@@ -12,6 +13,7 @@
     <link href="/Content/Theme/css/site.css" rel="stylesheet" />
 
     <script src="/Scripts/modernizr-2.6.2.js"></script>
+
     <style>
         .group1 {
             margin-right: 5%;
@@ -20,10 +22,12 @@
         .group2 {
             margin-left: 5%;
         }
+
         .group3 {
-            margin-left: 12%;
+            margin-left: 5%;
         }
     </style>
+
 </head>
 <body class="bootstrap-admin-with-small-navbar">
 
@@ -38,11 +42,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/Elements"><img src="~/Content/Theme/images/logo.PNG" /></a>
+                    <a class="navbar-brand" href="/"><img src="~/Content/Theme/images/Test.png" /></a>
                 </div>
                 <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-right:20%;margin-top:2%;">
                     <ul style="width:72em" class="nav navbar-nav navbar-right">
-                        <li class="group3">@Html.ActionLink("Instance", "Index")</li>
+                        <li class="group3">@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Instance", "Index", "Elements")</li>
                         <li>@Html.ActionLink("Security", "Index")</li>
                         <li>@Html.ActionLink("Inventory", "Index")</li>
                         <li>@Html.ActionLink("Documents", "Index")</li>
