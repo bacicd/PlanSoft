@@ -3,13 +3,24 @@
 }
 @Html.Partial("_LeftMenu")
 
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" />
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
 
 @section Scripts{
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
+
     <script>
         $(document).ready(function () { drawTable() });
-    
+
         function drawTable() {
             dataTable = $('#example').dataTable({
                 destroy: true,
@@ -19,11 +30,44 @@
                     "targets": -1,
                     "data": null,
                     "defaultContent": "<button class =\"glyphicon glyphicon-pencil edit\"></button> <button class =\"glyphicon glyphicon-trash delete\"></button>"
-                }]
+                }],
+                dom: 'Bfrtip',
+                buttons: [
+                         {
+                              extend: 'excel',
+                              text:      '<i class="fa fa-file-excel-o"></i>',
+                              titleAttr: 'Excel',
+                              exportOptions: {
+                                  columns: ':visible'
+                              }
+                          },
+                          {
+                              extend: 'csv',
+                              text:      '<i class="fa fa-file-text-o"></i>',
+                              titleAttr: 'CSV',
+                              exportOptions: {
+                                  columns: ':visible'
+                              }
+                          },
+                          {
+                              extend: 'pdf',
+                              text:      '<i class="fa fa-file-pdf-o"></i>',
+                              titleAttr: 'PDF',
+                              exportOptions: {
+                                  columns: ':visible'
+                              }
+                          },
+                          {
+                              extend: 'colvis',
+                              text: '<i class="fa fa-eye"></i>',
+                              titleAttr: "Columns"
+                          }
+                ]
 
             });
             return true;
         }
+
 
         $(document).on("click", ".save", function () {
             testStr = "([A-Za-z0-9])+"
@@ -56,8 +100,8 @@
                 }
             });
         });
-        
-       
+
+
         $("tbody").on("click", ".edit", function () {
             ID = $(this).closest("tr").children('td:eq(0)').text();
             Name = $(this).closest("tr").children('td:eq(1)').text()
@@ -65,7 +109,7 @@
             $('#editMessage').html("");
             $("#updateID").val(ID);
             $("#updateName").val(Name);
-                
+
             $(document).on("click", ".update", function () {
                 testStr = "([A-Za-z0-9])+"
                 var regex = new RegExp(testStr);
@@ -94,7 +138,7 @@
             });
         });
 
-        
+
         $("tbody").on("click", ".delete", function () {
             delID = $(this).closest("tr").children('td:eq(0)').text();
             $('#deleteModal').modal('show');
@@ -114,14 +158,11 @@
                     }
                 });
             });
-        
-    
+
+
     </script>
 
 }
-
-<!-- content -->
-<a href="#myModal" data-toggle="modal" class="btn btn-primary" style="margin-top:-12%;">Create New Element</a>
 
 <!--BEGIN NEW MODAL-->
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -132,13 +173,13 @@
                 <h4 id="myModalLabel" class="modal-title">Add Element</h4>
             </div>
             <div class="modal-body">
-                <div id="addmessage"></div>                
+                <div id="addmessage"></div>
                 Element ID: <input id="ruleID" />
                 <br />
                 Element Name: <input id="ruleName" />
                 <br />
                 Created By: <input id="ruleCreator" />
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -148,7 +189,6 @@
     </div>
 </div>
 <!--END MODAL-->
-
 <!--BEGIN EDIT MODAL-->
 <div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -172,7 +212,6 @@
     </div>
 </div>
 <!--END EDIT MODAL-->
-
 <!--BEGIN DELETE MODAL-->
 <div id="deleteModal" class="modal fade bs-example-modal-sm deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">
@@ -188,7 +227,7 @@
 <!--END DELETE MODAL-->
 
 
-<div class="col-md-10" style="margin-top:-4%;">
+<div class="col-md-10" style="margin-top:-7%;">
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -221,6 +260,7 @@
                 </table>
             </div>
         </div>
+        <a href="#myModal" data-toggle="modal" class="btn btn-primary">Create New Element</a>
     </div>
 </div>
 
