@@ -8,14 +8,152 @@
 @section Scripts{
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
     <script>
-    $(document).ready( function () {
-    $('#table_id').DataTable();
-} );
-    </script>
+        $(document).ready(function () { drawTable() });
 
+        function drawTable() {
+            dataTable = $('#example').dataTable({
+                destroy: true,
+                bProcessing: true,
+                sAjaxSource: '@Url.Action("LoadRules", "Rules")',
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button class =\"glyphicon glyphicon-pencil edit\"></button> <button class =\"glyphicon glyphicon-trash delete\"></button>"
+                }],
+                dom: 'Bfrtip',
+                buttons: [
+                         {
+                             extend: 'excel',
+                             text: '<i class="fa fa-file-excel-o"></i>',
+                             titleAttr: 'Excel',
+                             exportOptions: {
+                                 columns: ':visible'
+                             }
+                         },
+                          {
+                              extend: 'csv',
+                              text: '<i class="fa fa-file-text-o"></i>',
+                              titleAttr: 'CSV',
+                              exportOptions: {
+                                  columns: ':visible'
+                              }
+                          },
+                          {
+                              extend: 'pdf',
+                              text: '<i class="fa fa-file-pdf-o"></i>',
+                              titleAttr: 'PDF',
+                              exportOptions: {
+                                  columns: ':visible'
+                              }
+                          },
+                          {
+                              extend: 'colvis',
+                              text: '<i class="fa fa-eye"></i>',
+                              titleAttr: "Columns"
+                          }
+                ]
+
+            });
+            return true;
+        }
+
+        $(document).on("click", ".save", function () {
+            testStr = "([A-Za-z0-9])+"
+            var regex = new RegExp(testStr);
+            ruleName = $("#ruleName").val();
+            markedField = $("#markedField").val();
+            ruleStatus = $("#ruleStatus").val();
+            ruleCreator = $("#ruleCreator").val();
+            test1 = regex.test(ruleID);
+            test2 = regex.test(ruleName);
+            test3 = regex.test(ruleCreator);
+            if (!test1 || !test2 || !test3) {
+                $('#addmessage').html("Fields must not be empty or have special characters");
+                return false;
+            }
+
+            $.ajax({
+                url: "/Elements/Add",
+                datatype: "text",
+                data: { 'EleID': $('#ruleID').val(), 'EleName': $('#ruleName').val(), 'Creator': $('#ruleCreator').val() },
+                type: "POST",
+                success: function (data) {
+                    drawTable();
+                    $('#addmessage').html("");
+                    $('#myModal').modal('hide');
+                    return true;
+                },
+                error: function () {
+                    return false;
+                }
+            });
+        });
+
+        $("tbody").on("click", ".delete", function () {
+            delID = $(this).closest("tr").children('td:eq(0)').text();
+            $('#deleteModal').modal('show');
+        });
+        $(document).on("click", ".confirm", function () {
+            $.ajax({
+                url: "/Rules/Delete",
+                datatype: "text",
+                data: { 'RCode': delID },
+                type: "POST",
+                success: function (data) {
+                    drawTable();
+                    return true;
+                },
+                error: function () {
+                    return false;
+                }
+            });
+        });
+
+    function getVars() {
+        var data = '@Url.Action("LoadRules", "Rules")';
+       var date = new Date(), dateArray = new Array(), i;
+        for(i = 0; i<5; i++) {
+            dateArray[i] = data;
+        }
+        return dateArray;
+}
+// The Above function will create an array of five consecutive year from the the current year.
+
+function addVarSelect(divname) {
+    var newDiv=document.createElement('div');
+    var html = '<select>', dates = getVars(), i;
+    for(i = 0; i < dates.length; i++) {
+        html += "<option value='"+dates[i]+"'>"+dates[i]+"</option>";
+    }
+    html += '</select>';
+    newDiv.innerHTML= html;
+    document.getElementById(divname).appendChild(newDiv);
 }
 
-<a href="#myModal" data-toggle="modal" class="btn btn-primary" style="margin-top:-1.3%;">Rules Editor</a>
+function addConditional(divname) {
+    var newDiv = document.createElement('select');
+    var html = "<option>IF</option>  <option>THEN MARK</option> <option>ELSE</option> <option>AS</option>";
+    newDiv.innerHTML = html;
+    document.getElementById(divname).appendChild(newDiv);
+}
+
+function addComparison(divname) {
+    var newDiv = document.createElement('select');
+    var html = "<option>></option>  <option><</option> <option>=</option> <option><=</option> <option>>=</option>";
+    newDiv.innerHTML = html;
+    document.getElementById(divname).appendChild(newDiv);
+}
+
+function addInput(divname) {
+    var newDiv = document.createElement('input');
+    var html = "";
+    newDiv.innerHTML = html;
+    document.getElementById(divname).appendChild(newDiv);
+}
+
+    </script>
+}
+<a href="#myModal" data-toggle="modal" class="btn btn-primary" style="margin-top:-12%;">Rules Editor</a>
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -25,78 +163,58 @@
                 <h4 id="myModalLabel" class="modal-title">Rule Builder</h4>
             </div>
             <div class="modal-body">
-                Rule ID: <input id="ruleID" />
-                Rule Description: <input id="ruleID" /> 
+                Rule Name:
+                <select id="ruleNames" class="chzn-select" style="width: 100px"></select>
                 <br />
-                Rule Name: <input id="ruleID" /> 
-                <br />
-                Created By: <input id="ruleID" />                
-                Rule Status: 
-                <select id="select01" class="chzn-select" style="width: 150px">
+                Rule Status:
+                <select id="ruleStatus" class="chzn-select" style="width: 100px">
                     <option>Active</option>
-                    <option>In Process</option>
-                    <option>Retired</option>
+                    <option>Inactive</option>
                 </select>
-                <br />
-                <br />
-                <select id="select02" class="chzn-select" style="width: 70px">
-                    <option>IF</option>
-                    <option>THEN</option>
-                    <option>ELSE</option>
-                </select>
-                <br />
-                <select id="select02" class="chzn-select" style="width: 200px">
-                    <option>Meaningful Measure</option>
-                    <option>Measures Meaningfulness</option>
-                </select>
-                <select id="select02" class="chzn-select" style="width: 50px">
-                    <option>=</option>
-                    <option>></option>
-                    <option><</option>
-                </select>
-                <select id="select02" class="chzn-select" style="width: 200px">
-                    <option>Meaningful Measure</option>
-                    <option>Measures Meaningfulness</option>
-                </select>
-                <br />
-                <select id="select02" class="chzn-select" style="width: 70px">
-                    <option>IF</option>
-                    <option>THEN</option>
-                    <option>ELSE</option>
-                </select>
-                <br />
-                <select id="select02" class="chzn-select" style="width: 200px">
-                    <option>Meaningful Measure</option>
-                    <option>Measures Meaningfulness</option>
-                </select>
-                <select id="select02" class="chzn-select" style="width: 50px">
-                    <option>=</option>
-                    <option>></option>
-                    <option><</option>
-                </select>   
-                <select id="select02" class="chzn-select" style="width: 150px">
-                    <option>GOOD</option>
-                    <option>BAD</option>
-                    <option>WHAT</option>
-                </select>
+                Created By: Username
 
+                    <!--<option>Names of rules</option>-->
+                <br />
+                <br />
+                <br />
+                <div id="select-container">
+                    <!--DYNAMIC STUFF GOES HERE-->
+                </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="addInput('select-container');">Add Input</button>
+                <button type="button" class="btn btn-default" onclick="addComparison('select-container');">Add Comparison</button>
+                <button type="button" class="btn btn-default" onclick="addConditional('select-container');">Add Conditional</button>
+                <!--<button type="button" class="btn btn-default" onclick="addVarSelect('select-container');">Add Variable Select</button>-->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary save">Save changes</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="col-md-10" style="margin-top:1%;">
+<!--BEGIN DELETE MODAL-->
+<div id="deleteModal" class="modal fade bs-example-modal-sm deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-footer">
+                <h4 style="float:left" id="myModalLabel" class="modal-title">Confirm Delete</h4>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="confirm" class="btn btn-primary confirm" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END DELETE MODAL-->
+
+<div class="col-md-10" style="margin-top:-4%;">
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="text-muted bootstrap-admin-box-title">Rules Table</div>
             </div>
             <div class="bootstrap-admin-panel-content">
-                <table class="table table-hover" id="table_id">
+                <table class="table table-hover" id="example">
                     <thead>
                         <tr>
                             <th>Rule Code</th>
@@ -109,25 +227,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>100</td>
-                            <td>Meaningful Measures</td>
-                            <td>Measure Meaningfulness</td>
-                            <td>Active</td>
-                            <td>Username</td>
-                            <td>11/21/2015</td>
-                            <td><a href="">Edit </a> | <a href=""> Delete</a></td>
-                        </tr>
-                        <tr>
-                            <td>101</td>
-                            <td>Plan Ownership Type</td>
-                            <td>101</td>
-                            <td> </td>
-                            <td>Username</td>
-                            <td>11/21/2015</td>
-                            <td><a href="">Edit </a> | <a href=""> Delete</a></td>
-                        </tr>
                     </tbody>
+                    <tfoot>
+                    </tfoot>
                 </table>
             </div>
         </div>
