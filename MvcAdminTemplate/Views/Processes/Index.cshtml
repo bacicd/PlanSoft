@@ -3,8 +3,9 @@
 }
 @Html.Partial("_LeftMenu")
 
+
 @section Scripts{
-    <script type="text/javascript">
+    @*<script type="text/javascript">
     $(function () {
     $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
     $('.tree li.parent_li > span').on('click', function (e) {
@@ -81,10 +82,99 @@
     background:#eee;
     border:1px solid #94a0b4;
     color:#000
-}</style>
-    }
+}</style>*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>
 
-<div class="tree well" style="margin-top:-1.5%;">
+        $(document).ready(function () {
+            $("#b").click(function () {
+                $("p").append(" <b>Appended text</b>.");
+            });
+
+            $("#b").click(function () {
+                $("ol").append("<li>Appended item</li>");
+            });
+        });
+
+        $(document).ready(function () {
+            $("#addTask").click(function () {
+                $("divTasks").after("<i>After</i>");
+            });
+        });
+
+        $('#task').click(function () {
+            $('#task').css('display', 'none');
+            $('#taskentry')
+                .val($('#task').text())
+                .css('display', '')
+                .focus();
+        });
+
+        $('#taskentry').blur(function () {
+            $('#taskentry').css('display', 'none');
+            $('#task')
+                .text($('#taskentry').val())
+                .css('display', '');
+        });
+
+        $('#subtask').click(function () {
+            $('#subtask').css('display', 'none');
+            $('#subtaskentry')
+                .val($('#subtask').text())
+                .css('display', '')
+                .focus();
+        });
+
+        $('#subtaskentry').blur(function () {
+            $('#subtaskentry').css('display', 'none');
+            $('#subtask')
+                .text($('#subtaskentry').val())
+                .css('display', '');
+        });
+    </script>
+    <script>
+        $.ajax({
+         cache: false,
+         type: "GET",
+         url: '@Url.Action("DropDownAttributes", "Processes")',
+         dataType: 'json',
+         success: function (attribute)
+         {
+             var items = '';
+             var obj = '';
+             $.each(attribute, function (i, word) {
+                 $.each(word, function (i, obj) {
+                 items += "<option>" + obj + "</option>";
+                 });
+             });
+             $("#attributes").html(items);
+         },
+         error: function (xhr, ajaxOptions, thrownError)
+         {
+          alert('Failed to retrieve data.');
+         }
+       });
+    </script>
+    }
+<div id="mainTasks">
+    <span id="task">Task</span>
+    <input id="taskentry" style="display:none;" />
+    <a id="addTask" class="glyphicon glyphicon-plus"></a>
+    <br />
+    <div id="subTasks" style="margin-top:2%;">
+        <span id="subtask" style="margin-left:3%;">Sub Task</span>
+        <input id="subtaskentry" style="display:none;" />
+        <a id="addSubTask" class="glyphicon glyphicon-plus"></a>
+        <br />
+        <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
+            <select id="attributes" class="form-control" style="display:inline-block;"></select>
+        </div>
+        <a id="addAttribute" class="glyphicon glyphicon-plus" style="margin-top:2.5%;"></a>
+    </div>
+</div>
+
+@*<div class="tree well" style="margin-top:-1.5%;">
     <ul>
         <li>
             <span><i class="icon-plus-sign"></i> Parent</span> <a href="">Goes somewhere</a>
@@ -205,4 +295,4 @@
             </ul>
         </li>
     </ul>
-</div>
+</div>*@

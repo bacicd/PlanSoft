@@ -16,7 +16,9 @@ namespace MvcAdminTemplate.Models
 
         public static List<Attributes> AttributesList = new List<Attributes>(new[]
             {
-                new Attributes { ElementCode = "10", ElementName = "Plan", AttributeCode = "10", AttributeName = "Compensation Manager", DateSet = DateTime.Today, CreatedBy = "Username"}
+                new Attributes { ElementCode = "10", ElementName = "Plan", AttributeCode = "10", AttributeName = "Compensation Manager", DateSet = DateTime.Today, CreatedBy = "Username"},
+                new Attributes { ElementCode = "20", ElementName = "Plan", AttributeCode = "10", AttributeName = "Employee", DateSet = DateTime.Today, CreatedBy = "Username"},
+                new Attributes { ElementCode = "30", ElementName = "Plan", AttributeCode = "10", AttributeName = "Developer", DateSet = DateTime.Today, CreatedBy = "Username"}
             });
     }
 }
