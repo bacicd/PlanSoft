@@ -109,26 +109,26 @@
             });
         });
 
-    function getVars() {
-        var data = '@Url.Action("LoadRules", "Rules")';
-       var date = new Date(), dateArray = new Array(), i;
-        for(i = 0; i<5; i++) {
-            dateArray[i] = data;
-        }
-        return dateArray;
+        function addVarSelect(divname) {
+            var dateArray;
+             $.ajax({
+                type: 'POST',
+                url: '@Url.Action("LoadRuleNames")',
+                success: function (data) {
+                    var newDiv = document.createElement('select');
+                    array = data.split(";")
+                    var html = "";
+                    for(var i = 0; i < array.length-1 ;i++)
+                    {
+                        html += "<option> " + array[i] + "</option>"
+                    }
+                    newDiv.innerHTML = html;
+                    document.getElementById(divname).appendChild(newDiv);
+                }
+            });
 }
 // The Above function will create an array of five consecutive year from the the current year.
 
-function addVarSelect(divname) {
-    var newDiv=document.createElement('div');
-    var html = '<select>', dates = getVars(), i;
-    for(i = 0; i < dates.length; i++) {
-        html += "<option value='"+dates[i]+"'>"+dates[i]+"</option>";
-    }
-    html += '</select>';
-    newDiv.innerHTML= html;
-    document.getElementById(divname).appendChild(newDiv);
-}
 
 function addConditional(divname) {
     var newDiv = document.createElement('select');
@@ -186,7 +186,7 @@ function addInput(divname) {
                 <button type="button" class="btn btn-default" onclick="addInput('select-container');">Add Input</button>
                 <button type="button" class="btn btn-default" onclick="addComparison('select-container');">Add Comparison</button>
                 <button type="button" class="btn btn-default" onclick="addConditional('select-container');">Add Conditional</button>
-                <!--<button type="button" class="btn btn-default" onclick="addVarSelect('select-container');">Add Variable Select</button>-->
+                <button type="button" class="btn btn-default" onclick="addVarSelect('select-container');">Add Variable Select</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary save">Save changes</button>
             </div>

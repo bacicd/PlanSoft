@@ -17,19 +17,23 @@ namespace MvcAdminTemplate.Controllers
             return View();
         }
 
-        public ActionResult LoadRuleNames()
+        public string LoadRuleNames()
         {
-            return Json(new
+            string result = "";
+            foreach (Rules rule in Rules.RulesList)
             {
-                aaData = Rules.RulesList.Select(x => new[] { x.RuleName})
-            }, JsonRequestBehavior.AllowGet);
+                result += rule.RuleName + ";";
+            }
+            return result;
+
+            
         }
 
         public ActionResult LoadRules()
         {
             return Json(new
             {
-                aaData = Rules.RulesList.Select(x => new[] { x.RuleCode, x.RuleName, x.MarkedField, x.RuleStatus, x.DateAdded.ToString(), x.CreatedBy })
+                aaData = Rules.RulesList.Select(x => new[] { x.RuleCode, x.RuleName, x.MarkedField, x.RuleStatus, x.CreatedBy, x.DateAdded.ToString() })
             }, JsonRequestBehavior.AllowGet);
         }
 
