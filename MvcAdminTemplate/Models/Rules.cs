@@ -14,7 +14,20 @@ namespace MvcAdminTemplate.Models
         public string CreatedBy { get; set; }
         public DateTime DateAdded { get; set; }
 
-        public static List<Rules> RulesList = new List<Rules>(new[]
+        public static List<Rules> RulesList
+        {
+            get
+            {
+                return rulesList;
+            }
+
+            set
+            {
+                rulesList = value;
+            }
+        }
+
+        private static List<Rules> rulesList = new List<Rules>(new[]
             {
                 new Rules { RuleCode = "100", RuleName = "Meaningful Measures", MarkedField = "Measure Meaningfulness", RuleStatus = "Active", CreatedBy = "Username" , DateAdded = DateTime.Today},
                 new Rules { RuleCode = "101", RuleName = "Plan Ownership Type", MarkedField = "101", RuleStatus = "", CreatedBy = "Username", DateAdded = DateTime.Today },
