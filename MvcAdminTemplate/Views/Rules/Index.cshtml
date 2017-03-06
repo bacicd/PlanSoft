@@ -20,39 +20,6 @@
                     "data": null,
                     "defaultContent": "<button class =\"glyphicon glyphicon-pencil edit\"></button> <button class =\"glyphicon glyphicon-trash delete\"></button>"
                 }],
-                dom: 'Bfrtip',
-                buttons: [
-                         {
-                             extend: 'excel',
-                             text: '<i class="fa fa-file-excel-o"></i>',
-                             titleAttr: 'Excel',
-                             exportOptions: {
-                                 columns: ':visible'
-                             }
-                         },
-                          {
-                              extend: 'csv',
-                              text: '<i class="fa fa-file-text-o"></i>',
-                              titleAttr: 'CSV',
-                              exportOptions: {
-                                  columns: ':visible'
-                              }
-                          },
-                          {
-                              extend: 'pdf',
-                              text: '<i class="fa fa-file-pdf-o"></i>',
-                              titleAttr: 'PDF',
-                              exportOptions: {
-                                  columns: ':visible'
-                              }
-                          },
-                          {
-                              extend: 'colvis',
-                              text: '<i class="fa fa-eye"></i>',
-                              titleAttr: "Columns"
-                          }
-                ]
-
             });
             return true;
         }
@@ -153,7 +120,7 @@ function addInput(divname) {
 
     </script>
 }
-<a href="#myModal" data-toggle="modal" class="btn btn-primary" style="margin-top:-12%;">Rules Editor</a>
+<a href="#myModal" data-toggle="modal" class="btn btn-primary" style="margin-bottom:5%;margin-top:-2%">Rules Editor</a>
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -164,7 +131,7 @@ function addInput(divname) {
             </div>
             <div class="modal-body">
                 Rule Name:
-                <select id="ruleNames" class="chzn-select" style="width: 100px"></select>
+                <input />
                 <br />
                 Rule Status:
                 <select id="ruleStatus" class="chzn-select" style="width: 100px">
