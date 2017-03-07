@@ -29,20 +29,20 @@
             var regex = new RegExp(testStr);
             ruleName = $("#ruleName").val();
             markedField = $("#markedField").val();
-            ruleStatus = $("#ruleStatus").val();
-            ruleCreator = $("#ruleCreator").val();
-            test1 = regex.test(ruleID);
+            ruleCode = $("#ruleCode").val();
+            ruleCreator = "username";
+            test1 = regex.test(ruleCode);
             test2 = regex.test(ruleName);
-            test3 = regex.test(ruleCreator);
+            test3 = regex.test(markedField);
             if (!test1 || !test2 || !test3) {
                 $('#addmessage').html("Fields must not be empty or have special characters");
                 return false;
             }
 
             $.ajax({
-                url: "/Elements/Add",
+                url: "/Rules/Add",
                 datatype: "text",
-                data: { 'EleID': $('#ruleID').val(), 'EleName': $('#ruleName').val(), 'Creator': $('#ruleCreator').val() },
+                data: { 'RCode': $('#ruleCode').val(), 'RName': $('#ruleName').val(), 'markedField': $('#markedField').val(), 'RStatus': $('#ruleStatus').val(), 'Creator': "username" },
                 type: "POST",
                 success: function (data) {
                     drawTable();
@@ -94,8 +94,6 @@
                 }
             });
 }
-// The Above function will create an array of five consecutive year from the the current year.
-
 
 function addConditional(divname) {
     var newDiv = document.createElement('select');
@@ -130,8 +128,11 @@ function addInput(divname) {
                 <h4 id="myModalLabel" class="modal-title">Rule Builder</h4>
             </div>
             <div class="modal-body">
+                <div id="addmessage"></div>  
+                Rule Code:
+                <input id="ruleCode" />
                 Rule Name:
-                <input />
+                <input id="ruleName"/>
                 <br />
                 Rule Status:
                 <select id="ruleStatus" class="chzn-select" style="width: 100px">
@@ -139,9 +140,10 @@ function addInput(divname) {
                     <option>Inactive</option>
                 </select>
                 <br />
+                Marked Field: 
+                <input id="markedField"/>
+                <br />
                 Created By: Username
-
-                    <!--<option>Names of rules</option>-->
                 <br />
                 <br />
                 <br />

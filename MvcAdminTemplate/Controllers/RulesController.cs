@@ -83,9 +83,9 @@ namespace MvcAdminTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(string RCode, string RName, string RStatus, string Creator)
+        public ActionResult Add(string RCode, string RName, string markedField, string RStatus, string Creator)
         {
-            Rules.RulesList.Add(new Rules { RuleCode = RCode, RuleName = RName, RuleStatus = RStatus, DateAdded = DateTime.Today, CreatedBy = Creator });
+            Rules.RulesList.Add(new Rules { RuleCode = RCode, RuleName = RName, MarkedField = markedField, RuleStatus = RStatus, DateAdded = DateTime.Today, CreatedBy = Creator });
 
             return Json(new
             {
