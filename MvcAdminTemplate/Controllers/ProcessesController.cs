@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MvcAdminTemplate.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,5 +17,13 @@ namespace MvcAdminTemplate.Controllers
             return View();
         }
 
+
+        public JsonResult DropDownAttributes(string attribute)
+        {
+            return Json(new
+            {
+                attribute = Attributes.AttributesList.Select(x => new[] { x.AttributeName })
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }
