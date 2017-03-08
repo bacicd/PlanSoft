@@ -7,20 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MvcAdminTemplate
+namespace MvcAdminTemplate.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ElementVariable
+    public partial class UserRole
     {
-        public int Code { get; set; }
-        public int ECode { get; set; }
-        public string Name { get; set; }
-        public decimal CID { get; set; }
-        public string CreatedBy { get; set; }
-        public System.DateTime CreatedOn { get; set; }
+        public UserRole()
+        {
+            this.Accounts = new HashSet<Account>();
+        }
     
-        public virtual Element Element { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    
+        public virtual ICollection<Account> Accounts { get; set; }
     }
 }

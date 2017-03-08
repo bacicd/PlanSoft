@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MvcAdminTemplate
+namespace MvcAdminTemplate.Models
 {
     using System;
     using System.Collections.Generic;

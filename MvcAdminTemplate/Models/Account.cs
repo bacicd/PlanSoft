@@ -7,21 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MvcAdminTemplate
+namespace MvcAdminTemplate.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class UserRole
+    public partial class Account
     {
-        public UserRole()
-        {
-            this.Accounts = new HashSet<Account>();
-        }
+        public string Username { get; set; }
+        public int OrgID { get; set; }
+        public string First { get; set; }
+        public string Last { get; set; }
+        public string Role { get; set; }
+        public string Password { get; set; }
+        public System.DateTime CreatedOn { get; set; }
     
-        public string Name { get; set; }
-        public string Description { get; set; }
-    
-        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual Organization Organization { get; set; }
+        public virtual UserRole UserRole { get; set; }
     }
 }

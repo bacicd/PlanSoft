@@ -7,29 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MvcAdminTemplate
+namespace MvcAdminTemplate.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Attribute
+    public partial class AttributeVariable
     {
-        public Attribute()
-        {
-            this.AttributeVariables = new HashSet<AttributeVariable>();
-        }
-    
         public int Code { get; set; }
-        public int ECode { get; set; }
+        public int ACode { get; set; }
         public string Name { get; set; }
-        public string Field { get; set; }
-        public string Format { get; set; }
-        public string Flag { get; set; }
-        public string Input { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
     
-        public virtual ICollection<AttributeVariable> AttributeVariables { get; set; }
-        public virtual Element Element { get; set; }
+        public virtual Attribute Attribute { get; set; }
     }
 }
