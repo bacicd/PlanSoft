@@ -59,7 +59,7 @@ namespace MvcAdminTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(string RCode, string newCode, string newName)
+        public ActionResult Update(string RCode, string newCode, string newName, string newField)
         {
             foreach (Rules i in Rules.RulesList)
             {
@@ -67,6 +67,7 @@ namespace MvcAdminTemplate.Controllers
                 {
                     i.RuleCode = newCode;
                     i.RuleName = newName;
+                    i.MarkedField = newField;
                     i.DateAdded = DateTime.Today;
 
                     return Json(new

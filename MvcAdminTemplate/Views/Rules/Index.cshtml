@@ -93,7 +93,45 @@
                     document.getElementById(divname).appendChild(newDiv);
                 }
             });
-}
+        }
+
+        $("tbody").on("click", ".edit", function () {
+            $('#editMessage').html("");
+            ID = $(this).closest("tr").children('td:eq(0)').text();
+            Name = $(this).closest("tr").children('td:eq(1)').text();
+            MarkedField = $(this).closest("tr").children('td:eq(2)').text();
+            $('#editModal').modal('show');
+            $("#updateCode").val(ID);
+            $("#updateName").val(Name);
+            $("#updateField").val(MarkedField);
+            
+
+            $(document).on("click", ".update", function () {
+                testStr = "([A-Za-z0-9])+"
+                var regex = new RegExp(testStr);
+                test1 = regex.test($('#updateCode').val());
+                test2 = regex.test($('#updateName').val());
+                test3 = regex.test($('#updateField').val());
+                if (!test1 || !test2 || !test3) {
+                    $('#editMessage').html("Fields must not be empty or have special characters");
+                    return false;
+                }
+                $.ajax({
+                    url: "/Rules/Update",
+                    datatype: "text",
+                    data: { 'RCode': ID, 'newCode': $('#updateCode').val(), 'newName': $('#updateName').val(), 'newField': $('#updateField').val() },
+                    type: "POST",
+                    success: function (data) {
+                        drawTable();
+                        $('#editModal').modal('hide');
+                        return true;
+                    },
+                    error: function () {
+                        return false;
+                    }
+                });
+            });
+        });
 
 function addConditional(divname) {
     var newDiv = document.createElement('select');
@@ -163,6 +201,32 @@ function addInput(divname) {
         </div>
     </div>
 </div>
+
+<!--BEGIN EDIT MODAL-->
+<div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="myModalLabel" class="modal-title">Add Element</h4>
+            </div>
+            <div class="modal-body">
+                <div id="editMessage"></div>
+                Element Code: <input id="updateCode" />
+                <br />
+                Element Name: <input id="updateName" />
+                <br />
+                Marked Field: <input id="updateField" />
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="update" class="btn btn-primary update">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END EDIT MODAL-->
 
 <!--BEGIN DELETE MODAL-->
 <div id="deleteModal" class="modal fade bs-example-modal-sm deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
