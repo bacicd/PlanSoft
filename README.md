@@ -4,15 +4,14 @@ Codename Plansoft project
 Details:
 
 * USI senior project building an HR solution software regarding incentive plans.  
-* Free for personal and commercial use
 
 ## Demo
 
-[http://www.hresonance.com)
+http://www.hresonance.com
 
 ## License
 
-Copyright &copy; 2013 - USI
+Copyright &copy; 2017 - USI
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
