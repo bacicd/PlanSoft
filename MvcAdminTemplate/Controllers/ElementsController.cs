@@ -21,35 +21,35 @@ namespace MvcAdminTemplate.Controllers
         {
             return Json(new
             {
-                aaData = ElementsView.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy})
+                aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy})
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Delete(string EleID)
         {
-            foreach (ElementsView i in ElementsView.ElementsList)
+            foreach (ElementsViewModel i in ElementsViewModel.ElementsList)
             {
                 if (i.ElementId == EleID)
                 {
-                    ElementsView.ElementsList.Remove(i);
+                    ElementsViewModel.ElementsList.Remove(i);
                     return Json(new
                     {
-                        aaData = ElementsView.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
+                        aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
 
             return Json(new
             {
-                aaData = ElementsView.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
+                aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Update(string EleID, string newID, string newName)
         {
-            foreach (ElementsView i in ElementsView.ElementsList)
+            foreach (ElementsViewModel i in ElementsViewModel.ElementsList)
             {
                 if (i.ElementId == EleID)
                 {
@@ -59,25 +59,25 @@ namespace MvcAdminTemplate.Controllers
 
                     return Json(new
                     {
-                        aaData = ElementsView.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
+                        aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
 
             return Json(new
             {
-                aaData = ElementsView.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
+                aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Add(string EleID, string EleName, string Creator)
         {
-            ElementsView.ElementsList.Add(new ElementsView { ElementId = EleID, ElementName = EleName, DateSet = DateTime.Today, CreatedBy = Creator });
+            ElementsViewModel.ElementsList.Add(new ElementsViewModel { ElementId = EleID, ElementName = EleName, DateSet = DateTime.Today, CreatedBy = Creator });
 
             return Json(new
             {
-                aaData = ElementsView.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
+                aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
     }
