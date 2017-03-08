@@ -131,19 +131,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs">
-      <DependentUpon>HResonanceModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Attribute.cs">
-      <DependentUpon>HResonanceModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AttributeVariable.cs">
-      <DependentUpon>HResonanceModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AttributesController.cs" />
     <Compile Include="Controllers\AttributesVariablesController.cs" />
@@ -162,45 +153,18 @@
     <Compile Include="Controllers\RulesController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TablesController.cs" />
-    <Compile Include="Element.cs">
-      <DependentUpon>HResonanceModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ElementVariable.cs">
-      <DependentUpon>HResonanceModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HResonanceModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HResonanceModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="HResonanceModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HResonanceModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="HResonanceModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HResonanceModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="HtmlHelperExtensions\MenuExtensions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\AttributesView.cs" />
-    <Compile Include="Models\AttributesVariablesView.cs" />
-    <Compile Include="Models\ElementsView.cs" />
-    <Compile Include="Models\ElementsVariablesView.cs" />
+    <Compile Include="Models\AttributesVariablesViewModel.cs" />
+    <Compile Include="Models\AttributesViewModel.cs" />
+    <Compile Include="Models\ElementsVariablesViewModel.cs" />
+    <Compile Include="Models\ElementsViewModel.cs" />
     <Compile Include="Models\Rules.cs" />
     <Compile Include="Models\VmDashboard.cs" />
-    <Compile Include="Organization.cs">
-      <DependentUpon>HResonanceModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserRole.cs">
-      <DependentUpon>HResonanceModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -1674,24 +1638,7 @@
     <Content Include="Content\Theme\vendors\uniform\www\CNAME" />
     <Content Include="Content\Theme\vendors\uniform\www\downloads\.keep" />
     <Content Include="Content\Theme\vendors\uniform\www\stylesheets\multiple-themes.scss" />
-    <EntityDeploy Include="HResonanceModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>HResonanceModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="HResonanceModel.edmx.diagram">
-      <DependentUpon>HResonanceModel.edmx</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="HResonanceModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>HResonanceModel.edmx</DependentUpon>
-      <LastGenOutput>HResonanceModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="HResonanceModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>HResonanceModel.edmx</DependentUpon>
-      <LastGenOutput>HResonanceModel.cs</LastGenOutput>
-    </Content>
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
     <Content Include="img\jrocket.png" />
