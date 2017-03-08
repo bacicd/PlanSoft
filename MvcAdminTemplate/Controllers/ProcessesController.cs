@@ -22,7 +22,7 @@ namespace MvcAdminTemplate.Controllers
         {
             return Json(new
             {
-                attribute = Attributes.AttributesList.Select(x => new[] { x.AttributeName })
+                attribute = AttributesView.AttributesList.Select(x => new[] { x.AttributeName })
             }, JsonRequestBehavior.AllowGet);
         }
     }

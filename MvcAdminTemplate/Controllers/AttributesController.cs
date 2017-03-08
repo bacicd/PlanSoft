@@ -20,35 +20,35 @@ namespace MvcAdminTemplate.Controllers
         {
             return Json(new
             {
-                aaData = Attributes.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
+                aaData = AttributesView.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Delete(string EleCode)
         {
-            foreach (Attributes i in Attributes.AttributesList)
+            foreach (AttributesView i in AttributesView.AttributesList)
             {
                 if (i.ElementCode == EleCode)
                 {
-                    Attributes.AttributesList.Remove(i);
+                    AttributesView.AttributesList.Remove(i);
                     return Json(new
                     {
-                        aaData = Attributes.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
+                        aaData = AttributesView.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
 
             return Json(new
             {
-                aaData = Attributes.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
+                aaData = AttributesView.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Update(string EleCode, string NewEleCode, string NewEleName, string NewAttribCode, string NewAttribName)
         {
-            foreach (Attributes i in Attributes.AttributesList)
+            foreach (AttributesView i in AttributesView.AttributesList)
             {
                 if (i.ElementCode == EleCode)
                 {
@@ -60,25 +60,25 @@ namespace MvcAdminTemplate.Controllers
 
                     return Json(new
                     {
-                        aaData = Attributes.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
+                        aaData = AttributesView.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
 
             return Json(new
             {
-                aaData = Attributes.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
+                aaData = AttributesView.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Add(string EleCode, string EleName, string AttribCode, string AttribName, string Creator)
         {
-            Attributes.AttributesList.Add(new Attributes { ElementCode = EleCode, ElementName = EleName, AttributeCode = AttribCode, AttributeName = AttribName, DateSet = DateTime.Today, CreatedBy = Creator });
+            AttributesView.AttributesList.Add(new AttributesView { ElementCode = EleCode, ElementName = EleName, AttributeCode = AttribCode, AttributeName = AttribName, DateSet = DateTime.Today, CreatedBy = Creator });
 
             return Json(new
             {
-                aaData = Attributes.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
+                aaData = AttributesView.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
     }
