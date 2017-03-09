@@ -153,6 +153,8 @@
     <Compile Include="Controllers\RulesController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TablesController.cs" />
+    <Compile Include="Controllers\TestElementController.cs" />
+    <Compile Include="Controllers\TestOrganizationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1750,6 +1752,16 @@
     <Content Include="Views\Elements\Index.cshtml" />
     <Content Include="Views\Processes\Index.cshtml" />
     <Content Include="Views\Rules\Index.cshtml" />
+    <Content Include="Views\TestElement\Index.cshtml" />
+    <Content Include="Views\TestElement\Details.cshtml" />
+    <Content Include="Views\TestElement\Create.cshtml" />
+    <Content Include="Views\TestElement\Edit.cshtml" />
+    <Content Include="Views\TestElement\Delete.cshtml" />
+    <Content Include="Views\TestOrganization\Index.cshtml" />
+    <Content Include="Views\TestOrganization\Details.cshtml" />
+    <Content Include="Views\TestOrganization\Create.cshtml" />
+    <Content Include="Views\TestOrganization\Edit.cshtml" />
+    <Content Include="Views\TestOrganization\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
