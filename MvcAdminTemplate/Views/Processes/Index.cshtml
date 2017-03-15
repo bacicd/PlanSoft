@@ -77,26 +77,32 @@
         $(".container").on("click", ".addTask", addTask);
         $(".container").on("click", ".addSubtask", addSubtask);
         $(".container").on("click", ".addAttribute", addAttributeSelect)
+        
+        $(".container").on("click", ".subTask", subTask);
+        $(".container").on("click", ".subSubtask", subSubtask);
+        $(".container").on("click", ".subAttribute", subAttributeSelect)
 
         function addTask ()
         {
-            parentDiv = $(this).closest("div").index();
             html = "<br \> \
                 <div class=\"TASK\"> \
             <label class=\"EDITABLE\">Task 1 (Click to edit)</label> \
             <input class=\"clickedit\" type=\"text\" /> \
             <a id=\"addTask\" class=\"glyphicon glyphicon-plus addTask\" style=\"margin-left:.5%;\"></a> \
+            <a class=\"glyphicon glyphicon-minus subTask\" style=\"margin-top:.8%;\"></a> \
             <br /> \
     <div id=\"SUBTASK1\" class=\"SUBTASK\" style=\"margin-left:13%;margin-top:2%\"> \
             <label class=\"EDITABLE\">Subtask</label> \
             <input class=\"clickedit\" type=\"text\" /> \
             <a id=\"addTask\" class=\"glyphicon glyphicon-plus addSubtask\" style=\"margin-left:.5%;\"></a> \
+            <a class=\"glyphicon glyphicon-minus subSubtask\" style=\"margin-top:.8%;\"></a> \
             <br /> \
     <div id=\"attributeElements\" class=\"ATTRIBUTESELECTOR\" style=\"margin-left:9%; margin-top:2%;\"> \
                 <div class=\"col-md-4\"> \
                     <select id=\"attributes\" class=\"form-control attributes\" style=\"display:inline-block;\"></select> \
                 </div> \
                 <a id=\"addAttribute\" class=\"glyphicon glyphicon-plus addAttribute\" style=\"margin-top:.8%;\"></a> \
+                <a class=\"glyphicon glyphicon-minus subAttribute\" style=\"margin-top:.8%;\"></a> \
             </div> \
         </div> \
         </div>";
@@ -108,17 +114,18 @@
 
         function addSubtask()
         {
-            parentDiv = $(this).closest("div").index();
             html = "<div id=\"SUBTASK1\" class=\"SUBTASK\" style=\"margin-left:13%;margin-top:2%\"> \
             <label class=\"EDITABLE\">Subtask</label> \
             <input class=\"clickedit\" type=\"text\" /> \
             <a id=\"addTask\" class=\"glyphicon glyphicon-plus addSubtask\" style=\"margin-left:.5%;\"></a> \
+            <a class=\"glyphicon glyphicon-minus subSubtask\" style=\"margin-top:.8%;\"></a> \
             <br /> \
     <div id=\"attributeElements\" class=\"ATTRIBUTESELECTOR\" style=\"margin-left:9%; margin-top:2%;\"> \
                 <div class=\"col-md-4\"> \
                     <select id=\"attributes\" class=\"form-control attributes\" style=\"display:inline-block;\"></select> \
                 </div> \
                 <a id=\"addAttribute\" class=\"glyphicon glyphicon-plus addAttribute\" style=\"margin-top:.8%;\"></a> \
+                <a class=\"glyphicon glyphicon-minus subAttribute\" style=\"margin-top:.8%;\"></a> \
             </div> \
         </div>"
             $(html).insertAfter($(this).closest(".SUBTASK"))
@@ -129,22 +136,38 @@
 
         function addAttributeSelect()
         {
-            parentDiv = $(this).closest("div").index();
             html = "<div id=\"attributeElements\" class=\"ATTRIBUTESELECTOR\" style=\"margin-left:9%; margin-top:2%;\"> \
                 <div class=\"col-md-4\"> \
                     <select id=\"attributes\" class=\"form-control attributes\" style=\"display:inline-block;\"></select> \
                 </div> \
                 <a id=\"addAttribute\" class=\"glyphicon glyphicon-plus addAttribute\" style=\"margin-top:.8%;\"></a> \
+                <a class=\"glyphicon glyphicon-minus subAttribute\" style=\"margin-top:.8%;\"></a> \
             </div>"
             $(html).insertAfter($(this).closest(".ATTRIBUTESELECTOR"))
             populateAttributes();
             return false;
         }
 
+        function subTask()
+        {
+            $(this).closest(".TASK").remove();
+        }
+
+        function subSubtask() {
+            $(this).closest(".SUBTASK").remove();
+        }
+
+        function subAttributeSelect() {
+            $(this).closest(".ATTRIBUTESELECTOR").remove();
+        }
         
 
     </script>
 }
+
+
+
+
 
 <!--MASTER CONTAINER-->
 <div id="CONTAINER" class="container" style="margin-left:19%;">
@@ -161,7 +184,7 @@
             <a id="addTask" class="glyphicon glyphicon-plus addSubtask" style="margin-left:.5%;"></a>
             <br />
             <!--ATTRIBUTE SELECTOR 1-->
-            <div id="attributeElements" class="ATTRIBUTESELECTOR"style="margin-left:9%; margin-top:2%;">
+            <div id="attributeElements" class="ATTRIBUTESELECTOR" style="margin-left:9%; margin-top:2%;">
                 <div class="col-md-4">
                     <select id="attributes" class="form-control attributes" style="display:inline-block;"></select>
                 </div>
