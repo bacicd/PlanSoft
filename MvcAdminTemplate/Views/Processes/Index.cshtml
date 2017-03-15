@@ -8,359 +8,171 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
     <script>
-
-        $(document).ready(function () {
-            $("#b").click(function () {
-                $("p").append(" <b>Appended text</b>.");
-            });
-
-            $("#b").click(function () {
-                $("ol").append("<li>Appended item</li>");
-            });
-        });
-
         $(document).ready(function () {
             $("#addSubTask").click(function () {
                 console.log("clicked")
-                $('<div id="subTasks" style="margin-top:2%;"><span id="subtask" style="margin-left:3%;">Sub Task</span><input id="subtaskentry" style="display:none;" /><a id="addSubTask" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a><br /><div class="col-md-3" style="margin-left:5%; margin-top:2%;"><select id="attributes" class="form-control" style="display:inline-block;"></select></div><a id="addAttribute" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a></div>'
+                $('<div id="subTasks" style="margin-top:2%;"><span id="subtask" style="margin-left:3%;">Sub Task</span><input id="subtaskentry" style="display:none;" /><a id="addSubTask" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a><br /><div class="col-md-3" style="margin-left:5%; margin-top:2%;"><select id="attributes" class="form-control attributes" style="display:inline-block;"></select></div><a id="addAttribute" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a></div>'
              ).insertAfter('#subTasks');
             });
-        });
-
-        $('#task').click(function () {
-            $('#task').css('display', 'none');
-            $('#taskentry')
-                .val($('#task').text())
-                .css('display', '')
-                .focus();
-        });
-
-        $('#taskentry').blur(function () {
-            $('#taskentry').css('display', 'none');
-            $('#task')
-                .text($('#taskentry').val())
-                .css('display', '');
-        });
-
-        $('#subtask').click(function () {
-            $('#subtask').css('display', 'none');
-            $('#subtaskentry')
-                .val($('#subtask').text())
-                .css('display', '')
-                .focus();
-        });
-
-        $('#subtaskentry').blur(function () {
-            $('#subtaskentry').css('display', 'none');
-            $('#subtask')
-                .text($('#subtaskentry').val())
-                .css('display', '');
+            populateAttributes();
+            hideTextbox();
         });
     </script>
     <script>
-        $.ajax({
-            cache: false,
-            type: "GET",
-            url: '@Url.Action("DropDownAttributes", "Processes")',
-            dataType: 'json',
-            success: function (attribute) {
-                var items = '';
-                var obj = '';
-                $.each(attribute, function (i, word) {
-                    $.each(word, function (i, obj) {
-                        items += "<option>" + obj + "</option>";
+        function populateAttributes() {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("DropDownAttributes", "Processes")',
+                dataType: 'json',
+                success: function (attribute) {
+                    var items = '';
+                    var obj = '';
+                    $.each(attribute, function (i, word) {
+                        $.each(word, function (i, obj) {
+                            items += "<option>" + obj + "</option>";
+                        });
                     });
-                });
-                $("#attributes").html(items);
-                $("#attributes111").html(items);
-                $("#attributes112").html(items);
-                $("#attributes113").html(items);
-                $("#attributes114").html(items);
-                $("#attributes115").html(items);
-                $("#attributes116").html(items);
-                $("#attributes117").html(items);
-                $("#attributes118").html(items);
-                $("#attributes119").html(items);
-                $("#attributes1").html(items);
-                $("#attributes12").html(items);
-                $("#attributes13").html(items);
-                $("#attributes14").html(items);
-                $("#attributes15").html(items);
-                $('#attributes2').html(items);
-                $("#attributes21").html(items);
-                $("#attributes22").html(items);
-                $("#attributes23").html(items);
-                $("#attributes24").html(items);
-                $("#attributes25").html(items);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('Failed to retrieve data.');
-            }
-        });
+
+                    $(".attributes").html(items);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
+
+        var defaultText = 'Click to edit text';
+
+        function endEdit(e) {
+            var input = $(e.target),
+                label = input && input.prev();
+
+            label.text(input.val() === '' ? defaultText : input.val());
+            input.hide();
+            label.show();
+        }
+
+        
+
+        function hideTextbox() {
+            $('.clickedit').hide()
+            .focusout(endEdit)
+            .keyup(function (e) {
+                if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                    endEdit(e);
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+            .prev().click(function () {
+                $(this).hide();
+                $(this).next().show().focus();
+            });
+        }
+
+
+
+        $(".container").on("click", ".addTask", addTask);
+        $(".container").on("click", ".addSubtask", addSubtask);
+        $(".container").on("click", ".addAttribute", addAttributeSelect)
+
+        function addTask ()
+        {
+            parentDiv = $(this).closest("div").index();
+            html = "<br \> \
+                <div class=\"TASK\"> \
+            <label class=\"EDITABLE\">Task 1 (Click to edit)</label> \
+            <input class=\"clickedit\" type=\"text\" /> \
+            <a id=\"addTask\" class=\"glyphicon glyphicon-plus addTask\" style=\"margin-left:.5%;\"></a> \
+            <br /> \
+    <div id=\"SUBTASK1\" class=\"SUBTASK\" style=\"margin-left:13%;margin-top:2%\"> \
+            <label class=\"EDITABLE\">Subtask</label> \
+            <input class=\"clickedit\" type=\"text\" /> \
+            <a id=\"addTask\" class=\"glyphicon glyphicon-plus addSubtask\" style=\"margin-left:.5%;\"></a> \
+            <br /> \
+    <div id=\"attributeElements\" class=\"ATTRIBUTESELECTOR\" style=\"margin-left:9%; margin-top:2%;\"> \
+                <div class=\"col-md-4\"> \
+                    <select id=\"attributes\" class=\"form-control attributes\" style=\"display:inline-block;\"></select> \
+                </div> \
+                <a id=\"addAttribute\" class=\"glyphicon glyphicon-plus addAttribute\" style=\"margin-top:.8%;\"></a> \
+            </div> \
+        </div> \
+        </div>";
+            $(html).insertAfter($(this).closest(".TASK"));
+            populateAttributes();
+            hideTextbox();
+            return false;
+        }        
+
+        function addSubtask()
+        {
+            parentDiv = $(this).closest("div").index();
+            html = "<div id=\"SUBTASK1\" class=\"SUBTASK\" style=\"margin-left:13%;margin-top:2%\"> \
+            <label class=\"EDITABLE\">Subtask</label> \
+            <input class=\"clickedit\" type=\"text\" /> \
+            <a id=\"addTask\" class=\"glyphicon glyphicon-plus addSubtask\" style=\"margin-left:.5%;\"></a> \
+            <br /> \
+    <div id=\"attributeElements\" class=\"ATTRIBUTESELECTOR\" style=\"margin-left:9%; margin-top:2%;\"> \
+                <div class=\"col-md-4\"> \
+                    <select id=\"attributes\" class=\"form-control attributes\" style=\"display:inline-block;\"></select> \
+                </div> \
+                <a id=\"addAttribute\" class=\"glyphicon glyphicon-plus addAttribute\" style=\"margin-top:.8%;\"></a> \
+            </div> \
+        </div>"
+            $(html).insertAfter($(this).closest(".SUBTASK"))
+            populateAttributes();
+            hideTextbox();
+            return false;
+        }        
+
+        function addAttributeSelect()
+        {
+            parentDiv = $(this).closest("div").index();
+            html = "<div id=\"attributeElements\" class=\"ATTRIBUTESELECTOR\" style=\"margin-left:9%; margin-top:2%;\"> \
+                <div class=\"col-md-4\"> \
+                    <select id=\"attributes\" class=\"form-control attributes\" style=\"display:inline-block;\"></select> \
+                </div> \
+                <a id=\"addAttribute\" class=\"glyphicon glyphicon-plus addAttribute\" style=\"margin-top:.8%;\"></a> \
+            </div>"
+            $(html).insertAfter($(this).closest(".ATTRIBUTESELECTOR"))
+            populateAttributes();
+            return false;
+        }
+
+        
+
     </script>
 }
-<div class="container" style="margin-left:19%;">
-    <div id="mainTasks">
-        <span id="task">Task</span>
-        <input id="taskentry" style="display:none;" />
-        <a id="addTask" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-        <br />
-        <div id="subTasks" style="margin-top:2%;">
-            <span id="subtask" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry" style="display:none;" />
-            <a id="addSubTask" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div id="attributeElements" style="margin-left:5%; margin-top:2%;">
-                <div class="col-md-4">
-                    <select id="attributes" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements1"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes111" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute111" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute111-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements12"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes112" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute112" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute112-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements13"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes113" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute113" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute113-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements14"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes114" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute114" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute114-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements15"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes115" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute115" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute115-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements16"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes116" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute116" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute116-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements17"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes117" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute117" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute117-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements18"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes118" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute118" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute118-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements19"style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes119" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute119" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute119-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-        </div>
-        <div id="subTasks1" style="margin-top:2%;">
-            <span id="subtask1" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry1" style="display:none;" />
-            <a id="addSubTask1" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div id="attributeElements2" style="margin-left:5%; margin-top:2%;">
-                <div class="col-md-4">
-                    <select id="attributes211" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements21" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes212" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute111" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute111-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements22" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes213" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute112" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute112-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements23" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes214" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute113" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute113-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements24" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes215" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute114" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute114-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements15" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes115" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute115" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute115-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements16" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes116" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute116" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute116-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements17" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes117" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute117" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute117-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements18" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes118" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute118" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute118-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-            <div id="attributeElements19" style="margin-top:2%;margin-left:5%;">
-                <div class="col-md-4">
-                    <select id="attributes119" class="form-control" style="display:inline-block;"></select>
-                </div>
-                <a id="addAttribute119" class="glyphicon glyphicon-plus" style="margin-top:.8%;"></a>
-                <a id="addAttribute119-" class="glyphicon glyphicon-minus" style="margin-top:.8%;"></a>
-            </div>
-        </div>
-        <div id="subTasks12" style="margin-top:2%;">
-            <span id="subtask12" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry12" style="display:none;" />
-            <a id="addSubTask12" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes12" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute12" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
-        <div id="subTasks13" style="margin-top:2%;">
-            <span id="subtask13" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry13" style="display:none;" />
-            <a id="addSubTask13" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes13" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute13" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
-        <div id="subTasks14" style="margin-top:2%;">
-            <span id="subtask14" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry14" style="display:none;" />
-            <a id="addSubTask14" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes14" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute14" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
-        <div id="subTasks15" style="margin-top:2%;">
-            <span id="subtask15" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry15" style="display:none;" />
-            <a id="addSubTask15" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes15" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute15" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
-    </div>
-    <div id="mainTasks2" style="margin-top:2.8%;">
-        <span id="task2">Task</span>
-        <input id="taskentry2" style="display:none;" />
-        <a id="addTask2" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-        <br />
-        <div id="subTasks2" style="margin-top:2%;">
-            <span id="subtask2" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry2" style="display:none;" />
-            <a id="addSubTask2" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes2" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute2" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
 
-        <div id="subTasks21" style="margin-top:2%;">
-            <span id="subtask21" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry21" style="display:none;" />
-            <a id="addSubTask21" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
+<!--MASTER CONTAINER-->
+<div id="CONTAINER" class="container" style="margin-left:19%;">
+    <!--TASK 1-->
+    <div id="TASK1" class="TASK">
+        <label class="EDITABLE">Task 1 (Click to edit)</label>
+        <input class="clickedit" type="text" />
+        <a id="addTask" class="glyphicon glyphicon-plus addTask" style="margin-left:.5%;"></a>
+        <br />
+        <!--SUBTAK 1-->
+        <div id="SUBTASK1" class="SUBTASK" style="margin-left:13%;margin-top:2%">
+            <label class="EDITABLE">Subtask</label>
+            <input class="clickedit" type="text" />
+            <a id="addTask" class="glyphicon glyphicon-plus addSubtask" style="margin-left:.5%;"></a>
             <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes21" class="form-control" style="display:inline-block;"></select>
+            <!--ATTRIBUTE SELECTOR 1-->
+            <div id="attributeElements" class="ATTRIBUTESELECTOR"style="margin-left:9%; margin-top:2%;">
+                <div class="col-md-4">
+                    <select id="attributes" class="form-control attributes" style="display:inline-block;"></select>
+                </div>
+                <a id="addAttribute" class="glyphicon glyphicon-plus addAttribute" style="margin-top:.8%;"></a>
             </div>
-            <a id="addAttribute21" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
+            <!--END ATRIBUTE SELECTOR-->
+
         </div>
-        <div id="subTasks22" style="margin-top:2%;">
-            <span id="subtask22" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry22" style="display:none;" />
-            <a id="addSubTask22" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes22" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute22" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
-        <div id="subTasks23" style="margin-top:2%;">
-            <span id="subtask23" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry23" style="display:none;" />
-            <a id="addSubTask23" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes23" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute23" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
-        <div id="subTasks24" style="margin-top:2%;">
-            <span id="subtask24" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry24" style="display:none;" />
-            <a id="addSubTask24" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes24" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute24" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
-        <div id="subTasks25" style="margin-top:2%;">
-            <span id="subtask25" style="margin-left:3%;">Sub Task</span>
-            <input id="subtaskentry25" style="display:none;" />
-            <a id="addSubTask25" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a>
-            <br />
-            <div class="col-md-3" style="margin-left:5%; margin-top:2%;">
-                <select id="attributes25" class="form-control" style="display:inline-block;"></select>
-            </div>
-            <a id="addAttribute25" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a>
-        </div>
+        <!--END SUBTASK 1-->
     </div>
+<!--END TASK 1-->
 </div>
+<!--END MASTER CONTAINER-->
+
