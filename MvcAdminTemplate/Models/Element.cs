@@ -29,5 +29,7 @@ namespace MvcAdminTemplate.Models
         public virtual ICollection<Attribute> Attributes { get; set; }
         public virtual ICollection<ElementVariable> ElementVariables { get; set; }
         public virtual Organization Organization { get; set; }
+
+        public static List<Element> ElementsList = new List<Models.Element>();
     }
 }
