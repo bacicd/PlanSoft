@@ -1,4 +1,83 @@
-﻿<!-- left, vertical navbar -->
+﻿<style>
+    .dropdown-submenu {
+        position: relative;
+    }
+
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -6px;
+            margin-left: -1px;
+            -webkit-border-radius: 0 6px 6px 6px;
+            -moz-border-radius: 0 6px 6px 6px;
+            border-radius: 0 6px 6px 6px;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu > a:after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #cccccc;
+            margin-top: 5px;
+            margin-right: -10px;
+        }
+
+        .dropdown-submenu:hover > a:after {
+            border-left-color: #cccccc;
+        }
+
+        .dropdown-submenu.pull-left {
+            float: none;
+        }
+
+        .dropdown-submenu.pull-left > .dropdown-menu {
+                left: -100%;
+                margin-left: 10px;
+                -webkit-border-radius: 6px 0 6px 6px;
+                -moz-border-radius: 6px 0 6px 6px;
+                border-radius: 6px 0 6px 6px;
+            }
+</style>
+<nav>
+    <div class="col-md-2 bootstrap-admin-col-left" style="margin-top:-1.3%;">
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; width: 20%; background-color:rgba(245, 245, 245, 0.498039);list-style: none;">
+            <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+            <li class="divider"></li>
+            <li class="dropdown-submenu">
+                <a>MDM</a>
+                <ul class="dropdown-menu" style="background-color:rgba(245, 245, 245, 1);">
+                   <li>@Html.ActionLink("Elements", "Index", "Elements")</li>
+                   <li>@Html.ActionLink("Elements Variables", "Index", "ElementsVariables")</li>
+                   <li>@Html.ActionLink("Attributes", "Index", "Attributes")</li>
+                   <li>@Html.ActionLink("Attributes Variables", "Index", "AttributesVariables")</li>
+                </ul>
+            </li>
+            <li class="divider"></li>
+            <li>@Html.ActionLink("Rules", "Index", "Rules")</li>
+            <li class="divider"></li>
+            <li>@Html.ActionLink("Data", "Index", "Tables")</li>
+            <li class="divider"></li>
+            <li>@Html.ActionLink("Processes", "Index", "Processes")</li>
+            <li class="divider"></li>
+            <li>@Html.ActionLink("Displays", "Index", "Displays")</li>
+            
+         </ul>
+    </div>
+</nav>
+
+
+
+
+<!-- left, vertical navbar
 <div class="col-md-2 bootstrap-admin-col-left" style="margin-top:-1.3%;">
     <ul class="nav navbar-collapse collapse bootstrap-admin-navbar-side">
         @Html.MenuItem("Elements", "Index", "Elements")
@@ -6,11 +85,11 @@
         @Html.MenuItem("Attributes", "Index", "Attributes")
         @Html.MenuItem("Attributes Variables", "Index", "AttributesVariables")
         @Html.MenuItem("Rules", "Index", "Rules")
-        <!--@Html.MenuItem("Data", "Index", "Tables")-->
+        @Html.MenuItem("Data", "Index", "Tables")
         @Html.MenuItem("Processes", "Index", "Processes")
-        @Html.MenuItem("Displays", "Index", "Displays")
+        @Html.MenuItem("Displays", "Index", "Displays")-->
 
-        <!--Content Below is left for a record of the template we built from. It will become deprecated, but for now it will be used for reference!-->
+       <!-- Content Below is left for a record of the template we built from. It will become deprecated, but for now it will be used for reference!-->
 
         <!--@Html.MenuItem(" UI &amp; Interface", "Index", "Interface")
         
@@ -37,7 +116,7 @@
         </li>
         <li>
             <a href="#"><span class="badge pull-right">4,231</span> Logs</a>
-        </li>-->
+        </li>
     </ul>
-</div>
+</div>-->
 
