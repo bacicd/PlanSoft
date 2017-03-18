@@ -22,5 +22,7 @@ namespace MvcAdminTemplate.Models
         public System.DateTime CreatedOn { get; set; }
     
         public virtual Element Element { get; set; }
+
+        public static List<ElementVariable> ElementsVarList = new List<Models.ElementVariable>();
     }
 }

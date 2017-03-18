@@ -9,6 +9,7 @@ namespace MvcAdminTemplate.Controllers
 {
     public class ElementsVariablesController : Controller
     {
+        private DBModelEntities db = new DBModelEntities();
         //
         // GET: /ElementsVariables/
 
@@ -19,9 +20,10 @@ namespace MvcAdminTemplate.Controllers
 
         public ActionResult LoadElements()
         {
+            ElementVariable.ElementsVarList = db.ElementVariables.ToList();
             return Json(new
             {
-                aaData = ElementsVariablesViewModel.ElementsVariablesList.Select(x => new[] { x.ElementCode, x.ElementName, x.VariableCode, x.VariableName, x.VariableCID, x.DateSet.ToString(), x.CreatedBy })
+                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), x.ECode.ToString(), x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -74,13 +76,42 @@ namespace MvcAdminTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(string EleCode, string EleName, string varCode, string varName, string varCID, string Creator)
+        public ActionResult Add(string EleCode, string EleName, string varName, string varCID, string Creator)
         {
-            ElementsVariablesViewModel.ElementsVariablesList.Add(new ElementsVariablesViewModel { ElementCode = EleCode, ElementName = EleName, VariableCID = varCID, VariableCode = varCode, VariableName = varName, DateSet = DateTime.Today, CreatedBy = Creator });
+            //ElementsVariablesViewModel.ElementsVariablesList.Add(new ElementsVariablesViewModel { ElementCode = EleCode, ElementName = EleName, VariableCID = varCID, VariableCode = varCode, VariableName = varName, DateSet = DateTime.Today, CreatedBy = Creator });
+            ElementVariable.ElementsVarList.Add(new ElementVariable {  ECode = Convert.ToInt32(EleCode),  CID = Convert.ToDecimal(varCID), Name = EleName, CreatedOn = DateTime.Today, CreatedBy = Creator });
+
+            ElementVariable addElementVar = new ElementVariable();
+            addElementVar.ECode = Convert.ToInt32(EleCode);
+            addElementVar.CID = Convert.ToDecimal(varCID);
+            addElementVar.Name = EleName;
+            addElementVar.CreatedOn = DateTime.Today;
+            addElementVar.CreatedBy = Creator;
+            db.ElementVariables.Add(addElementVar);
+            db.SaveChanges();
 
             return Json(new
             {
-                aaData = ElementsVariablesViewModel.ElementsVariablesList.Select(x => new[] { x.ElementCode, x.ElementName, x.VariableCode, x.VariableName, x.VariableCID, x.DateSet.ToString(), x.CreatedBy })
+                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), x.ECode.ToString(), x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult DropDownElementCodes(string code)
+        {
+            Element.ElementsList = db.Elements.ToList();
+            return Json(new
+            {
+                code = Element.ElementsList.Select(x => new[] { x.Code.ToString() })
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DropDownElementNames(string name)
+        {
+            Element.ElementsList = db.Elements.ToList();
+            return Json(new
+            {
+                name = Element.ElementsList.Select(x => new[] { x.Name })
             }, JsonRequestBehavior.AllowGet);
         }
 
