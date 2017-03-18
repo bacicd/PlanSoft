@@ -25,23 +25,21 @@
         }
 
         $(document).ready(drawTable);
-    
+
         $(document).on("click", ".save", function () {
             testStr = "([A-Za-z0-9])+"
             var regex = new RegExp(testStr);
             ruleCode = $("#ruleCode").val();
             ruleName = $("#ruleName").val();
-            varCode = $("#varCode").val();
             varName = $("#varName").val();
             varCID = $("#varCID").val();
             ruleCreator = $("#ruleCreator").val();
             test1 = regex.test(ruleCode);
             test2 = regex.test(ruleName);
-            test3 = regex.test(varCode);
             test4 = regex.test(varName);
             test5 = regex.test(varCID);
             test6 = regex.test(ruleCreator);
-            if (!test1 || !test2 || !test3 || !test4 || !test5 || !test6) {
+            if (!test1 || !test2 ||  !test4 || !test5 || !test6) {
                 $('#addmessage').html("Fields must not be empty or have special characters");
                 return false;
             }
@@ -49,7 +47,7 @@
             $.ajax({
                 url: "/ElementsVariables/Add",
                 datatype: "text",
-                data: { 'EleCode': $('#ruleCode').val(), 'EleName': $('#ruleName').val(), 'varCode': $('#varCode').val(), 'varName': $('#varName').val(), 'varCID': $('#varCID').val(), 'Creator': $('#ruleCreator').val() },
+                data: { 'EleCode': $('#eleCodes').val(), 'EleName': $('#ruleName').val(), 'varName': $('#varName').val(), 'varCID': $('#varCID').val(), 'Creator': $('#ruleCreator').val() },
                 type: "POST",
                 success: function (data) {
                     $('#addmessage').html("");
@@ -127,7 +125,30 @@
                 return false;
             }
         });
-    });
+        });
+
+        function populateEleCode() {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("DropDownElementCodes", "ElementsVariables")',
+                dataType: 'json',
+                success: function (code) {
+                    console.log("Success");
+                    var items = '';
+                    var obj = '';
+                    $.each(code, function (i, word) {
+                        $.each(word, function (i, obj) {
+                            items += "<option>" + obj + "</option>";
+                        });
+                    });
+                    $("#eleCodes").html(items);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
 
     </script>
 
@@ -146,15 +167,13 @@
             </div>
             <div class="modal-body">
                 <div id="addmessage"></div>                
-                Element ID: <input id="ruleCode" />
+                Element ID: <input id="eleCodes"/>
                 <br />
                 Element Name: <input id="ruleName" />
                 <br />
                 Variable Name: <input id="varName" />
                 <br />
                 Variable CID Name: <input id="varCID" />
-                <br />
-                Variable Code Name: <input id="varCode" />
                 <br />
                 Created By: <input id="ruleCreator" />
 

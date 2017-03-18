@@ -18,6 +18,14 @@
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
 
+    <style>
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+    </style>
+
     <script>
         $(document).ready(function () { drawTable() });
 
@@ -159,6 +167,40 @@
                 });
             });
 
+            $(document).ready(function () {
+                $('tbody tr').addClass('visible');
+                $('thead tr th input:text').keyup(function (event) {
+                    if (event.keyCode == 27 || $(this).val() == '') {
+
+                        $('tbody tr td ').show();
+
+                    }
+                    else {
+                        for (var i = 1 ; i < 10 ; i++) {
+                            if ($("thead tr th:nth-child(" + i + ") input:text").val().length > 0) {
+                                var fn = filter("tbody>tr > :nth-child(" + i + ")", $(this).val());
+                            }
+                        }
+                    }
+                });
+            });
+
+            function filter(selector, query) {
+                var z = null;
+                query = $.trim(query);
+                query = query.replace(/ /gi, '|');
+                $(selector).each(function () {
+                    if ($(this).text().search(new RegExp(query, "i")) < 0) {
+                        $(this).siblings().hide();
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).siblings().show();
+                        $(this).show();
+                    }
+                });
+            }
+
 
     </script>
 
@@ -239,15 +281,23 @@
                         <tr>
                             <th>
                                 Element Id
+                                <br />
+                                <input type="text" name="filterfname" value="">
                             </th>
                             <th>
                                 Element Name
+                                <br />
+                                <input type="text" name="filterfname" value="">
                             </th>
                             <th>
                                 Date Created
+                                <br />
+                                <input type="text" name="filterfname" value="">
                             </th>
                             <th>
                                 Created By
+                                <br />
+                                <input type="text" name="filterfname" value="">
                             </th>
                             <th>
                                 Actions
