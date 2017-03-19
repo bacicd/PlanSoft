@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="hresonanceModelStoreContainer" CdmEntityContainer="DBModelEntities">
+    <EntitySetMapping Name="Accounts">
+      <EntityTypeMapping TypeName="hresonanceModel.Account">
+        <MappingFragment StoreEntitySet="Account">
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+          <ScalarProperty Name="First" ColumnName="First" />
+          <ScalarProperty Name="Last" ColumnName="Last" />
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Attributes">
+      <EntityTypeMapping TypeName="hresonanceModel.Attribute">
+        <MappingFragment StoreEntitySet="Attribute">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ECode" ColumnName="ECode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Field" ColumnName="Field" />
+          <ScalarProperty Name="Format" ColumnName="Format" />
+          <ScalarProperty Name="Flag" ColumnName="Flag" />
+          <ScalarProperty Name="Input" ColumnName="Input" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AttributeVariables">
+      <EntityTypeMapping TypeName="hresonanceModel.AttributeVariable">
+        <MappingFragment StoreEntitySet="AttributeVariable">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ACode" ColumnName="ACode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Elements">
+      <EntityTypeMapping TypeName="hresonanceModel.Element">
+        <MappingFragment StoreEntitySet="Element">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ElementVariables">
+      <EntityTypeMapping TypeName="hresonanceModel.ElementVariable">
+        <MappingFragment StoreEntitySet="ElementVariable">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ECode" ColumnName="ECode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CID" ColumnName="CID" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Organizations">
+      <EntityTypeMapping TypeName="hresonanceModel.Organization">
+        <MappingFragment StoreEntitySet="Organization">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserRoles">
+      <EntityTypeMapping TypeName="hresonanceModel.UserRole">
+        <MappingFragment StoreEntitySet="UserRole">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

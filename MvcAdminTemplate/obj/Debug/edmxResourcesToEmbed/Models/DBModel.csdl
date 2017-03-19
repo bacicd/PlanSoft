@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="hresonanceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="Username" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="OrgID" Type="Int32" Nullable="false" />
+    <Property Name="First" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Last" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Role" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Organization" Relationship="Self.fk_organization" FromRole="Account" ToRole="Organization" />
+    <NavigationProperty Name="UserRole" Relationship="Self.fk_role" FromRole="Account" ToRole="UserRole" />
+  </EntityType>
+  <EntityType Name="Attribute">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ECode" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Field" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Name="Format" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Name="Flag" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Name="Input" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="AttributeVariables" Relationship="Self.fk_attribute" FromRole="Attribute" ToRole="AttributeVariable" />
+    <NavigationProperty Name="Element" Relationship="Self.fk_elementattr" FromRole="Attribute" ToRole="Element" />
+  </EntityType>
+  <EntityType Name="AttributeVariable">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ACode" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Attribute" Relationship="Self.fk_attribute" FromRole="AttributeVariable" ToRole="Attribute" />
+  </EntityType>
+  <EntityType Name="Element">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrgID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Attributes" Relationship="Self.fk_elementattr" FromRole="Element" ToRole="Attribute" />
+    <NavigationProperty Name="ElementVariables" Relationship="Self.fk_element" FromRole="Element" ToRole="ElementVariable" />
+    <NavigationProperty Name="Organization" Relationship="Self.fk_elementorg" FromRole="Element" ToRole="Organization" />
+  </EntityType>
+  <EntityType Name="ElementVariable">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ECode" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CID" Type="Decimal" Precision="16" Scale="0" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Element" Relationship="Self.fk_element" FromRole="ElementVariable" ToRole="Element" />
+  </EntityType>
+  <EntityType Name="Organization">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="State" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.fk_organization" FromRole="Organization" ToRole="Account" />
+    <NavigationProperty Name="Elements" Relationship="Self.fk_elementorg" FromRole="Organization" ToRole="Element" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.fk_role" FromRole="UserRole" ToRole="Account" />
+  </EntityType>
+  <Association Name="fk_organization">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Account" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Account">
+        <PropertyRef Name="OrgID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_role">
+    <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+    <End Role="Account" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserRole">
+        <PropertyRef Name="Name" />
+      </Principal>
+      <Dependent Role="Account">
+        <PropertyRef Name="Role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_attribute">
+    <End Role="Attribute" Type="Self.Attribute" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AttributeVariable" Type="Self.AttributeVariable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attribute">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="AttributeVariable">
+        <PropertyRef Name="ACode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_elementattr">
+    <End Role="Element" Type="Self.Element" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Attribute" Type="Self.Attribute" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Element">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="Attribute">
+        <PropertyRef Name="ECode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_element">
+    <End Role="Element" Type="Self.Element" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ElementVariable" Type="Self.ElementVariable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Element">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="ElementVariable">
+        <PropertyRef Name="ECode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_elementorg">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Element" Type="Self.Element" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Element">
+        <PropertyRef Name="OrgID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DBModelEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Accounts" EntityType="Self.Account" />
+    <EntitySet Name="Attributes" EntityType="Self.Attribute" />
+    <EntitySet Name="AttributeVariables" EntityType="Self.AttributeVariable" />
+    <EntitySet Name="Elements" EntityType="Self.Element" />
+    <EntitySet Name="ElementVariables" EntityType="Self.ElementVariable" />
+    <EntitySet Name="Organizations" EntityType="Self.Organization" />
+    <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+    <AssociationSet Name="fk_organization" Association="Self.fk_organization">
+      <End Role="Organization" EntitySet="Organizations" />
+      <End Role="Account" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="fk_role" Association="Self.fk_role">
+      <End Role="UserRole" EntitySet="UserRoles" />
+      <End Role="Account" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="fk_attribute" Association="Self.fk_attribute">
+      <End Role="Attribute" EntitySet="Attributes" />
+      <End Role="AttributeVariable" EntitySet="AttributeVariables" />
+    </AssociationSet>
+    <AssociationSet Name="fk_elementattr" Association="Self.fk_elementattr">
+      <End Role="Element" EntitySet="Elements" />
+      <End Role="Attribute" EntitySet="Attributes" />
+    </AssociationSet>
+    <AssociationSet Name="fk_element" Association="Self.fk_element">
+      <End Role="Element" EntitySet="Elements" />
+      <End Role="ElementVariable" EntitySet="ElementVariables" />
+    </AssociationSet>
+    <AssociationSet Name="fk_elementorg" Association="Self.fk_elementorg">
+      <End Role="Organization" EntitySet="Organizations" />
+      <End Role="Element" EntitySet="Elements" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

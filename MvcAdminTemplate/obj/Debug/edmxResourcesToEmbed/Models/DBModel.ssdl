@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="hresonanceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="Username" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="OrgID" Type="int" Nullable="false" />
+    <Property Name="First" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="Last" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="Role" Type="varchar" MaxLength="32" />
+    <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="CreatedOn" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Attribute">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ECode" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="Field" Type="varchar" MaxLength="32" />
+    <Property Name="Format" Type="varchar" MaxLength="32" />
+    <Property Name="Flag" Type="varchar" MaxLength="32" />
+    <Property Name="Input" Type="varchar" MaxLength="32" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="CreatedOn" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AttributeVariable">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ACode" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="CreatedOn" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Element">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrgID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="CreatedOn" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ElementVariable">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ECode" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="CID" Type="numeric" Precision="16" Scale="0" Nullable="false" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="CreatedOn" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Organization">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Phone" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Address" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="City" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="State" Type="varchar" MaxLength="32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="Name" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <Association Name="fk_attribute">
+    <End Role="Attribute" Type="Self.Attribute" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AttributeVariable" Type="Self.AttributeVariable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attribute">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="AttributeVariable">
+        <PropertyRef Name="ACode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_element">
+    <End Role="Element" Type="Self.Element" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ElementVariable" Type="Self.ElementVariable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Element">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="ElementVariable">
+        <PropertyRef Name="ECode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_elementattr">
+    <End Role="Element" Type="Self.Element" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Attribute" Type="Self.Attribute" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Element">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="Attribute">
+        <PropertyRef Name="ECode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_elementorg">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Element" Type="Self.Element" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Element">
+        <PropertyRef Name="OrgID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_organization">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Account" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Account">
+        <PropertyRef Name="OrgID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_role">
+    <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+    <End Role="Account" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserRole">
+        <PropertyRef Name="Name" />
+      </Principal>
+      <Dependent Role="Account">
+        <PropertyRef Name="Role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="hresonanceModelStoreContainer">
+    <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Attribute" EntityType="Self.Attribute" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AttributeVariable" EntityType="Self.AttributeVariable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Element" EntityType="Self.Element" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ElementVariable" EntityType="Self.ElementVariable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_attribute" Association="Self.fk_attribute">
+      <End Role="Attribute" EntitySet="Attribute" />
+      <End Role="AttributeVariable" EntitySet="AttributeVariable" />
+    </AssociationSet>
+    <AssociationSet Name="fk_element" Association="Self.fk_element">
+      <End Role="Element" EntitySet="Element" />
+      <End Role="ElementVariable" EntitySet="ElementVariable" />
+    </AssociationSet>
+    <AssociationSet Name="fk_elementattr" Association="Self.fk_elementattr">
+      <End Role="Element" EntitySet="Element" />
+      <End Role="Attribute" EntitySet="Attribute" />
+    </AssociationSet>
+    <AssociationSet Name="fk_elementorg" Association="Self.fk_elementorg">
+      <End Role="Organization" EntitySet="Organization" />
+      <End Role="Element" EntitySet="Element" />
+    </AssociationSet>
+    <AssociationSet Name="fk_organization" Association="Self.fk_organization">
+      <End Role="Organization" EntitySet="Organization" />
+      <End Role="Account" EntitySet="Account" />
+    </AssociationSet>
+    <AssociationSet Name="fk_role" Association="Self.fk_role">
+      <End Role="UserRole" EntitySet="UserRole" />
+      <End Role="Account" EntitySet="Account" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -157,6 +157,42 @@
         function subAttributeSelect() {
             $(this).closest(".ATTRIBUTESELECTOR").remove();
         }
+
+
+        function getDataStr()
+        {
+            var STR = ""
+            $(".TASK").each(function (i, task) {
+                STR += "\nTASK: " + $(this).find("label").first("label").text() + "\n";
+
+                //$(task, ".SUBTASK").each(function (task, subtask) {
+                $(this).find(".SUBTASK").each(function (task, subtask) {
+                    STR += "\n\tSUBTASK: " + $(this).find("label").first("label").text() + "\n";
+
+                    $(this).find(".ATTRIBUTESELECTOR").each(function (subtask, attrib) {
+                        STR += "\n\t\tATTRIBUTE: " + $(this).find("select").first("select").val() + "\n";
+                    });
+                });
+
+            });
+
+            return STR;
+        }
+
+        function getDataParents()
+        {
+            var attribDict = {}
+            $(".ATTRIBUTESELECTOR").each(function (key, val) {
+                attribDict[$(this).find('select').first().val()] = $(this).closest(".SUBTASK").find('label').first().text();
+            });
+            
+            var subtaskDict = {}
+            $(".SUBTASK").each(function (key, val) {
+                subtaskDict[$(this).closest(".SUBTASK").find('label').first().text()] = $(this).closest(".TASK").find('label').first().text();
+            });
+
+            return attribDict, subtaskDict;
+        }
         
 
     </script>
@@ -164,7 +200,8 @@
 
 
 
-
+<!--SAVE BUTTON-->
+<input id="exportButton" type="button" value="Export" onclick="getDataStr();" />
 
 <!--MASTER CONTAINER-->
 <div id="CONTAINER" class="container" style="margin-left:19%;">
