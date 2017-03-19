@@ -6,6 +6,18 @@
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
 
 @section Scripts{
+
+    <style>
+        input {
+            outline: 0;
+            border-width: 0 0 .01em 0;
+            border-color: black;
+        }
+
+            input:focus {
+                border-color: lightblue;
+            }
+    </style>
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
     <script>
         function drawTable()
@@ -31,15 +43,17 @@
             var regex = new RegExp(testStr);
             ruleCode = $("#ruleCode").val();
             ruleName = $("#ruleName").val();
+            varCode = $("#varCode").val();
             varName = $("#varName").val();
             varCID = $("#varCID").val();
             ruleCreator = $("#ruleCreator").val();
             test1 = regex.test(ruleCode);
             test2 = regex.test(ruleName);
+            test3 = regex.test(varCode);
             test4 = regex.test(varName);
             test5 = regex.test(varCID);
             test6 = regex.test(ruleCreator);
-            if (!test1 || !test2 ||  !test4 || !test5 || !test6) {
+            if (!test1 || !test2 || !test3 || !test4 || !test5 || !test6) {
                 $('#addmessage').html("Fields must not be empty or have special characters");
                 return false;
             }
@@ -47,7 +61,7 @@
             $.ajax({
                 url: "/ElementsVariables/Add",
                 datatype: "text",
-                data: { 'EleCode': $('#eleCodes').val(), 'EleName': $('#ruleName').val(), 'varName': $('#varName').val(), 'varCID': $('#varCID').val(), 'Creator': $('#ruleCreator').val() },
+                data: { 'EleCode': $('#eleCodes').val(), 'EleName': $('#ruleName').val(), 'varCode': $('#varCode').val(), 'varName': $('#varName').val(), 'varCID': $('#varCID').val(), 'Creator': $('#ruleCreator').val() },
                 type: "POST",
                 success: function (data) {
                     $('#addmessage').html("");
@@ -127,29 +141,51 @@
         });
         });
 
-        function populateEleCode() {
-            $.ajax({
-                cache: false,
-                type: "GET",
-                url: '@Url.Action("DropDownElementCodes", "ElementsVariables")',
-                dataType: 'json',
-                success: function (code) {
-                    console.log("Success");
-                    var items = '';
-                    var obj = '';
-                    $.each(code, function (i, word) {
-                        $.each(word, function (i, obj) {
-                            items += "<option>" + obj + "</option>";
-                        });
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DropDownElementCodes", "ElementsVariables")',
+            dataType: 'json',
+            success: function (code) {
+                console.log("Success");
+                var items = '';
+                var obj = '';
+                $.each(code, function (i, word) {
+                    $.each(word, function (i, obj) {
+                        items += "<option>" + obj + "</option>";
                     });
-                    $("#eleCodes").html(items);
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert('Failed to retrieve data.');
-                }
-            });
-        }
+                });
+                console.log(items);
+                $("#eleCodes").html(items);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+                console.log(thrownError);
+            }
+        });
 
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DropDownElementNames", "ElementsVariables")',
+            dataType: 'json',
+            success: function (code) {
+                console.log("Success");
+                var items = '';
+                var obj = '';
+                $.each(code, function (i, word) {
+                    $.each(word, function (i, obj) {
+                        items += "<option>" + obj + "</option>";
+                    });
+                });
+                console.log(items);
+                $("#ruleName").html(items);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+                console.log(thrownError);
+            }
+        });
     </script>
 
 }
@@ -163,17 +199,21 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 id="myModalLabel" class="modal-title">Add Element</h4>
+                <h4 id="myModalLabel" class="modal-title">Add Element Variable</h4>
             </div>
             <div class="modal-body">
-                <div id="addmessage"></div>                
-                Element ID: <input id="eleCodes"/>
+                <div id="addmessage"></div>
+                Element ID:<select id="eleCodes" style="display:inline-block; margin-left:"></select>
                 <br />
-                Element Name: <input id="ruleName" />
+                <br />
+                Element Name: <select id="ruleName" style="display:inline-block;"></select>
+                <br />
                 <br />
                 Variable Name: <input id="varName" />
                 <br />
+                <br />
                 Variable CID Name: <input id="varCID" />
+                <br />
                 <br />
                 Created By: <input id="ruleCreator" />
 
@@ -192,7 +232,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 id="myModalLabel" class="modal-title">Add Element</h4>
+                <h4 id="myModalLabel" class="modal-title">Edit Element Variable</h4>
             </div>
             <div class="modal-body">
                 <div id="editMessage"></div>

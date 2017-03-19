@@ -23,7 +23,7 @@ namespace MvcAdminTemplate.Controllers
             ElementVariable.ElementsVarList = db.ElementVariables.ToList();
             return Json(new
             {
-                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), x.ECode.ToString(), x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.ECode.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -76,15 +76,15 @@ namespace MvcAdminTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(string EleCode, string EleName, string varName, string varCID, string Creator)
+        public ActionResult Add(string EleCode, string EleName, string varCode, string varName, string varCID, string Creator)
         {
             //ElementsVariablesViewModel.ElementsVariablesList.Add(new ElementsVariablesViewModel { ElementCode = EleCode, ElementName = EleName, VariableCID = varCID, VariableCode = varCode, VariableName = varName, DateSet = DateTime.Today, CreatedBy = Creator });
-            ElementVariable.ElementsVarList.Add(new ElementVariable {  ECode = Convert.ToInt32(EleCode),  CID = Convert.ToDecimal(varCID), Name = EleName, CreatedOn = DateTime.Today, CreatedBy = Creator });
+            ElementVariable.ElementsVarList.Add(new ElementVariable { ECode = Convert.ToInt32(EleCode), CID = Convert.ToDecimal(varCID), Name = varName, CreatedOn = DateTime.Today, CreatedBy = Creator });
 
             ElementVariable addElementVar = new ElementVariable();
             addElementVar.ECode = Convert.ToInt32(EleCode);
             addElementVar.CID = Convert.ToDecimal(varCID);
-            addElementVar.Name = EleName;
+            addElementVar.Name = varName;
             addElementVar.CreatedOn = DateTime.Today;
             addElementVar.CreatedBy = Creator;
             db.ElementVariables.Add(addElementVar);
@@ -92,23 +92,26 @@ namespace MvcAdminTemplate.Controllers
 
             return Json(new
             {
-                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), x.ECode.ToString(), x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), EleName, x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
+        [HttpGet]
         public JsonResult DropDownElementCodes(string code)
         {
-            Element.ElementsList = db.Elements.ToList();
             return Json(new
             {
                 code = Element.ElementsList.Select(x => new[] { x.Code.ToString() })
             }, JsonRequestBehavior.AllowGet);
+            //return Json(new
+            //{
+            //    attribute = AttributesViewModel.AttributesList.Select(x => new[] { x.AttributeName })
+            //}, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult DropDownElementNames(string name)
         {
-            Element.ElementsList = db.Elements.ToList();
             return Json(new
             {
                 name = Element.ElementsList.Select(x => new[] { x.Name })
