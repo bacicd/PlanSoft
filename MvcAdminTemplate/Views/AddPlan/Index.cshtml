@@ -94,19 +94,33 @@
 
     .content {
         width: 30%;
-        margin: 20px auto;
+        margin-left: 37%;
+    }
+    form{
+        
+        width:150%;
+        
+    }
+    .regform{
+        width: 150%;
+        padding-top:7%;
+        margin-left:-60%;
     }
 
     .main {
         float: left;
         width: 120%;
     }
-
+    .title{
+        font-size: 150%;
+        text-align:left;
+    }
     #progressbar {
         margin: 0;
         padding: 0;
-        font-size: 20px;
+        font-size: 150%;
         background: none;
+        width:-120%;
     }
 
     .active {
@@ -115,56 +129,45 @@
 
     fieldset {
         display: none;
-        width: 20%;
-        padding: 20%;
-        margin-top: 50px;
-        margin-left: 85px;
-        border-radius: 5px;
-        box-shadow: 3px 3px 25px 1px gray;
+        width: 50%;
+        padding: 0;
+        
     }
 
     #first {
         display: block;
         padding: 20px;
-        margin-right: 30%;
+        margin-right: -30%;
         border-radius: 5px;
-        box-shadow: 3px 3px 25px 1px gray;
+        
     }
 
     input[type=text],
     input[type=password],
     select {
-        width: 100%;
-        margin: 10px 0;
-        height: 40px;
-        padding: 5px;
-        border: 3px solid rgb(236, 176, 220);
-        border-radius: 4px;
+        padding: 10px;
+        border: none;
+        border-bottom: solid 2px #c9c9c9;
+        transition: border 0.3s;
+        background-color:rgba(245, 245, 245, 0.498039);
     }
 
-    textarea {
-        width: 100%;
-        margin: 10px 0;
-        height: 70px;
-        padding: 5px;
-        border: 3px solid rgb(236, 176, 220);
-        border-radius: 4px;
-    }
+
 
     input[type=submit],
     input[type=button] {
-        width: 120px;
+        width: 30%;
         margin: 15px 25px;
         padding: 5px;
         height: 40px;
-        background-color: sienna;
+        background-color: #65acf5;
         border: none;
         border-radius: 4px;
-        color: white;
+        
         font-family: 'Droid Serif', serif;
     }
 
-    .progress {
+    li.progress {
         margin-right: 52px;
         display: inline;
         color: #000000;
@@ -245,48 +248,76 @@
     <!-- Multistep Form -->
     <div class="main">
         <form action="" class="regform" method="get">
-            <!-- Progress Bar -->
-            <nav>
-                <ul id="progressbar" style="margin-right:10%;display:inline;color:#c1c5cc;font-family: 'Droid Serif', serif;list-style:none; text-align:center; float:left;">
-                    <li class="progress">Funding</li>
-                    <li class="progress">Metrics</li>
-                    <li class="progress">Approach</li>
-                </ul>
-            </nav>
-            <!-- Fieldsets -->
-            <fieldset id="first">
-                <input class="text_field" name="email" placeholder="Email" type="text">
-                <input class="text_field" name="pass" placeholder="Password" type="password">
-                <input class="text_field" name="cpass" placeholder="Confirm Password" type="password">
-                <input class="next_btn" name="next" type="button" value="Next">
-            </fieldset>
-            <fieldset>
-                <select class="options">
-                    <option>--Select Education--</option>
-                    <option>Post Graduate</option>
-                    <option>Graduate</option>
-                    <option>HSC</option>
-                    <option>SSC</option>
-                </select>
-                <input class="text_field" name="marks" placeholder="Marks Obtained" type="text">
-                <input class="text_field" name="pyear" placeholder="Passing Year" type="text">
-                <input class="text_field" name="univ" placeholder="University" type="text">
-                <input class="pre_btn" name="previous" type="button" value="Previous">
-                <input class="next_btn" name="next" type="button" value="Next">
-            </fieldset>
-            <fieldset>
-                <h2 class="title">Approach</h2>
+            <!-- Progress Bar-->
 
-                <input class="text_field" name="fname" placeholder="First Name" type="text">
-                <input class="text_field" name="lname" placeholder="Last Name" type="text">
-                <input class="text_field" name="cont" placeholder="Contact" type="text">
-                <label>Gender</label>
-                <input class="rad" name="gender" type="radio">Male
-                <input class="rad" name="gender" type="radio">Female
-                <textarea name="address" placeholder="Address"></textarea>
-                <input class="pre_btn" type="button" value="Previous">
-                <input class="submit_btn" type="submit" value="Submit">
-            </fieldset>
-        </form>
-    </div>
+            <ul id="progressbar" style="margin-right:150%;color:#c1c5cc;font-family: 'Droid Serif', serif;list-style-type:none; margin:0; padding:0;">
+                    <li class="active" style="display:inline; padding:10%;">Funding</li>
+                    <li style="display:inline; padding:10%;">Metrics</li>
+                    <li style="display:inline; padding:10%;">Approach</li>
+            </ul>
+   
+    <!-- Fieldsets -->
+    <fieldset id="first" style="display:block">
+
+        <select class="options">
+            <option>--Funding Approach--</option>
+            <option>Post Graduate</option>
+            <option>Graduate</option>
+            <option>HSC</option>
+            <option>SSC</option>
+        </select><br />
+        <input class="text_field" name="email" placeholder="List Funding Components" type="text"><br />
+        <select class="options">
+            <option>--Funding Level--</option>
+            <option>Post Graduate</option>
+            <option>Graduate</option>
+            <option>HSC</option>
+            <option>SSC</option>
+        </select><br />
+        <select class="options">
+            <option>--Funding Mechanism--</option>
+            <option>Post Graduate</option>
+            <option>Graduate</option>
+            <option>HSC</option>
+            <option>SSC</option>
+        </select><br />
+        <select class="options">
+            <option>--Pool Funding Mechanism--</option>
+            <option>Post Graduate</option>
+            <option>Graduate</option>
+            <option>HSC</option>
+            <option>SSC</option>
+        </select><br />
+        <input class="text_field" name="email" placeholder="Target Funding Basis" type="text">
+        <input class="text_field" name="email" placeholder="Funding Threshold" type="text">
+        <textarea rows="4" cols="50" name="comment" placeholder="Funding Comment" form="usrform" style="background-color:rgba(245, 245, 245, 0.498039);border:none; border-bottom: solid 2px #c9c9c9;"></textarea>
+        <input class="next_btn" name="next" type="button" value="Next">
+    </fieldset>
+    <fieldset>
+
+        <select class="options">
+            <option>--Select Education--</option>
+            <option>Post Graduate</option>
+            <option>Graduate</option>
+            <option>HSC</option>
+            <option>SSC</option>
+        </select>
+        <input class="text_field" name="marks" placeholder="Marks Obtained" type="text">
+        <input class="text_field" name="pyear" placeholder="Passing Year" type="text">
+        <input class="text_field" name="univ" placeholder="University" type="text">
+        <input class="pre_btn" name="previous" type="button" value="Previous">
+        <input class="next_btn" name="next" type="button" value="Next">
+    </fieldset>
+    <fieldset>
+
+
+        <input class="text_field" name="fname" placeholder="First Name" type="text">
+        <input class="text_field" name="lname" placeholder="Last Name" type="text">
+        <input class="text_field" name="cont" placeholder="Contact" type="text">
+
+        <input class="pre_btn" type="button" value="Previous">
+        <input class="submit_btn" type="submit" value="Submit">
+    </fieldset>
+    </form>
+</div>
 </div>
