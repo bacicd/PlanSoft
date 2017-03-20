@@ -30,48 +30,61 @@ namespace MvcAdminTemplate.Controllers
         [HttpPost]
         public ActionResult Delete(string EleCode)
         {
-            foreach (ElementsVariablesViewModel i in ElementsVariablesViewModel.ElementsVariablesList)
-            {
-                if (i.ElementCode == EleCode)
-                {
-                    ElementsVariablesViewModel.ElementsVariablesList.Remove(i);
-                    return Json(new
-                    {
-                        aaData = ElementsVariablesViewModel.ElementsVariablesList.Select(x => new[] { x.ElementCode, x.ElementName, x.VariableCode, x.VariableName, x.VariableCID, x.DateSet.ToString(), x.CreatedBy })
-                    }, JsonRequestBehavior.AllowGet);
-                }
-            }
+            ElementVariable.ElementsVarList = db.ElementVariables.ToList();
+            ElementVariable element = db.ElementVariables.Find(Convert.ToInt32(EleCode));
+
+            db.ElementVariables.Remove(element);
+            db.SaveChanges();
+            //foreach (ElementsVariablesViewModel i in ElementsVariablesViewModel.ElementsVariablesList)
+            //{
+            //    if (i.ElementCode == EleCode)
+            //    {
+            //        ElementsVariablesViewModel.ElementsVariablesList.Remove(i);
+            //        return Json(new
+            //        {
+            //            aaData = ElementsVariablesViewModel.ElementsVariablesList.Select(x => new[] { x.ElementCode, x.ElementName, x.VariableCode, x.VariableName, x.VariableCID, x.DateSet.ToString(), x.CreatedBy })
+            //        }, JsonRequestBehavior.AllowGet);
+            //    }
+            //}
 
             return Json(new
             {
-                aaData = ElementsVariablesViewModel.ElementsVariablesList.Select(x => new[] { x.ElementCode, x.ElementName, x.VariableCode, x.VariableName, x.VariableCID, x.DateSet.ToString(), x.CreatedBy })
+                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), x.Name, x.CID.ToString(), x.ECode.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult Update(string varCode, string newEleCode, string newEleName, string newVarCID, string newVarName, string newVarCode)
+        public ActionResult Update(string varCode, string newVarName, string newVarCID)
         {
-            foreach (ElementsVariablesViewModel i in ElementsVariablesViewModel.ElementsVariablesList)
-            {
-                if (i.ElementCode == varCode)
-                {
-                    i.ElementCode = newEleCode;
-                    i.ElementName = newEleName;
-                    i.VariableCID = newVarCID;
-                    i.VariableCode = newVarCode;
-                    i.VariableName = newVarName;
-                    i.DateSet = DateTime.Today;
+            ElementVariable.ElementsVarList = db.ElementVariables.ToList();
+            ElementVariable elementVar = db.ElementVariables.Find(Convert.ToInt32(varCode));
 
-                    return Json(new
-                    {
-                        aaData = ElementsVariablesViewModel.ElementsVariablesList.Select(x => new[] { x.ElementCode, x.ElementName, x.VariableCode, x.VariableName, x.VariableCID, x.DateSet.ToString(), x.CreatedBy })
-                    }, JsonRequestBehavior.AllowGet);
-                }
-            }
+            //2. change element name in disconnected mode (out of ctx scope)
+            elementVar.CID = Convert.ToInt32(newVarCID);
+            elementVar.Name = newVarName;
+
+            db.SaveChanges();
+            //foreach (ElementsVariablesViewModel i in ElementsVariablesViewModel.ElementsVariablesList)
+            //{
+            //    if (i.ElementCode == varCode)
+            //    {
+            //        i.ElementCode = newEleCode;
+            //        i.ElementName = newEleName;
+            //        i.VariableCID = newVarCID;
+            //        i.VariableCode = newVarCode;
+            //        i.VariableName = newVarName;
+            //        i.DateSet = DateTime.Today;
+
+            //        return Json(new
+            //        {
+            //            aaData = ElementsVariablesViewModel.ElementsVariablesList.Select(x => new[] { x.ElementCode, x.ElementName, x.VariableCode, x.VariableName, x.VariableCID, x.DateSet.ToString(), x.CreatedBy })
+            //        }, JsonRequestBehavior.AllowGet);
+            //    }
+            //}
 
             return Json(new
             {
-                aaData = ElementsVariablesViewModel.ElementsVariablesList.Select(x => new[] { x.ElementCode, x.ElementName, x.VariableCode, x.VariableName, x.VariableCID, x.DateSet.ToString(), x.CreatedBy })
+                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), x.Name, x.CID.ToString() })
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -99,6 +112,7 @@ namespace MvcAdminTemplate.Controllers
         [HttpGet]
         public JsonResult DropDownElementCodes(string code)
         {
+            Element.ElementsList = db.Elements.ToList();
             return Json(new
             {
                 code = Element.ElementsList.Select(x => new[] { x.Code.ToString() })
@@ -112,6 +126,7 @@ namespace MvcAdminTemplate.Controllers
         [HttpGet]
         public JsonResult DropDownElementNames(string name)
         {
+            Element.ElementsList = db.Elements.ToList();
             return Json(new
             {
                 name = Element.ElementsList.Select(x => new[] { x.Name })
