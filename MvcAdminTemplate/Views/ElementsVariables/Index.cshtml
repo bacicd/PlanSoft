@@ -4,21 +4,36 @@
 @Html.Partial("_LeftMenu")
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" />
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
 
 @section Scripts{
-
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
     <style>
+        .tooLong {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+
         input {
             outline: 0;
             border-width: 0 0 .01em 0;
             border-color: black;
         }
 
-            input:focus {
-                border-color: lightblue;
-            }
+        input:focus {
+            border-color: lightblue;
+        }
     </style>
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
     <script>
         function drawTable()
         {
@@ -30,9 +45,41 @@
                     "targets": -1,
                     "data": null,
                     "defaultContent": "<button class =\"glyphicon glyphicon-pencil edit\"></button> <button class =\"glyphicon glyphicon-trash delete\"></button>"
-                }]
+                }],
+                dom: 'Bfrtip',
+                buttons: [
+                     {
+                         extend: 'excel',
+                         text:      '<i class="fa fa-file-excel-o"></i>',
+                         titleAttr: 'Excel',
+                         exportOptions: {
+                             columns: ':visible'
+                         }
+                     },
+                      {
+                          extend: 'csv',
+                          text:      '<i class="fa fa-file-text-o"></i>',
+                          titleAttr: 'CSV',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                      {
+                          extend: 'pdf',
+                          text:      '<i class="fa fa-file-pdf-o"></i>',
+                          titleAttr: 'PDF',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                      {
+                          extend: 'colvis',
+                          text: '<i class="fa fa-eye"></i>',
+                          titleAttr: "Columns"
+                      }
+            ]
 
-            });
+        });
         return true;
         }
 
@@ -105,7 +152,7 @@
                 $.ajax({
                     url: "/ElementsVariables/Update",
                     datatype: "text",
-                    data: { 'VarCode': ID, 'NewEleCode': $('#updateCode').val(), 'NewEleName': $('#updateEleName').val(), 'NewVarCode': $('#updateVarCode').val(), 'NewVarName': $('#updateVarName').val(), 'NewVarCID': $('#updateVarCID').val() },
+                    data: { 'VarCode': varCode, 'NewVarName': $('#updateVarName').val(), 'NewVarCID': $('#updateVarCID').val(), 'NewVarCode': $('#updateVarCode').val() },
                     type: "POST",
                     success: function (data) {
                         drawTable();
@@ -122,7 +169,7 @@
 
 
         $("tbody").on("click", ".delete", function () {
-            delID = $(this).closest("tr").children('td:eq(0)').text();
+            delID = $(this).closest("tr").children('td:eq(2)').text();
             $('#deleteModal').modal('show');
         });
         $(document).on("click", ".confirm", function () {
@@ -186,12 +233,45 @@
                 console.log(thrownError);
             }
         });
+
+        $(document).ready(function () {
+                $('tbody tr').addClass('visible');
+                $('thead tr th input:text').keyup(function (event) {
+                    if (event.keyCode == 27 || $(this).val() == '') {
+
+                        $('tbody tr td ').show();
+
+                    }
+                    else {
+                        for (var i = 1 ; i < 10 ; i++) {
+                            if ($("thead tr th:nth-child(" + i + ") input:text").val().length > 0) {
+                                var fn = filter("tbody>tr > :nth-child(" + i + ")", $(this).val());
+                            }
+                        }
+                    }
+                });
+            });
+
+            function filter(selector, query) {
+                var z = null;
+                query = $.trim(query);
+                query = query.replace(/ /gi, '|');
+                $(selector).each(function () {
+                    if ($(this).text().search(new RegExp(query, "i")) < 0) {
+                        $(this).siblings().hide();
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).siblings().show();
+                        $(this).show();
+                    }
+                });
+            }
     </script>
 
 }
 
 <!-- content -->
-<a href="#myModal" data-toggle="modal" class="btn btn-primary" style="margin-top:-1.3%;">Create New Element Variable</a>
 
 <!--BEGIN SAVE MODAL-->
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -236,13 +316,13 @@
             </div>
             <div class="modal-body">
                 <div id="editMessage"></div>
-                Element Code: <input id="updateCode" />
+               <!-- Element Code: <input id="updateCode" />
                 <br />
                 Element Name: <input id="updateEleName" />
                 <br />
-                Variable CID: <input id="updateVarCID" />
-                <br />
                 Variable Code: <input id="updateVarCode" />
+                <br />-->                
+                Variable CID: <input id="updateVarCID" />
                 <br />
                 Variable Name: <input id="updateVarName" />
                 <br />
@@ -269,11 +349,11 @@
 </div>
 <!--END DELETE MODAL-->
 
-<div class="col-md-10" style="margin-top:1%;">
+<div class="col-md-10"  style="margin-top:-1.3%;">
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div class="text-muted bootstrap-admin-box-title">Elements Table</div>
+                <div class="text-muted bootstrap-admin-box-title">Element Variables Table</div>
             </div>
             <div class="bootstrap-admin-panel-content">
                 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
@@ -281,24 +361,38 @@
                         <tr>
                             <th>
                                 Element Code
+                                <br />
+                                <input type="text" class="tooLong" name="filterfname" value="">
                             </th>
                             <th>
                                 Element Name
+                                <br />
+                                <input type="text" class="tooLong"  name="filterfname" value="">
                             </th>
                             <th>
                                 Variable Code
+                                <br />
+                                <input type="text" class="tooLong"  name="filterfname" value="">
                             </th>
                             <th>
                                 Variable Name
+                                <br />
+                                <input type="text" class="tooLong"  name="filterfname" value="">
                             </th>
                             <th>
                                 Variable CID
+                                <br />
+                                <input type="text" class="tooLong"  name="filterfname" value="">
                             </th>
                             <th>
                                 Date Added
+                                <br />
+                                <input type="text" class="tooLong"  name="filterfname" value="">
                             </th>
                             <th>
                                 Created By
+                                <br />
+                                <input type="text" class="tooLong"  name="filterfname" value="">
                             </th>
                             <th>
                                 Actions
@@ -311,6 +405,7 @@
                 </table>
             </div>
         </div>
+        <a href="#myModal" data-toggle="modal" class="btn btn-primary">Create New Element Variable</a>
     </div>
 </div>
 
