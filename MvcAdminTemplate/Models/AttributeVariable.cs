@@ -21,5 +21,6 @@ namespace MvcAdminTemplate.Models
         public System.DateTime CreatedOn { get; set; }
     
         public virtual Attribute Attribute { get; set; }
+        public static List<AttributeVariable> AttributesVariablesList = new List<Models.AttributeVariable>();
     }
 }

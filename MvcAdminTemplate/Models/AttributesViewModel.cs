@@ -14,11 +14,11 @@ namespace MvcAdminTemplate.Models
         public DateTime DateSet { get; set; }
         public string CreatedBy { get; set; }
 
-        public static List<AttributesViewModel> AttributesList = new List<AttributesViewModel>(new[]
-            {
-                new AttributesViewModel { ElementCode = "10", ElementName = "Plan", AttributeCode = "10", AttributeName = "Compensation Manager", DateSet = DateTime.Today, CreatedBy = "Username"},
-                new AttributesViewModel { ElementCode = "20", ElementName = "Plan", AttributeCode = "10", AttributeName = "Employee", DateSet = DateTime.Today, CreatedBy = "Username"},
-                new AttributesViewModel { ElementCode = "30", ElementName = "Plan", AttributeCode = "10", AttributeName = "Developer", DateSet = DateTime.Today, CreatedBy = "Username"}
-            });
+        //public static List<AttributesViewModel> AttributesList = new List<AttributesViewModel>(new[]
+        //    {
+        //        new AttributesViewModel { ElementCode = "10", ElementName = "Plan", AttributeCode = "10", AttributeName = "Compensation Manager", DateSet = DateTime.Today, CreatedBy = "Username"},
+        //        new AttributesViewModel { ElementCode = "20", ElementName = "Plan", AttributeCode = "10", AttributeName = "Employee", DateSet = DateTime.Today, CreatedBy = "Username"},
+        //        new AttributesViewModel { ElementCode = "30", ElementName = "Plan", AttributeCode = "10", AttributeName = "Developer", DateSet = DateTime.Today, CreatedBy = "Username"}
+        //    });
     }
 }

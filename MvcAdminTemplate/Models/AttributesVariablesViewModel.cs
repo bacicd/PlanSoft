@@ -14,10 +14,10 @@ namespace MvcAdminTemplate.Models
         public DateTime DateSet { get; set; }
         public string CreatedBy { get; set; }
 
-        public static List<AttributesVariablesViewModel> AttributesVariablesList = new List<AttributesVariablesViewModel>(new[]
-            {
-                new AttributesVariablesViewModel { AttributeCode = "1008", AttributeName = "Plan Ownership Type", VariableCode = "100", VariableName = "Corporate-Wide", DateSet = DateTime.Today, CreatedBy = "Username" },
-                new AttributesVariablesViewModel { AttributeCode = "1008", AttributeName = "Plan Ownership Type", VariableCode = "101", VariableName = "LOB Specific", DateSet = DateTime.Today, CreatedBy = "Username" },
-            });
+        //public static List<AttributesVariablesViewModel> AttributesVariablesList = new List<AttributesVariablesViewModel>(new[]
+        //    {
+        //        new AttributesVariablesViewModel { AttributeCode = "1008", AttributeName = "Plan Ownership Type", VariableCode = "100", VariableName = "Corporate-Wide", DateSet = DateTime.Today, CreatedBy = "Username" },
+        //        new AttributesVariablesViewModel { AttributeCode = "1008", AttributeName = "Plan Ownership Type", VariableCode = "101", VariableName = "LOB Specific", DateSet = DateTime.Today, CreatedBy = "Username" },
+        //    });
     }
 }

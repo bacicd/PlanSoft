@@ -31,5 +31,7 @@ namespace MvcAdminTemplate.Models
     
         public virtual ICollection<AttributeVariable> AttributeVariables { get; set; }
         public virtual Element Element { get; set; }
+
+        public static List<Attribute> AttributesList = new List<Models.Attribute>();
     }
 }
