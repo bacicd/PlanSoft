@@ -264,6 +264,16 @@
                 }
             });
         }
+
+        //$("#ruleCode").change(function () {
+        //    if ($(this).data('options') == undefined) {
+        //        /*Taking an array of all options-2 and kind of embedding it on the select1*/
+        //        $(this).data('options', $('#ruleName option').clone());
+        //    }
+        //    var id = $(this).val();
+        //    var options = $(this).data('options').filter('[value=' + id + ']');
+        //    $('#ruleName').html(options);
+        //});
     </script>
 }
 
@@ -279,15 +289,15 @@
             </div>
             <div class="modal-body">
                 <div id="addmessage"></div>                
-                Element Code: <select id="ruleCode" style="display:inline-block;"></select>
+                Element Code: <select id="ruleCode" style="display:inline-block; margin-left:3.5%;"></select>
                 <br /><br />
-                Element Name: <select id="ruleName" style="display:inline-block;"></select>
+                Element Name: <select id="ruleName" style="display:inline-block; margin-left:3%;"></select>
                 <br /><br />
                 @*Attribute Code: <input id="attribCode" />
                 <br />*@
-                Attribute Name: <input id="attribName" />
+                Attribute Name: <input id="attribName" style="display:inline-block; margin-left:2%;" />
                 <br /><br />
-                Created By: <input id="ruleCreator" />
+                Created By: <input id="ruleCreator" style="display:inline-block; margin-left:7%;" />
 
             </div>
             <div class="modal-footer">
