@@ -151,7 +151,7 @@
                 $.ajax({
                     url: "/Attributes/Update",
                     datatype: "text",
-                    data: { 'EleCode': ID, 'NewEleCode': $('#updateEleCode').val(), 'NewEleName': $('#updateEleName').val(), 'NewAttribCode': $('#updateAttribCode').val(), 'NewAttribName': $('#updateAttribName').val() },
+                    data: { 'EleCode': ID, 'NewEleCode': $('#updateEleCode').val(), 'NewEleName': $('#updateEleName').val(), 'NewAttribCode': Code, 'NewAttribName': $('#updateAttribName').val() },
                     type: "POST",
                     success: function (data) {
                         drawTable();
@@ -168,7 +168,7 @@
 
 
         $("tbody").on("click", ".delete", function () {
-            delID = $(this).closest("tr").children('td:eq(0)').text();
+            delID = $(this).closest("tr").children('td:eq(2)').text();
             $('#deleteModal').modal('show');
         });
         $(document).on("click", ".confirm", function () {
@@ -183,6 +183,52 @@
                 error: function () {
                 }
             });
+        });
+
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DropDownElementCodes", "Attributes")',
+            dataType: 'json',
+            success: function (code) {
+                console.log("Success");
+                var items = '';
+                var obj = '';
+                $.each(code, function (i, word) {
+                    $.each(word, function (i, obj) {
+                        items += "<option>" + obj + "</option>";
+                    });
+                });
+                console.log(items);
+                $("#ruleCode").html(items);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+                console.log(thrownError);
+            }
+        });
+
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DropDownElementNames", "Attributes")',
+            dataType: 'json',
+            success: function (code) {
+                console.log("Success");
+                var items = '';
+                var obj = '';
+                $.each(code, function (i, word) {
+                    $.each(word, function (i, obj) {
+                        items += "<option>" + obj + "</option>";
+                    });
+                });
+                console.log(items);
+                $("#ruleName").html(items);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+                console.log(thrownError);
+            }
         });
 
         $(document).ready(function () {
@@ -218,12 +264,10 @@
                 }
             });
         }
-
     </script>
 }
 
 <!-- content -->
-<a href="#myModal" data-toggle="modal" class="btn btn-primary" style="margin-top:-1.3%">Create New Attribute</a>
 
 <!--BEGIN NEW MODAL-->
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -235,14 +279,14 @@
             </div>
             <div class="modal-body">
                 <div id="addmessage"></div>                
-                Element Code: <input id="ruleCode" />
-                <br />
-                Element Name: <input id="ruleName" />
-                <br />
-                Attribute Code: <input id="attribCode" />
-                <br />
+                Element Code: <select id="ruleCode" style="display:inline-block;"></select>
+                <br /><br />
+                Element Name: <select id="ruleName" style="display:inline-block;"></select>
+                <br /><br />
+                @*Attribute Code: <input id="attribCode" />
+                <br />*@
                 Attribute Name: <input id="attribName" />
-                <br />
+                <br /><br />
                 Created By: <input id="ruleCreator" />
 
             </div>
@@ -265,12 +309,12 @@
             </div>
             <div class="modal-body">
                 <div id="editMessage"></div>
-                Element Code: <input id="updateEleCode" />
+                @*Element Code: <input id="updateEleCode" />
                 <br />
                 Element Name: <input id="updateEleName" />
                 <br />
                 Attribute Code: <input id="updateAttribCode" />
-                <br />
+                <br />*@
                 Attribute Name: <input id="updateAttribName" />
             </div>
             <div class="modal-footer">
@@ -296,7 +340,7 @@
 </div>
 <!--END DELETE MODAL-->
 
-<div class="col-md-10" style="margin-top:1%;">
+<div class="col-md-10"  style="margin-top:-1.3%;">
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -348,6 +392,7 @@
                 </table>
             </div>
         </div>
+        <a href="#myModal" data-toggle="modal" class="btn btn-primary" style="margin-top:-1.3%">Create New Attribute</a>
     </div>
 </div>
 
