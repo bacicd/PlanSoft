@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "ViewEditPlan";
+}
+@Html.Partial("_LeftMenuAddPlan")
+
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+@section Scripts{
+    
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+    
+    <script>
+        $(document).ready(function () { drawTable() });
+
+        function drawTable() {
+            dataTable = $('#example').dataTable({
+                destroy: true,
+                bProcessing: true,
+                sAjaxSource: '@Url.Action("LoadPlans", "Plans")',
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button class =\"glyphicon glyphicon-pencil edit\"></button> <button class =\"glyphicon glyphicon-eye-open delete\"></button>"
+                }],
+                dom: 'Bfrtip',
+                buttons: [
+                     {
+                         extend: 'excel',
+                         text:      '<i class="fa fa-file-excel-o"></i>',
+                         titleAttr: 'Excel',
+                         exportOptions: {
+                             columns: ':visible'
+                         }
+                     },
+                      {
+                          extend: 'csv',
+                          text:      '<i class="fa fa-file-text-o"></i>',
+                          titleAttr: 'CSV',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                      {
+                          extend: 'pdf',
+                          text:      '<i class="fa fa-file-pdf-o"></i>',
+                          titleAttr: 'PDF',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                      {
+                          extend: 'colvis',
+                          text: '<i class="fa fa-eye"></i>',
+                          titleAttr: "Columns"
+                      }
+                ]
+
+            });
+            return true;
+        }
+
+        $("tbody").on("click", ".edit", function () {
+            ID = $(this).closest("tr").children('td:eq(0)').text();
+            $('#editModal').modal('show');
+            
+            $(document).on("click", ".update", function () {
+                $.ajax({
+                    url: "/ViewEditPlans/Update",
+                    datatype: "text",
+                    data: { 'PlanID': ID, 'NewPlanID': $('#updatePlanID').val(), 'NewPlanName': $('#updatePlanName').val(), 'NewCompMan': $('#updateCompMan').val(), 'NewCompAdv': $('#updateCompAdv').val(), 'NewPlanAdmin': $('#updatePlanAdmin').val(), 'NewPlanStatus': $('#updatePlanStatus').val() },
+                    type: "POST",
+                    success: function (data) {
+                        $('#testarea').html("UPDATED");
+                        drawTable();
+                        return true;
+                      },
+                        error: function () {
+                        $("#testarea").html("DID NOT UPDATE");
+                        return false;
+                      }
+                  });
+              });
+        });
+   </script>
+    }
+
+        <!--BEGIN EDIT MODAL-->
+        <div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 id="myModalLabel" class="modal-title">Edit Plan</h4>
+                    </div>
+                    <div class="modal-body">
+                        Plan ID: <input id="updatePlanID" />
+                        <br />
+                        Plan Name: <input id="updatePlanName" />
+                        <br />
+                        Compensation Manager: <input id="updateCompMan" />
+                        <br />
+                        Compensation Advisor: <input id="updateCompAdv" />
+                        <br />
+                        Plan Administrator: <input id="updatePlanAdmin" />
+                        <br />
+                        Plan Status: <input id="updatePlanStatus" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" id="update" class="btn btn-primary update" data-dismiss="modal">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+  <div class="col-md-10" style="margin-top:-1.3%;">
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="text-muted bootstrap-admin-box-title">Plans Table</div>
+            </div>
+            <div class="bootstrap-admin-panel-content">
+                <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+                    <thead>
+                        <tr>
+                            <th>
+                                Plan ID
+                            </th>
+                            <th>
+                                Plan Name
+                            </th>
+                            <th>
+                                Compensation Manager
+                            </th>
+                            <th>
+                                Compensation Advisor
+                            </th>
+                            <th>
+                                Plan Administrator
+                            </th>
+                            <th>
+                                Plan Status
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
