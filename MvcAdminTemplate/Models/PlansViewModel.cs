@@ -18,7 +18,7 @@ namespace MvcAdminTemplate.Models
             {
                new PlansViewModel { PlanID = "1000", PlanName = "Plan1", CompensationManager = "John Doe", CompensationAdvisor = "Joe Schmo", PlanAdmin  = "Mike Jackson", PlanStatus = "Active"},
                new PlansViewModel { PlanID = "2000", PlanName = "Plan2", CompensationManager = "John Doe", CompensationAdvisor = "Joe Schmo", PlanAdmin  = "Mike Jackson", PlanStatus = "Active"},
-               new PlansViewModel { PlanID = "3000", PlanName = "Plan3", CompensationManager = "John Doe", CompensationAdvisor = "Joe Schmo", PlanAdmin  = "Mike Jackson", PlanStatus = "Active"}
+               new PlansViewModel { PlanID = "3000", PlanName = "Plan3", CompensationManager = "John Doe", CompensationAdvisor = "Joe Schmo", PlanAdmin  = "Mike Jackson", PlanStatus = "Active"},
             });
     }
 }
