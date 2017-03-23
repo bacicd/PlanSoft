@@ -53,5 +53,34 @@ namespace MvcAdminTemplate.Controllers
                 aaData = PlansViewModel.PlansList.Select(x => new[] { x.PlanID, x.PlanName, x.CompensationManager, x.CompensationAdvisor, x.PlanAdmin, x.PlanStatus })
             }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public ActionResult View(string PlanID, string ViewPlanID, string ViewPlanName, string ViewCompMan, string ViewCompAdv, string ViewPlanAdmin, string ViewPlanStatus)
+        {
+            foreach (PlansViewModel i in PlansViewModel.PlansList)
+            {
+                if (i.PlanID == PlanID)
+                {
+                    i.PlanID = ViewPlanID;
+                    i.PlanName = ViewPlanName;
+                    i.CompensationManager = ViewCompMan;
+                    i.CompensationAdvisor = ViewCompAdv;
+                    i.PlanAdmin = ViewPlanAdmin;
+                    i.PlanStatus = ViewPlanStatus;
+
+                    return Json(new
+                    {
+                        aaData = PlansViewModel.PlansList.Select(x => new[] { x.PlanID, x.PlanName, x.CompensationManager, x.CompensationAdvisor, x.PlanAdmin, x.PlanStatus })
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            return Json(new
+            {
+                aaData = PlansViewModel.PlansList.Select(x => new[] { x.PlanID, x.PlanName, x.CompensationManager, x.CompensationAdvisor, x.PlanAdmin, x.PlanStatus })
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }
