@@ -91,13 +91,13 @@
         $(document).on("click", ".save", function() {
             testStr = "([A-Za-z0-9])+"
             var regex = new RegExp(testStr);
-            attribCode = $("#attribCode").val();
-            attribName = $("#attribName").val();
+            ruleCode = $("#attribCode").val();
+            ruleName = $("#attribName").val();
             varCode = $("#varCode").val();
             varName = $("#varName").val();
             ruleCreator = $("#ruleCreator").val();
-            test1 = regex.test(attribCode);
-            test2 = regex.test(attribName);
+            test1 = regex.test(ruleCode);
+            test2 = regex.test(ruleName);
             test3 = regex.test(varCode);
             test4 = regex.test(varName);
             test5 = regex.test(ruleCreator);
@@ -108,7 +108,7 @@
             $.ajax({
                 url: "/AttributesVariables/Add",
                 datatype: "text",
-                data: { 'AttribCode': $('#attribCode').val(), 'AttribName': $('#attribName').val(), 'varCode': $('#varCode').val(), 'varName': $('#varName').val(), 'Creator': $('#attribCreator').val() },
+                data: { 'AttribCode': $('#ruleCode').val(), 'AttribName': $('#ruleName').val(), 'varCode': $('#varCode').val(), 'varName': $('#varName').val(), 'Creator': $('#attribCreator').val() },
                 type: "POST",
                 success: function (data) {
                     $('#addmessage').html("");
@@ -127,9 +127,9 @@
             ID = $(this).closest("tr").children('td:eq(0)').text();
             attribCode = $(this).closest("tr").children('td:eq(0)').text();
             attribName = $(this).closest("tr").children('td:eq(1)').text()
-            varCode = $(this).closest("tr").children('td:eq(2)').text()
-            varName = $(this).closest("tr").children('td:eq(3)').text()
-            
+            varCode = $(this).closest("tr").children('td:eq(3)').text()
+            varName = $(this).closest("tr").children('td:eq(2)').text()
+
             $('#editModal').modal('show');
             $('#editMessage').html("");
             $("#updateAttribCode").val(attribCode);
@@ -142,7 +142,7 @@
                 var regex = new RegExp(testStr);
                 attribName = $("#updateAttribName").val();
                 attribCode = $("#updateAttribCode").val();
-                varCode = $("#updateVarCode").val();
+                //varCode = $("#updateVarCode").val();
                 varName = $("#updateVarName").val();
                 test1 = regex.test(attribName);
                 test2 = regex.test(attribCode);
@@ -155,7 +155,7 @@
                 $.ajax({
                     url: "/AttributesVariables/Update",
                     datatype: "text",
-                    data: { 'varCode': ID, 'NewAttribCode': $('#updateAttribCode').val(), 'NewAttribName': $('#updateAttribName').val(), 'NewVarCode': $('#updateVarCode').val(), 'NewVarName': $('#updateVarName').val() },
+                    data: { 'varCode': varCode, 'NewAttribCode': $('#updateAttribCode').val(), 'NewAttribName': $('#updateAttribName').val(), 'NewVarCode': $('#updateVarCode').val(), 'NewVarName': $('#updateVarName').val() },
                     type: "POST",
                     success: function (data) {
                         $('#editModal').modal('hide');
@@ -172,7 +172,7 @@
 
 
         $("tbody").on("click", ".delete", function () {
-            delID = $(this).closest("tr").children('td:eq(0)').text();
+            delID = $(this).closest("tr").children('td:eq(3)').text();
             $('#deleteModal').modal('show');
         });
 
@@ -188,6 +188,51 @@
             error: function () {
             }
         });
+        });
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DropDownAttributeCodes", "AttributesVariables")',
+            dataType: 'json',
+            success: function (code) {
+                console.log("Success");
+                var items = '';
+                var obj = '';
+                $.each(code, function (i, word) {
+                    $.each(word, function (i, obj) {
+                        items += "<option>" + obj + "</option>";
+                    });
+                });
+                console.log(items);
+                $("#ruleCode").html(items);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+                console.log(thrownError);
+            }
+        });
+
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DropDownAttributeNames", "AttributesVariables")',
+            dataType: 'json',
+            success: function (code) {
+                console.log("Success");
+                var items = '';
+                var obj = '';
+                $.each(code, function (i, word) {
+                    $.each(word, function (i, obj) {
+                        items += "<option>" + obj + "</option>";
+                    });
+                });
+                console.log(items);
+                $("#ruleName").html(items);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+                console.log(thrownError);
+            }
         });
 
         $(document).ready(function () {
@@ -238,15 +283,15 @@
             </div>
             <div class="modal-body">
                 <div id="addmessage"></div>                
-                Attribute ID: <input id="attribCode" />
-                <br />
-                Attribute Name: <input id="attribName" />
-                <br />
-                Variable Name: <input id="varName" />
-                <br />
-                Variable Code Name: <input id="varCode" />
-                <br />
-                Created By: <input id="attribCreator" />
+                Attribute ID: <select id="ruleCode" style="display:inline-block; margin-left:6.5%;"></select>
+                <br /><br />
+                Attribute Name: <select id="ruleName" style="display:inline-block; margin-left:2%;" ></select>
+                <br /><br />
+                Variable Name: <input id="varName" style="display:inline-block; margin-left:3%;" />
+                @*<br />
+                Variable Code Name: <input id="varCode" />*@
+                <br /><br />
+                Created By: <input id="attribCreator" style="display:inline-block; margin-left:7%;" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -267,12 +312,12 @@
             </div>
             <div class="modal-body">
                 <div id="editMessage"></div>
-                Attribute Code: <input id="updateAttribCode" />
+                @*Attribute Code: <input id="updateAttribCode" />
                 <br />
                 Attribute Name: <input id="updateAttribName" />
                 <br />
                 Variable Code: <input id="updateVarCode" />
-                <br />
+                <br />*@
                 Variable Name: <input id="updateVarName" />
                 <br />
             </div>
@@ -327,7 +372,7 @@
                             <th>Created By
                                 <br />
                                 <input type="text" class="tooLong" name="filterfname" value=""></th>
-                            <th>&nbsp;Action&nbsp;</th>
+                            <th>&nbsp;&nbsp;Action&nbsp;&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
