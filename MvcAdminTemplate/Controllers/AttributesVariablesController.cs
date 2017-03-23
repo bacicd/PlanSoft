@@ -23,14 +23,14 @@ namespace MvcAdminTemplate.Controllers
             AttributeVariable.AttributesVariablesList = db.AttributeVariables.ToList();
             return Json(new
             {
-               aaData = AttributeVariable.AttributesVariablesList.Select(x => new[] { x.Attribute.Code.ToString(), x.Attribute.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+               aaData = AttributeVariable.AttributesVariablesList.Select(x => new[] { x.Attribute.Code.ToString(), x.Attribute.Name, x.Name, x.Code.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Delete(string AttribCode)
         {
-            AttributeVariable.AttributesVariablesList = db.AttributeVariables.ToList();
+            //AttributeVariable.AttributesVariablesList = db.AttributeVariables.ToList();
             AttributeVariable attribute = db.AttributeVariables.Find(Convert.ToInt32(AttribCode));
 
             db.AttributeVariables.Remove(attribute);
@@ -63,7 +63,7 @@ namespace MvcAdminTemplate.Controllers
             AttributeVariable attribVar = db.AttributeVariables.Find(Convert.ToInt32(varCode));
 
             //2. change element name in disconnected mode (out of ctx scope)
-            attribVar.Code = Convert.ToInt32(NewVarCode);
+            //attribVar.Code = Convert.ToInt32(NewVarCode);
             attribVar.Name = NewVarName;
 
             db.SaveChanges();
@@ -96,7 +96,7 @@ namespace MvcAdminTemplate.Controllers
         public ActionResult Add(string AttribCode, string AttribName, string varCode, string varName, string Creator)
         {
             //AttributesVariablesViewModel.AttributesVariablesList.Add(new AttributesVariablesViewModel { AttributeCode = AttribCode, AttributeName = AttribName, VariableCode = varCode, VariableName = varName, DateSet = DateTime.Today, CreatedBy = Creator });
-            AttributeVariable.AttributesVariablesList.Add(new AttributeVariable { ACode = Convert.ToInt32(AttribCode), Name = varName, CreatedOn = DateTime.Today, CreatedBy = Creator });
+            //AttributeVariable.AttributesVariablesList.Add(new AttributeVariable { ACode = Convert.ToInt32(AttribCode), Name = varName, CreatedOn = DateTime.Today, CreatedBy = Creator });
 
             AttributeVariable addAttributeVar = new AttributeVariable();
             addAttributeVar.ACode = Convert.ToInt32(AttribCode);
