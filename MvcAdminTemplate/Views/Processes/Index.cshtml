@@ -14,7 +14,8 @@
                 $('<div id="subTasks" style="margin-top:2%;"><span id="subtask" style="margin-left:3%;">Sub Task</span><input id="subtaskentry" style="display:none;" /><a id="addSubTask" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a><br /><div class="col-md-3" style="margin-left:5%; margin-top:2%;"><select id="attributes" class="form-control attributes" style="display:inline-block;"></select></div><a id="addAttribute" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a></div>'
              ).insertAfter('#subTasks');
             });
-            populateAttributes();
+            //populateAttributes();
+            fakeAttribs();
             hideTextbox();
         });
     </script>
@@ -42,6 +43,22 @@
             });
         }
 
+        function fakeAttribs()
+        {
+            var items = "";
+            items += "<option> Employee </option>";
+            items += "<option> Developer </option>";
+            items += "<option> Compensation Manager </option>";
+            items += "<option> Guy </option>";
+            items += "<option> Buddy </option>";
+            items += "<option> Friend </option>";
+            items += "<option> Kilroy was here </option>";
+            items += "<option> Odd Future </option>";
+
+            $(".attributes").html(items);
+
+        }
+
         var defaultText = 'Click to edit text';
 
         function endEdit(e) {
@@ -53,7 +70,7 @@
             label.show();
         }
 
-        
+
 
         function hideTextbox() {
             $('.clickedit').hide()
@@ -77,7 +94,7 @@
         $(".container").on("click", ".addTask", addTask);
         $(".container").on("click", ".addSubtask", addSubtask);
         $(".container").on("click", ".addAttribute", addAttributeSelect)
-        
+
         $(".container").on("click", ".subTask", subTask);
         $(".container").on("click", ".subSubtask", subSubtask);
         $(".container").on("click", ".subAttribute", subAttributeSelect)
@@ -105,10 +122,11 @@
         </div> \
         </div>";
             $(html).insertAfter($(this).closest(".TASK"));
-            populateAttributes();
+            //populateAttributes();
+            fakeAttribs();
             hideTextbox();
             return false;
-        }        
+        }
 
         function addSubtask()
         {
@@ -126,10 +144,11 @@
             </div> \
         </div>"
             $(html).insertAfter($(this).closest(".SUBTASK"))
-            populateAttributes();
+            //populateAttributes();
+            fakeAttribs();
             hideTextbox();
             return false;
-        }        
+        }
 
         function addAttributeSelect()
         {
@@ -141,7 +160,8 @@
                 <a class=\"glyphicon glyphicon-minus subAttribute\" style=\"margin-top:.8%;\"></a> \
             </div>"
             $(html).insertAfter($(this).closest(".ATTRIBUTESELECTOR"))
-            populateAttributes();
+            //populateAttributes();
+            fakeAttribs();
             return false;
         }
 
@@ -175,8 +195,35 @@
                 });
 
             });
+            $("#importField").val(STR);
 
+            sendToBackEnd(STR);
             return STR;
+        }
+
+        function sendToBackEnd(STR)
+        {
+            var data = JSON.stringify(STR);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getData", "Processes")',
+                data: JSON.stringify({ data: STR }),
+                dataType: 'text',
+                contentType: "application/json; charset=utf-8",
+                success: function (attribute) {
+                    
+                },
+                error: function () {
+                    alert('Failed to store data.');
+                }
+            });
+        }
+
+        function repopulateDataStr()
+        {
+            var str = $("#importField").val();
+            str.split("\n");
+            return str;
         }
 
         function getDataParents()
@@ -185,7 +232,7 @@
             $(".ATTRIBUTESELECTOR").each(function (key, val) {
                 attribDict[$(this).find('select').first().val()] = $(this).closest(".SUBTASK").find('label').first().text();
             });
-            
+
             var subtaskDict = {}
             $(".SUBTASK").each(function (key, val) {
                 subtaskDict[$(this).closest(".SUBTASK").find('label').first().text()] = $(this).closest(".TASK").find('label').first().text();
@@ -193,7 +240,7 @@
 
             return attribDict, subtaskDict;
         }
-        
+
 
     </script>
 }
@@ -202,6 +249,9 @@
 
 <!--SAVE BUTTON-->
 <input id="exportButton" type="button" value="Export" onclick="getDataStr();" />
+<br />
+<input id="importField" type="text" value="" />
+<input id="importButton" type="button" value="Import" onclick="repopulateDataStr();" />
 
 <!--MASTER CONTAINER-->
 <div id="CONTAINER" class="container" style="margin-left:19%;">

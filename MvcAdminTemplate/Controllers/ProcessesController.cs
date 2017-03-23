@@ -17,6 +17,11 @@ namespace MvcAdminTemplate.Controllers
             return View();
         }
 
+        public JsonResult getData(string data)
+        {
+            string processesData = data;
+            return Json(true);
+        }
 
         public JsonResult DropDownAttributes(string attribute)
         {
