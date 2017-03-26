@@ -14,6 +14,7 @@ namespace MvcAdminTemplate.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -27,17 +28,20 @@ namespace MvcAdminTemplate.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(Models.Account userr, string returnURL)
         {
-            if (ModelState.IsValid)
+            if (IsValid(userr.Username, userr.Password))
             {
-                //TODO : Do something to authenticate the user
-                return RedirectToLocal(returnUrl);
+                FormsAuthentication.SetAuthCookie(userr.Username, false);
+                return RedirectToLocal(returnURL);
             }
-
-            // If we got this far, something failed, redisplay form
-            ModelState.AddModelError(String.Empty, "The user name or password provided is incorrect.");
-            return View(model);
+            
+            else
+            {
+                // If we got this far, something failed, redisplay form
+                ModelState.AddModelError(String.Empty, "The user name or password provided is incorrect.");
+                return View(userr);
+            }      
         }
 
         //
@@ -106,7 +110,7 @@ namespace MvcAdminTemplate.Controllers
         }
 
         // Logs out and redirects to Home Page
-        public ActionResult LogOut()
+        public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");

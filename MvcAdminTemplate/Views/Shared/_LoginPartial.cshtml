@@ -24,7 +24,14 @@ else
     
         #menuitems a:hover { border-bottom:3px solid #808080;}
 </style>
-        <li id="menuitems">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li id="menuitems">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-
+@if (Request.IsAuthenticated)
+{
+    <li id="menuitems">@Html.ActionLink("Log Out", "Logout", "Account")</li>
+    <li id="menuitems"><strong>@Html.Encode(User.Identity.Name)</strong></li>  
+}
+else
+{
+    <li id="menuitems">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    <li id="menuitems">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+}
 @*}*@
