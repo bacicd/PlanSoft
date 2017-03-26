@@ -63,16 +63,16 @@ namespace MvcAdminTemplate.Controllers
             {
                 if(ModelState.IsValid)
                 {
-                    using(var db = new MvcAdminTemplate.Models.DBModelEntities())
+                    using(DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities())
                     {
                         // Hashes using SimpleCrypto Lib
                         // Will be changed to Argon2 in the future
-                        var hash = new SimpleCrypto.PBKDF2();
-                        var hashedPass = hash.Compute(user.Password); // Hashes user password
-                        Account newUser = db.Accounts.Create();
+                        var crypto = new SimpleCrypto.PBKDF2();
+                        var hashedPass = crypto.Compute(user.Password); // Hashes user password
+                        var newUser = db.Accounts.Create();
                         newUser.Username = user.Username;
                         newUser.Password = hashedPass;
-                        newUser.PasswordSalt = hash.Salt;
+                        newUser.PasswordSalt = crypto.Salt;
                         newUser.OrgID = 10; // hardcoded for now (should be user.Organization)
                         newUser.First = user.First;
                         newUser.Last = user.Last;
@@ -118,15 +118,15 @@ namespace MvcAdminTemplate.Controllers
 
         private bool IsValid(string username, string password)
         {
-            var hash = new SimpleCrypto.PBKDF2();
+            var crypto = new SimpleCrypto.PBKDF2();
             bool IsValid = false;
 
-            using (var db = new MvcAdminTemplate.Models.DBModelEntities())
+            using (DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities())
             {
                 var user = db.Accounts.FirstOrDefault(u => u.Username == username);
                 if(user != null)
                 {
-                    if(user.Password == hash.Compute(password, user.PasswordSalt))
+                    if(user.Password == crypto.Compute(password, user.PasswordSalt))
                     {
                         IsValid = true;
                     }
