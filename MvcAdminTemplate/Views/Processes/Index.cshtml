@@ -14,8 +14,8 @@
                 $('<div id="subTasks" style="margin-top:2%;"><span id="subtask" style="margin-left:3%;">Sub Task</span><input id="subtaskentry" style="display:none;" /><a id="addSubTask" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a><br /><div class="col-md-3" style="margin-left:5%; margin-top:2%;"><select id="attributes" class="form-control attributes" style="display:inline-block;"></select></div><a id="addAttribute" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a></div>'
              ).insertAfter('#subTasks');
             });
-            //populateAttributes();
-            fakeAttribs();
+            populateAttributes();
+            //fakeAttribs();
             hideTextbox();
         });
     </script>
@@ -30,12 +30,19 @@
                     var items = '';
                     var obj = '';
                     $.each(attribute, function (i, word) {
-                        $.each(word, function (i, obj) {
-                            items += "<option>" + obj + "</option>";
-                        });
+                            $.each(word, function (i, obj) {
+                                items += "<option>" + obj + "</option>";
+                            });
                     });
 
-                    $(".attributes").html(items);
+                    $(".attributes").each(function () {
+                        var temp = $(this).html()
+                        if (temp == "")
+                        {
+                            $(this).html(items);
+                        }
+                        
+                    });
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Failed to retrieve data.');
@@ -122,8 +129,8 @@
         </div> \
         </div>";
             $(html).insertAfter($(this).closest(".TASK"));
-            //populateAttributes();
-            fakeAttribs();
+            populateAttributes();
+            //fakeAttribs();
             hideTextbox();
             return false;
         }
@@ -144,8 +151,8 @@
             </div> \
         </div>"
             $(html).insertAfter($(this).closest(".SUBTASK"))
-            //populateAttributes();
-            fakeAttribs();
+            populateAttributes();
+            //fakeAttribs();
             hideTextbox();
             return false;
         }
@@ -160,8 +167,8 @@
                 <a class=\"glyphicon glyphicon-minus subAttribute\" style=\"margin-top:.8%;\"></a> \
             </div>"
             $(html).insertAfter($(this).closest(".ATTRIBUTESELECTOR"))
-            //populateAttributes();
-            fakeAttribs();
+            populateAttributes();
+            //fakeAttribs();
             return false;
         }
 
