@@ -1,0 +1,41 @@
+﻿@model MvcAdminTemplate.Models.Account
+
+@{
+    ViewBag.Title = "Register";
+}
+@Html.Partial("_LeftMenu")
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Registration Failed, fields.");
+    <div>
+        <fieldset>
+            <legend>Registration Form</legend>
+            <div class="editor-label">@Html.LabelFor(u => u.First)</div>
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.First)
+                @Html.ValidationMessageFor(u => u.First)
+            </div>
+
+            <div class="editor-label">@Html.LabelFor(u => u.Last)</div>
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Last)
+                @Html.ValidationMessageFor(u => u.Last)
+            </div>
+
+            <div class="editor-label">@Html.LabelFor(u => u.Username)</div>
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Username)
+                @Html.ValidationMessageFor(u => u.Username)
+            </div>
+
+            <div class="editor-label">@Html.LabelFor(u => u.Password)</div>
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Password)
+                @Html.ValidationMessageFor(u => u.Password)
+            </div>
+
+            <input type="submit" value="Register" />
+        </fieldset>
+    </div>
+}

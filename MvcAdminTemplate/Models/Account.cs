@@ -21,7 +21,7 @@ namespace MvcAdminTemplate.Models
         public string Role { get; set; }
         public string Password { get; set; }
         public System.DateTime CreatedOn { get; set; }
-        public string Salt { get; set; }
+        public string PasswordSalt { get; set; }
     
         public virtual Organization Organization { get; set; }
         public virtual UserRole UserRole { get; set; }

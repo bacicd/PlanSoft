@@ -14,9 +14,9 @@
           <Property Name="First" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="Last" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="Role" Type="varchar" MaxLength="32" />
-          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CreatedOn" Type="date" Nullable="false" />
-          <Property Name="Salt" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="PasswordSalt" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Attribute">
           <Key>
@@ -209,11 +209,11 @@
           <Property Name="First" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Last" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Role" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Organization" Relationship="Self.fk_organization" FromRole="Account" ToRole="Organization" />
           <NavigationProperty Name="UserRole" Relationship="Self.fk_role" FromRole="Account" ToRole="UserRole" />
-          <Property Name="Salt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Attribute">
           <Key>
@@ -412,7 +412,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="hresonanceModel.Account">
               <MappingFragment StoreEntitySet="Account">
-                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="OrgID" ColumnName="OrgID" />
                 <ScalarProperty Name="First" ColumnName="First" />
