@@ -190,18 +190,19 @@
         {
             var STR = ""
             $(".TASK").each(function (i, task) {
-                STR += "\nTASK: " + $(this).find("label").first("label").text() + "\n";
+                STR += " \nTASK: " + $(this).find("label").first("label").text();
 
                 //$(task, ".SUBTASK").each(function (task, subtask) {
                 $(this).find(".SUBTASK").each(function (task, subtask) {
-                    STR += "\n\tSUBTASK: " + $(this).find("label").first("label").text() + "\n";
+                    STR += " \nSUBTASK: " + $(this).find("label").first("label").text();
 
                     $(this).find(".ATTRIBUTESELECTOR").each(function (subtask, attrib) {
-                        STR += "\n\t\tATTRIBUTE: " + $(this).find("select").first("select").val() + "\n";
+                        STR += " \nATTRIBUTE: " + $(this).find("select").first("select").val();
                     });
                 });
 
             });
+            STR += "\n";
             $("#importField").val(STR);
 
             sendToBackEnd(STR);
