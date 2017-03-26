@@ -22,19 +22,27 @@ namespace MvcAdminTemplate.Controllers
 
         public ActionResult LoadElements()
         {
-            Element.ElementsList = db.Elements.ToList();
+            var elementContext = new DBModelEntities();
+            IList<Element> elements = elementContext.Elements.ToList();
+            return Json(new
+            {
+                //aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy})
+                aaData = elements.Select(x => new[] { x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+            }, JsonRequestBehavior.AllowGet);
+            /*Element.ElementsList = db.Elements.ToList();
 
             return Json(new
             {
                 //aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy})
                 aaData = Element.ElementsList.Select(x => new[] { x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy})
-            }, JsonRequestBehavior.AllowGet);
+            }, JsonRequestBehavior.AllowGet);*/
         }
 
         [HttpPost]
         public ActionResult Delete(string EleID)
         {
-            Element.ElementsList = db.Elements.ToList();
+            var elementContext = new DBModelEntities();
+            IList<Element> elements = elementContext.Elements.ToList();
             Element element = db.Elements.Find(Convert.ToInt32(EleID));
 
             db.Elements.Remove(element);
@@ -57,14 +65,15 @@ namespace MvcAdminTemplate.Controllers
             return Json(new
             {
                 //aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
-                aaData = Element.ElementsList.Select(x => new[] { x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = elements.Select(x => new[] { x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Update(string EleID, string newID, string newName)
         {
-            Element.ElementsList = db.Elements.ToList();
+            var elementContext = new DBModelEntities();
+            IList<Element> elements = elementContext.Elements.ToList();
             Element element = db.Elements.Find(Convert.ToInt32(EleID));
 
             //2. change element name in disconnected mode (out of ctx scope)
@@ -94,15 +103,17 @@ namespace MvcAdminTemplate.Controllers
             return Json(new
             {
                 //aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
-                aaData = Element.ElementsList.Select(x => new[] { x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = elements.Select(x => new[] { x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Add(string EleID, string EleName, string Creator)
         {
+            var elementContext = new DBModelEntities();
+            IList<Element> elements = elementContext.Elements.ToList();
             //ElementsViewModel.ElementsList.Add(new ElementsViewModel { ElementId = EleID, ElementName = EleName, DateSet = DateTime.Today, CreatedBy = Creator });
-            Element.ElementsList.Add(new Element { Code = Convert.ToInt32(EleID), Name = EleName, CreatedOn = DateTime.Today, CreatedBy = Creator });
+            elements.Add(new Element { Code = Convert.ToInt32(EleID), Name = EleName, CreatedOn = DateTime.Today, CreatedBy = Creator });
 
             Element addElement = new Element();
             addElement.Code = Convert.ToInt32(EleID);
@@ -116,7 +127,7 @@ namespace MvcAdminTemplate.Controllers
             return Json(new
             {
                 //aaData = ElementsViewModel.ElementsList.Select(x => new[] { x.ElementId, x.ElementName, x.DateSet.ToString(), x.CreatedBy })
-                aaData = Element.ElementsList.Select(x => new[] { x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = elements.Select(x => new[] { x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
     }

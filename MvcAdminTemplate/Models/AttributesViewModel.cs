@@ -14,6 +14,7 @@ namespace MvcAdminTemplate.Models
         public DateTime DateSet { get; set; }
         public string CreatedBy { get; set; }
 
+
         //public static List<AttributesViewModel> AttributesList = new List<AttributesViewModel>(new[]
         //    {
         //        new AttributesViewModel { ElementCode = "10", ElementName = "Plan", AttributeCode = "10", AttributeName = "Compensation Manager", DateSet = DateTime.Today, CreatedBy = "Username"},

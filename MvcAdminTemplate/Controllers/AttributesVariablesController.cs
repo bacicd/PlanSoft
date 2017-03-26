@@ -116,10 +116,11 @@ namespace MvcAdminTemplate.Controllers
         [HttpGet]
         public JsonResult DropDownAttributeCodes(string code)
         {
-            Models.Attribute.AttributesList = db.Attributes.ToList();
+            var attributeContext = new DBModelEntities();
+            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
             return Json(new
             {
-                code = Models.Attribute.AttributesList.Select(x => new[] { x.Code.ToString() })
+                code = attributes.Select(x => new[] { x.Code.ToString() })
             }, JsonRequestBehavior.AllowGet);
             //return Json(new
             //{
@@ -130,10 +131,11 @@ namespace MvcAdminTemplate.Controllers
         [HttpGet]
         public JsonResult DropDownAttributeNames(string name)
         {
-            Models.Attribute.AttributesList = db.Attributes.ToList();
+            var attributeContext = new DBModelEntities();
+            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
             return Json(new
             {
-                name = Models.Attribute.AttributesList.Select(x => new[] { x.Name })
+                name = attributes.Select(x => new[] { x.Name })
             }, JsonRequestBehavior.AllowGet);
         }
     }

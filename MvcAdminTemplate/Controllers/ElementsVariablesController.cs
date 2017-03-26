@@ -20,17 +20,19 @@ namespace MvcAdminTemplate.Controllers
 
         public ActionResult LoadElements()
         {
-            ElementVariable.ElementsVarList = db.ElementVariables.ToList();
+            var elementvarContext = new DBModelEntities();
+            IList<ElementVariable> elementvars = elementvarContext.ElementVariables.ToList();
             return Json(new
             {
-                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.ECode.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = elementvars.Select(x => new[] { x.ECode.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Delete(string EleCode)
         {
-            ElementVariable.ElementsVarList = db.ElementVariables.ToList();
+            var elementvarContext = new DBModelEntities();
+            IList<ElementVariable> elementvars = elementvarContext.ElementVariables.ToList();
             ElementVariable element = db.ElementVariables.Find(Convert.ToInt32(EleCode));
 
             db.ElementVariables.Remove(element);
@@ -49,14 +51,15 @@ namespace MvcAdminTemplate.Controllers
 
             return Json(new
             {
-                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), x.Name, x.CID.ToString(), x.ECode.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = elementvars.Select(x => new[] { x.Code.ToString(), x.Name, x.CID.ToString(), x.ECode.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Update(string varCode, string newVarName, string newVarCID)
         {
-            ElementVariable.ElementsVarList = db.ElementVariables.ToList();
+            var elementvarContext = new DBModelEntities();
+            IList<ElementVariable> elementvars = elementvarContext.ElementVariables.ToList();
             ElementVariable elementVar = db.ElementVariables.Find(Convert.ToInt32(varCode));
 
             //2. change element name in disconnected mode (out of ctx scope)
@@ -84,15 +87,17 @@ namespace MvcAdminTemplate.Controllers
 
             return Json(new
             {
-                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), x.Name, x.CID.ToString() })
+                aaData = elementvars.Select(x => new[] { x.Code.ToString(), x.Name, x.CID.ToString() })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Add(string EleCode, string EleName, string varCode, string varName, string varCID, string Creator)
         {
+            var elementvarContext = new DBModelEntities();
+            IList<ElementVariable> elementvars = elementvarContext.ElementVariables.ToList();
             //ElementsVariablesViewModel.ElementsVariablesList.Add(new ElementsVariablesViewModel { ElementCode = EleCode, ElementName = EleName, VariableCID = varCID, VariableCode = varCode, VariableName = varName, DateSet = DateTime.Today, CreatedBy = Creator });
-            ElementVariable.ElementsVarList.Add(new ElementVariable { ECode = Convert.ToInt32(EleCode), CID = Convert.ToDecimal(varCID), Name = varName, CreatedOn = DateTime.Today, CreatedBy = Creator });
+            elementvars.Add(new ElementVariable { ECode = Convert.ToInt32(EleCode), CID = Convert.ToDecimal(varCID), Name = varName, CreatedOn = DateTime.Today, CreatedBy = Creator });
 
             ElementVariable addElementVar = new ElementVariable();
             addElementVar.ECode = Convert.ToInt32(EleCode);
@@ -105,17 +110,18 @@ namespace MvcAdminTemplate.Controllers
 
             return Json(new
             {
-                aaData = ElementVariable.ElementsVarList.Select(x => new[] { x.Code.ToString(), EleName, x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = elementvars.Select(x => new[] { x.Code.ToString(), EleName, x.Name, x.CID.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult DropDownElementCodes(string code)
         {
-            Element.ElementsList = db.Elements.ToList();
+            var elementContext = new DBModelEntities();
+            IList<Element> elements = elementContext.Elements.ToList();
             return Json(new
             {
-                code = Element.ElementsList.Select(x => new[] { x.Code.ToString() })
+                code = elements.Select(x => new[] { x.Code.ToString() })
             }, JsonRequestBehavior.AllowGet);
             //return Json(new
             //{
@@ -126,10 +132,12 @@ namespace MvcAdminTemplate.Controllers
         [HttpGet]
         public JsonResult DropDownElementNames(string name)
         {
-            Element.ElementsList = db.Elements.ToList();
+            var elementContext = new DBModelEntities();
+            IList<Element> elements = elementContext.Elements.ToList();
+
             return Json(new
             {
-                name = Element.ElementsList.Select(x => new[] { x.Name })
+                name = elements.Select(x => new[] { x.Name })
             }, JsonRequestBehavior.AllowGet);
         }
 

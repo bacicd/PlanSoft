@@ -9,6 +9,7 @@ namespace MvcAdminTemplate.Controllers
 {
     public class AttributesController : Controller
     {
+
         private DBModelEntities db = new DBModelEntities();
         //
         // GET: /Attributes/
@@ -19,18 +20,22 @@ namespace MvcAdminTemplate.Controllers
         }
         public ActionResult LoadAttributes()
         {
-            Models.Attribute.AttributesList = db.Attributes.ToList();
+            var attributeContext = new DBModelEntities();
+            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
 
             return Json(new
             {
                 //aaData = AttributesViewModel.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
-                aaData = Models.Attribute.AttributesList.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = attributes.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Delete(string EleCode)
         {
+            var attributeContext = new DBModelEntities();
+            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
+
             //Models.Attribute.AttributesList = db.Attributes.ToList();
             Models.Attribute attribute = db.Attributes.Find(Convert.ToInt32(EleCode));
 
@@ -52,14 +57,15 @@ namespace MvcAdminTemplate.Controllers
             return Json(new
             {
                 //aaData = AttributesViewModel.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
-                aaData = Models.Attribute.AttributesList.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = attributes.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Update(string EleCode, string NewEleCode, string NewEleName, string NewAttribCode, string NewAttribName)
         {
-            Models.Attribute.AttributesList = db.Attributes.ToList();
+            var attributeContext = new DBModelEntities();
+            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
             Models.Attribute attribute = db.Attributes.Find(Convert.ToInt32(NewAttribCode));
 
             //2. change attribute name in disconnected mode (out of ctx scope)
@@ -88,13 +94,15 @@ namespace MvcAdminTemplate.Controllers
             return Json(new
             {
                 //aaData = AttributesViewModel.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
-                aaData = Models.Attribute.AttributesList.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = attributes.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult Add(string EleCode, string EleName, string AttribCode, string AttribName, string Creator)
         {
+            var attributeContext = new DBModelEntities();
+            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
             //AttributesViewModel.AttributesList.Add(new AttributesViewModel { ElementCode = EleCode, ElementName = EleName, AttributeCode = AttribCode, AttributeName = AttribName, DateSet = DateTime.Today, CreatedBy = Creator });
 
             //Models.Attribute.AttributesList.Add(new Models.Attribute { ECode = Convert.ToInt32(EleCode), Code = Convert.ToInt32(AttribCode), Name = AttribName, CreatedOn = DateTime.Today, CreatedBy = Creator });
@@ -116,17 +124,18 @@ namespace MvcAdminTemplate.Controllers
             return Json(new
             {
                 //aaData = AttributesViewModel.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
-                aaData = Models.Attribute.AttributesList.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = attributes.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult DropDownElementCodes(string code)
         {
-            Element.ElementsList = db.Elements.ToList();
+            var elementContext = new DBModelEntities();
+            IList<Element> elements = elementContext.Elements.ToList();
             return Json(new
             {
-                code = Element.ElementsList.Select(x => new[] { x.Code.ToString() })
+                code = elements.Select(x => new[] { x.Code.ToString() })
             }, JsonRequestBehavior.AllowGet);
             //return Json(new
             //{
@@ -137,10 +146,11 @@ namespace MvcAdminTemplate.Controllers
         [HttpGet]
         public JsonResult DropDownElementNames(string name)
         {
-            Element.ElementsList = db.Elements.ToList();
+            var elementContext = new DBModelEntities();
+            IList<Element> elements = elementContext.Elements.ToList();
             return Json(new
             {
-                name = Element.ElementsList.Select(x => new[] { x.Name })
+                name = elements.Select(x => new[] { x.Name })
             }, JsonRequestBehavior.AllowGet);
         }
     }
