@@ -76,7 +76,7 @@ namespace MvcAdminTemplate.Controllers
         public JsonResult DropDownAttributes(string attribute)
         {
             var attributeContext = new DBModelEntities();
-            IList<ElementVariable> attributelist = attributeContext.ElementVariables.ToList();
+            IList<Models.Attribute> attributelist = attributeContext.Attributes.ToList();
             return Json(new
             {
                 attribute = attributelist.Select(x => new[] { x.Name })

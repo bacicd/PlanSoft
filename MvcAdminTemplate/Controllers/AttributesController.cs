@@ -21,7 +21,7 @@ namespace MvcAdminTemplate.Controllers
         public ActionResult LoadAttributes()
         {
             var attributeContext = new DBModelEntities();
-            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
+            IList<Models.Attribute> attributes = attributeContext.Attributes.ToList();
 
             return Json(new
             {
@@ -34,7 +34,7 @@ namespace MvcAdminTemplate.Controllers
         public ActionResult Delete(string EleCode)
         {
             var attributeContext = new DBModelEntities();
-            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
+            IList<Models.Attribute> attributes = attributeContext.Attributes.ToList();
 
             //Models.Attribute.AttributesList = db.Attributes.ToList();
             Models.Attribute attribute = db.Attributes.Find(Convert.ToInt32(EleCode));
@@ -65,7 +65,7 @@ namespace MvcAdminTemplate.Controllers
         public ActionResult Update(string EleCode, string NewEleCode, string NewEleName, string NewAttribCode, string NewAttribName)
         {
             var attributeContext = new DBModelEntities();
-            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
+            IList<Models.Attribute> attributes = attributeContext.Attributes.ToList();
             Models.Attribute attribute = db.Attributes.Find(Convert.ToInt32(NewAttribCode));
 
             //2. change attribute name in disconnected mode (out of ctx scope)
@@ -102,7 +102,7 @@ namespace MvcAdminTemplate.Controllers
         public ActionResult Add(string EleCode, string EleName, string AttribCode, string AttribName, string Creator)
         {
             var attributeContext = new DBModelEntities();
-            IList<ElementVariable> attributes = attributeContext.ElementVariables.ToList();
+            IList<Models.Attribute> attributes = attributeContext.Attributes.ToList();
             //AttributesViewModel.AttributesList.Add(new AttributesViewModel { ElementCode = EleCode, ElementName = EleName, AttributeCode = AttribCode, AttributeName = AttribName, DateSet = DateTime.Today, CreatedBy = Creator });
 
             //Models.Attribute.AttributesList.Add(new Models.Attribute { ECode = Convert.ToInt32(EleCode), Code = Convert.ToInt32(AttribCode), Name = AttribName, CreatedOn = DateTime.Today, CreatedBy = Creator });
