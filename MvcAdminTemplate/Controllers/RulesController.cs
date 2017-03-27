@@ -7,6 +7,7 @@ using MvcAdminTemplate.Models;
 
 namespace MvcAdminTemplate.Controllers
 {
+    [Authorize]
     public class RulesController : Controller
     {
         //

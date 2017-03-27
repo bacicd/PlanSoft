@@ -8,6 +8,7 @@ using MvcAdminTemplate.Models;
 
 namespace MvcAdminTemplate.Controllers
 {
+    [Authorize]
     public class AttributesVariablesController : Controller
     {
         private DBModelEntities db = new DBModelEntities();

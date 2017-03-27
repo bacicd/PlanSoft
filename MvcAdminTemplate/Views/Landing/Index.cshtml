@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Landing.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HResonance</title>
+    <link href="~/Content/Theme/images/favicon.ico" rel="icon" type="image/x-icon" />
+    <!--@Styles.Render("~/Content/Theme")
+    @Scripts.Render("~/bundles/modernizr")-->
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="/Content/Theme/css/bootstrap-admin-theme.css" rel="stylesheet" />
+    <link href="/Content/Theme/css/site.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+    <style>
+        .group1 {
+            margin-right: 10%;
+        }
+
+        .group2 {
+            margin-left: 10%;
+        }
+
+        #menuitems a:hover {
+            border-bottom: 2px solid #00accd !important;
+        }
+
+        * {
+            font-size: 100%;
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+
+</head>
+<body class="bootstrap-admin-with-small-navbar">
+
+    <!-- main / large navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+               
+                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-left:20%;margin-top:-4%;">
+                    <ul style="width:72em" class="nav navbar-nav navbar-right">
+                        <li id="menuitems">@Html.ActionLink("Survey", "Index","Survey")</li>
+                        <li id="menuitems" class="group3">@Html.ActionLink("Open Ticket", "Index", "OpenTicket")</li>
+                        <li id="menuitems">@Html.ActionLink("Request Features", "Index", "Features")</li>
+                        @Html.Partial("_LoginPartial") 
+                    </ul>
+                </div>
+             </div>
+          </div>
+    </nav>
+    <img src="~/Content/Theme/images/HResonance.jpg"style="width:20%; margin-left:40%; padding-top:0%;" />
+    <div style="font-size:140%; padding-top:10%; width:45%; padding-left:5%;">
+        <p>Join the alpha stage & help us create<br />trailblazing strategic incentive plan<br />management software </p>
+    </div>
+    <div style="font-size:90%; width:45%;padding-left:5%;">
+        <p>We are currently working on an intial version of Resonance, and we<br /> want to launch our beta product as fast as possible.
+        You can help us<br />and influence system features.</p>
+    </div>
+    <div style="margin-top:-16%;">
+        <img src="~/Content/Theme/images/Replacement.jpg" style="float:right; width:35%;" />
+    </div>
+    
+</body>
+</html>

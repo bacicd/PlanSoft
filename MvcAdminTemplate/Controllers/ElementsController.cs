@@ -9,6 +9,7 @@ using MvcAdminTemplate.Models;
 
 namespace MvcAdminTemplate.Controllers
 {
+    [Authorize]
     public class ElementsController : Controller
     {
         private DBModelEntities db = new DBModelEntities();

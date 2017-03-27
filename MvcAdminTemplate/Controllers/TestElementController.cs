@@ -16,6 +16,7 @@ using MvcAdminTemplate.Models;
 
 namespace MvcAdminTemplate.Controllers
 {
+    [Authorize]
     public class TestElementController : Controller
     {
         private DBModelEntities db = new DBModelEntities();

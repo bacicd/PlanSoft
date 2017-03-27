@@ -4,10 +4,6 @@
 }
 
 <div class="row">
-    <div class="alert alert-info">
-        <a class="close" data-dismiss="alert" href="#">&times;</a>
-        Press enter key or click the Submit button
-    </div>
     @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "bootstrap-admin-login-form" }))
     {
         @Html.AntiForgeryToken()

@@ -6,11 +6,10 @@ using System.Web.Mvc;
 
 namespace MvcAdminTemplate.Controllers
 {
-    [Authorize]
-    public class GradeController : Controller
+    public class LandingController : Controller
     {
         //
-        // GET: /Grade/
+        // GET: /Landing/
 
         public ActionResult Index()
         {

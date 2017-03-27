@@ -8,6 +8,7 @@ using System.Data;
 
 namespace MvcAdminTemplate.Controllers
 {
+    [Authorize]
     public class ProcessesController : Controller
     {
         //

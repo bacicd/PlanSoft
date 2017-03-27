@@ -113,7 +113,7 @@ namespace MvcAdminTemplate.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Landing");
         }
 
         private bool IsValid(string username, string password)

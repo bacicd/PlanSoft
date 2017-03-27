@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace MvcAdminTemplate.Controllers
 {
+    [Authorize]
     public class FormsController : Controller
     {
         //
