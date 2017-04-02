@@ -175,7 +175,10 @@
     }
 </style>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
+        
+
+
         var count = 0; // To Count Blank Fields
         /*------------ Validation Function-----------------*/
         $(".submit_btn").click(function (event) {
@@ -205,14 +208,14 @@
             }
         });
         /*---------------------------------------------------------*/
-        $(".next_btn").click(function () { // Function Runs On NEXT Button Click
-            $(this).parent().next().fadeIn('slow');
-            $(this).parent().css({
-                'display': 'none'
-            });
-            // Adding Class Active To Show Steps Forward;
-            $('.active').next().addClass('active');
-        });
+        //$(".next_btn").click(function () { // Function Runs On NEXT Button Click
+            //$(this).parent().next().fadeIn('slow');
+            //$(this).parent().css({
+                //'display': 'none'
+            //});
+            //// Adding Class Active To Show Steps Forward;
+            //$('.active').next().addClass('active');
+        //});
         $(".pre_btn").click(function () { // Function Runs On PREVIOUS Button Click
             $(this).parent().prev().fadeIn('slow');
             $(this).parent().css({
@@ -230,10 +233,218 @@
                 return true;
             }
         });
+
+        var str = getLayoutStr();
     });
+
+    $("body").on("click", ".next_btn", nextBtn);
+    $("body").on("click", ".pre_btn", preBtn);
+
+    
+
+    function nextBtn()
+    {
+        // Function Runs On NEXT Button Click
+        $(this).parent().next().fadeIn('slow');
+        $(this).parent().css({
+            'display': 'none'
+        });
+        // Adding Class Active To Show Steps Forward;
+        $('.active').next().addClass('active');
+
+    }
+
+    function preBtn() {
+        // Function Runs On PREVIOUS Button Click
+        $(this).parent().prev().fadeIn('slow');
+        $(this).parent().css({
+            'display': 'none'
+        });
+        // Removing Class Active To Show Steps Backward;
+        $('.active:last').removeClass('active');
+
+    }
+
+    function getLayoutStr() {
+        var str = ""
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("getLayoutStr", "AddPlan")',
+            dataType: 'json',
+            success: function (layoutStr) {
+                var str = JSON.stringify(layoutStr);
+                parseLayoutStr(str);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+        return str;
+    }
+
+    function parseLayoutStr(str) {
+        var data = str.split(" TASK:")
+        var arr = []
+        var arrCounter = 0;
+
+        //build master array
+        for(i = 1; i < data.length; i++)
+        {
+            for(j = 0; j < (data[i].split(" ATTRIBUTE:").length -1);j++)
+            {
+                var attribIndex = nthIndexOf(data[i], "ATTRIBUTE:", j);
+                attrib = data[i].slice(attribIndex + 10, data[i].indexOf("\\n", nthIndexOf(data[i], "ATTRIBUTE", j)));
+                subtask = data[i].slice(data[i].lastIndexOf("SUBTASK:", data[i].indexOf(attrib)) +8, data[i].indexOf("\\n", data[i].indexOf("\\n", data[i].lastIndexOf("SUBTASK:", data[i].indexOf(attrib)))));
+                task = data[i].slice(0, data[i].indexOf("\\n"));
+
+                arr.push([task, subtask, attrib]);
+            }
+        }
+        
+        //array of just tasks, just subtasks
+        var taskArr = [];
+        var subtaskArr = [];
+        var attribArr = [];
+        for (i = 0; i < arr.length; i++)
+        {
+            if (taskArr.indexOf(arr[i][0]) == -1)
+            {
+                taskArr.push(arr[i][0]);
+            }
+
+            if (subtaskArr.indexOf(arr[i][1]) == -1)
+            {
+                subtaskArr.push(arr[i][1]);
+            }
+        }
+       
+
+        setProgtrackr(taskArr);
+
+        //populate subtask heads
+        populateSubtask(arr, taskArr, 0);
+
+        //collect names of attributes by subtask
+        var htmlStr = "";
+
+        //For each subtask, create fieldset
+        for (i = 0; i < subtaskArr.length; i++)
+        {
+            //if first subtask in task, subtask is "first"
+            if (i == 0)
+            {
+                htmlStr += "<fieldset id=\"first\" style=\"display:block\">";
+            }
+            else htmlStr += "<fieldset>";
+            
+            //for each attribute in subtask
+            for (j = 0; j < arr.length; j++)
+            {
+                
+                if(arr[j][1] == subtaskArr[i])
+                {
+                    //put attrib name, attrib datainput, populate datainput with attrib vars
+                    htmlStr += "<label id=\"" + arr[j][2] + "\"> " + arr[j][2] + "</label><br />";
+                    htmlStr += "<select class=\"options\"> \
+                                <option>--Funding Approach--</option> \
+                                <option>Post Graduate</option> \
+                                <option>Graduate</option> \
+                                <option>HSC</option> \
+                                <option>SSC</option> \
+                            </select><br />";
+                }                
+            }
+
+            //close subtask
+            
+            if(i == 0)
+            {
+                htmlStr += "<input class=\"next_btn\" name=\"next\" type=\"button\" value=\"Next\">";
+            }
+            else if (i == subtaskArr.length -1)
+            {
+                htmlStr += "<input class=\"pre_btn\" name=\"previous\" type=\"button\" value=\"Previous\">";
+                htmlStr += "<input class=\"submit_btn\" type=\"submit\" value=\"Submit\">";
+            }
+            else
+            {
+                htmlStr += "<input class=\"pre_btn\" name=\"previous\" type=\"button\" value=\"Previous\">";
+                htmlStr += "<input class=\"next_btn\" name=\"next\" type=\"button\" value=\"Next\">";
+            }
+            
+            
+            htmlStr += "</fieldset>";
+        }
+
+        $("#fieldsets").html(htmlStr);
+
+        return arr;
+    }
+
+    function nthIndexOf(string, substring, n)
+    {
+        var i = 0;
+        var index = 0;
+        while( i <= n)
+        {
+            index = string.indexOf(substring, index+1);
+            i++;
+        }
+        return index;
+    }
+
+    function setProgtrackr(tasks) {
+        var str = "";
+        for (i = 0; i < tasks.length; i++)
+        {
+            str += "<li class=\"progtrckr-todo\">" + tasks[i] + "</li>";
+        }
+        
+        $(".progtrckr").html(str);
+        var tracker = document.getElementById("progtracker");
+        tracker.setAttribute("data-progtrckr-steps", tasks.length);
+    }
+
+    //Builds content area given main data array, tasks array, and task num
+    function populateSubtask(arr, tasks, num)
+    {
+        var htmlStr = ""
+         
+        var subtasks = []
+        for (i = 0; i < arr.length; i++)
+        {
+            if (arr[i][0] == tasks[num] && subtasks.indexOf(arr[i][1]) == -1)
+            {
+                subtasks.push(arr[i][1]);
+            }
+        }
+        for (i = 0; i < subtasks.length; i++)
+        {
+            //populate subtask labels
+            if (i == 0)
+            {
+                htmlStr += "<li class=\"active\" style=\"display:inline; padding:10%;\">" + subtasks[i] + "</li>";
+            }
+            else 
+            {
+                htmlStr += "<li style=\"display:inline; padding:10%;\">" + subtasks[i] + "</li>";
+            }
+            
+        }
+
+        $("#progressbar").html(htmlStr);
+    }
+
+    function getAttribute(name)
+    {
+        
+    }
+
+
 </script>
 <div>
-    <ol class="progtrckr" data-progtrckr-steps="8">
+    <ol class="progtrckr" id="progtracker" data-progtrckr-steps="8">
         <li class="progtrckr-done">Plan Description</li>
         <li class="progtrckr-todo">Plan Design</li>
         <li class="progtrckr-todo">Distribution</li>
@@ -256,7 +467,10 @@
                     <li style="display:inline; padding:10%;">Approach</li>
             </ul>
    
+            <div id="fieldsets">
+            </div>
     <!-- Fieldsets -->
+    <!--
     <fieldset id="first" style="display:block">
 
         <select class="options">
@@ -318,6 +532,7 @@
         <input class="pre_btn" type="button" value="Previous">
         <input class="submit_btn" type="submit" value="Submit">
     </fieldset>
+    -->
     </form>
 </div>
 </div>
