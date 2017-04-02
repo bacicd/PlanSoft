@@ -60,6 +60,11 @@
         border-bottom: 4px solid silver;
     }
 
+    ol.progtrckr li.progtrckr-inprog {
+        color: black;
+        border-bottom: 4px solid blue;
+    }
+
     ol.progtrckr li:after {
         content: "\00a0\00a0";
     }
@@ -175,10 +180,10 @@
     }
 </style>
 <script>
+    var taskNo = 0;
+    var arr = [];
+
     $(document).ready(function () {
-        
-
-
         var count = 0; // To Count Blank Fields
         /*------------ Validation Function-----------------*/
         $(".submit_btn").click(function (event) {
@@ -234,11 +239,13 @@
             }
         });
 
-        var str = getLayoutStr();
+        var str = getLayoutStr(taskNo);
+        
     });
 
     $("body").on("click", ".next_btn", nextBtn);
     $("body").on("click", ".pre_btn", preBtn);
+    $("body").on("click", ".submit_btn", subBtn);
 
     
 
@@ -265,7 +272,41 @@
 
     }
 
-    function getLayoutStr() {
+    function subBtn()
+    {
+        //Validate data
+
+        //Save data
+
+        //Update progress tracker
+
+        $(".progtrckr-todo").eq(taskNo).css("border-bottom", "4px solid yellowgreen");
+        $(".progtrckr-todo").eq(taskNo + 1).css("color", "black");
+        $(".progtrckr-todo").eq(taskNo + 1).css("border-bottom", "4px solid blue");
+
+        ////Graveyard of other functions that would have been easier but break shit for no reason////
+        //$("ol li:nth-child(" + taskNo + ")").css("border-bottom", "4px solid yellowgreen");
+        //$("#progtracker").index(taskNo+1).css("border-bottom", "4px solid blue");
+        //$(".progtrckr-inprog").next.removeClass("progtrckr-todo");
+        //$(".progtrckr-inprog").next.addClass("progtrckr-inprog");
+        //currentTask.removeClass("progtrckr-inprog");
+        //currentTask.addClass("progtrckr-done");
+        //currentTask.next.removeClass("progtrckr-todo");
+        //currentTask.next.addClass("progtrckr-inprog");
+
+        //set to next task
+        taskNo += 1;
+        populateAttribs(arr, taskNo);
+        populateSubtask(arr, taskNo);
+        //getLayoutStr(taskNo);
+        //$.holdReady(true);
+
+        
+
+    }
+
+    //get layout string from controller, call parse string with task number to display
+    function getLayoutStr(num) {
         var str = ""
         $.ajax({
             cache: false,
@@ -274,7 +315,7 @@
             dataType: 'json',
             success: function (layoutStr) {
                 var str = JSON.stringify(layoutStr);
-                parseLayoutStr(str);
+                arr = parseLayoutStr(str, num);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('Failed to retrieve data.');
@@ -283,47 +324,59 @@
         return str;
     }
 
-    function parseLayoutStr(str) {
+    //Parses layout str and does initial setup of page
+    function parseLayoutStr(str, num) {
         var data = str.split(" TASK:")
         var arr = []
-        var arrCounter = 0;
 
-        //build master array
+        //build master array -- messy
+        //For each task
         for(i = 1; i < data.length; i++)
         {
+            //For each attribute
             for(j = 0; j < (data[i].split(" ATTRIBUTE:").length -1);j++)
             {
+                //index of attribute is jth index of "ATTRIBUTE"
                 var attribIndex = nthIndexOf(data[i], "ATTRIBUTE:", j);
+                //Attribute is string[attribIndex, jth index of "\n"]
                 attrib = data[i].slice(attribIndex + 10, data[i].indexOf("\\n", nthIndexOf(data[i], "ATTRIBUTE", j)));
+                //string parsing spagetti 
                 subtask = data[i].slice(data[i].lastIndexOf("SUBTASK:", data[i].indexOf(attrib)) +8, data[i].indexOf("\\n", data[i].indexOf("\\n", data[i].lastIndexOf("SUBTASK:", data[i].indexOf(attrib)))));
+                //task is from string[0] to string.firstindexof(\n)
                 task = data[i].slice(0, data[i].indexOf("\\n"));
-
+                //push array of task, subtask, attrib to arr
                 arr.push([task, subtask, attrib]);
             }
         }
         
         //array of just tasks, just subtasks
         var taskArr = [];
-        var subtaskArr = [];
-        var attribArr = [];
         for (i = 0; i < arr.length; i++)
         {
             if (taskArr.indexOf(arr[i][0]) == -1)
             {
                 taskArr.push(arr[i][0]);
             }
-
-            if (subtaskArr.indexOf(arr[i][1]) == -1)
-            {
-                subtaskArr.push(arr[i][1]);
-            }
         }
        
-
+        //setup tasks
         setProgtrackr(taskArr);
 
         //populate subtask heads
-        populateSubtask(arr, taskArr, 0);
+        populateSubtask(arr, num);
+
+        //populate attributes inputs 
+        populateAttribs(arr,num);
+
+        
+        //return arr (to where?)
+        return arr;
+    }
+
+    function populateAttribs(arr, taskNo)
+    {
+        
+        subtaskArr = getSubtaskList(arr, taskNo);
 
         //collect names of attributes by subtask
         var htmlStr = "";
@@ -336,16 +389,18 @@
             {
                 htmlStr += "<fieldset id=\"first\" style=\"display:block\">";
             }
+                //else is normal fieldset
             else htmlStr += "<fieldset>";
-            
-            //for each attribute in subtask
+
+            //for each attribute 
             for (j = 0; j < arr.length; j++)
             {
-                
-                if(arr[j][1] == subtaskArr[i])
+                //if attribute in subtask
+                if (arr[j][1] == subtaskArr[i])
                 {
                     //put attrib name, attrib datainput, populate datainput with attrib vars
                     htmlStr += "<label id=\"" + arr[j][2] + "\"> " + arr[j][2] + "</label><br />";
+                    //dummy data
                     htmlStr += "<select class=\"options\"> \
                                 <option>--Funding Approach--</option> \
                                 <option>Post Graduate</option> \
@@ -353,35 +408,38 @@
                                 <option>HSC</option> \
                                 <option>SSC</option> \
                             </select><br />";
-                }                
+                }
             }
 
-            //close subtask
-            
-            if(i == 0)
+
+            //If only one subtask, just hav sub btn
+            if (subtaskArr.length == 1)
             {
+                htmlStr += "<input class=\"submit_btn\" type=\"submit\" value=\"Submit\">";
+            }
+            //If first subtask, add only next button, 
+            if (i == 0) {
                 htmlStr += "<input class=\"next_btn\" name=\"next\" type=\"button\" value=\"Next\">";
             }
-            else if (i == subtaskArr.length -1)
-            {
+            //If last subtask, add prev and sub btn
+            else if (i == subtaskArr.length - 1) {
                 htmlStr += "<input class=\"pre_btn\" name=\"previous\" type=\"button\" value=\"Previous\">";
                 htmlStr += "<input class=\"submit_btn\" type=\"submit\" value=\"Submit\">";
             }
-            else
-            {
+            //Otherwise add prev and next btn
+            else {
                 htmlStr += "<input class=\"pre_btn\" name=\"previous\" type=\"button\" value=\"Previous\">";
                 htmlStr += "<input class=\"next_btn\" name=\"next\" type=\"button\" value=\"Next\">";
             }
-            
-            
+
+            //close subtask
             htmlStr += "</fieldset>";
         }
-
+        //set content of fieldsets to htmlstr
         $("#fieldsets").html(htmlStr);
-
-        return arr;
     }
 
+    //get nth index of substring in string
     function nthIndexOf(string, substring, n)
     {
         var i = 0;
@@ -395,22 +453,37 @@
     }
 
     function setProgtrackr(tasks) {
+        //String to hold tracker bars
         var str = "";
         for (i = 0; i < tasks.length; i++)
         {
-            str += "<li class=\"progtrckr-todo\">" + tasks[i] + "</li>";
+            if (i == 0)
+            {
+                //If first tracker, make it in progress
+                str += "<li class=\"progtrckr-todo\">" + tasks[i] + "</li>";
+            }
+            ///Otherwise todo
+            else str += "<li class=\"progtrckr-todo\">" + tasks[i] + "</li>";
         }
-        
+        //Set progtrckr content to str
         $(".progtrckr").html(str);
+        //Set steps attribute to # of tasks
         var tracker = document.getElementById("progtracker");
         tracker.setAttribute("data-progtrckr-steps", tasks.length);
+        //set first task to blue
+        $(".progtrckr-todo").eq(taskNo).css("color", "black");
+        $(".progtrckr-todo").eq(taskNo).css("border-bottom", "4px solid blue");
     }
 
-    //Builds content area given main data array, tasks array, and task num
-    function populateSubtask(arr, tasks, num)
+    //Builds subtask tabs given main data arr, and task number
+    function populateSubtask(arr, num)
     {
         var htmlStr = ""
+
+        //get list of all tasks
+        tasks = getTasksList(arr);
          
+        //get subtasks under tasks[num] (under current task)
         var subtasks = []
         for (i = 0; i < arr.length; i++)
         {
@@ -434,6 +507,35 @@
         }
 
         $("#progressbar").html(htmlStr);
+    }
+
+    function getTasksList(arr)
+    {
+        var taskArr = [];        
+        for (i = 0; i < arr.length; i++)
+        {
+            if (taskArr.indexOf(arr[i][0]) == -1)
+            {
+                taskArr.push(arr[i][0]);
+            }
+        }
+
+        return taskArr;
+    }
+
+    //Given master array and task no, return array of all subtasks belonging to that task
+    function getSubtaskList(arr, num)
+    {
+        var subtasks = []
+        for (i = 0; i < arr.length; i++)
+        {
+            if (arr[i][0] == tasks[num] && subtasks.indexOf(arr[i][1]) == -1)
+            {
+                subtasks.push(arr[i][1]);
+            }
+        }
+
+        return subtasks;
     }
 
     function getAttribute(name)
