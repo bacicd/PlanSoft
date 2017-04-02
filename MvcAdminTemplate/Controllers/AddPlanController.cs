@@ -20,7 +20,7 @@ namespace MvcAdminTemplate.Controllers
 
         public JsonResult getLayoutStr()
         {
-            string str = "  TASK: TASK1\n SUBTASK: SUBTASK1\n ATTRIBUTE: Payment Occurrence\n ATTRIBUTE: Payment Amount\n SUBTASK: SUBTASK2\n ATTRIBUTE: Bonus Amount\n ATTRIBUTE: Bonus Metric\n ATTRIBUTE: Bonuses\n TASK: TASK2\n SUBTASK: SUBATSK3\n ATTRIBUTE: Compensation Benefits\n ATTRIBUTE: Commercial\n TASK: TASK3\n SUBTASK: SUBATSK3\n ATTRIBUTE: Compensation Benefits\n ATTRIBUTE: Commercial\n ";
+            string str = "  TASK: TASK1\n SUBTASK: SUBTASK1\n ATTRIBUTE: Payment Occurrence\n ATTRIBUTE: Payment Amount\n SUBTASK: SUBTASK2\n ATTRIBUTE: Bonus Amount\n ATTRIBUTE: Bonus Metric\n ATTRIBUTE: Bonuses\n TASK: TASK2\n SUBTASK: SUBATSK3\n ATTRIBUTE: Compensation Benefits\n ATTRIBUTE: Commercial\n TASK: TASK3\n SUBTASK: SUBATSK4\n ATTRIBUTE: ATTRIBNAME\n ATTRIBUTE: ALSO AN ATTRIB NAME\n ";
 
             //var attributeContext = new DBModelEntities();
             //IList<Models.Attribute> attributelist = attributeContext.Attributes.ToList();
