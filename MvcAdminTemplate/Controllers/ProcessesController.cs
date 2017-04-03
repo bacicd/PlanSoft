@@ -23,25 +23,46 @@ namespace MvcAdminTemplate.Controllers
         {
             string processesData = data;
             DataTable processTable = new DataTable("Processes");
+
+
+            string[] subtasks = data.Split(new string[] { "SUBTASK:" }, StringSplitOptions.None);
+            for (int i = 0; i < subtasks.Length; i++)
+            {
+                //get list of stubtasks to check against later
+                //First value is not used                
+                subtasks[i] = Extension.Slice(subtasks[i], 0, subtasks[i].IndexOf("\n"));
+                string temp = subtasks[i];
+            }
+
+            //get list of attributes
+            var attributeContext = new DBModelEntities();
+            IList<Models.Attribute> attributelist = attributeContext.Attributes.ToList();
+            
             
 
             //Set columns of datatable
             processTable.Columns.Add("OrgID", typeof(string));
-            processTable.Columns.Add("Tasks", typeof(string));
-            processTable.Columns.Add("Subtasks", typeof(string));
+            processTable.Columns.Add("TaskID", typeof(string));
+            processTable.Columns.Add("TabName", typeof(string));
+            processTable.Columns.Add("STID", typeof(string));
+            processTable.Columns.Add("STName", typeof(string));
             processTable.Columns.Add("Attribute", typeof(string));
             processTable.Columns.Add("ACode", typeof(string));
 
+            /*
             //Add ID column (PK)
             DataColumn column = new DataColumn("ID", typeof(string));
             column.AutoIncrement = true;
             column.AutoIncrementSeed = 1;
             column.AutoIncrementStep = 1;
             processTable.Columns.Add(column);
+            */
 
             //Set primary key of datatable
-            DataColumn[] columns = new DataColumn[1];
-            columns[0] = processTable.Columns["ID"];
+            DataColumn[] columns = new DataColumn[3];
+            columns[0] = processTable.Columns["TaskID"];
+            columns[1] = processTable.Columns["STID"];
+            columns[2] = processTable.Columns["ACode"];
             processTable.PrimaryKey = columns;
 
            
@@ -61,8 +82,11 @@ namespace MvcAdminTemplate.Controllers
                     attrib = Extension.Slice(dataArr[i], attribIndex+10, dataArr[i].IndexOf("\n", Extension.NthIndexOf(dataArr[i], "ATTRIBUTE", j)));
                     subtask = Extension.Slice(dataArr[i], dataArr[i].LastIndexOf("SUBTASK:", dataArr[i].IndexOf(attrib))+8, dataArr[i].IndexOf("\n", dataArr[i].LastIndexOf("SUBTASK:", dataArr[i].IndexOf(attrib))));
                     task = Extension.Slice(dataArr[i],0, dataArr[i].IndexOf("\n"));
-                    //ORGID, TASK, SUBTASK, ATTRIB, ATTRIB CODE
-                    processTable.Rows.Add("1", task , subtask, attrib, "Herp");
+                    int subtaskID = Array.IndexOf(subtasks, subtask);
+                    int attribCode = attributelist[j].Code;
+
+                    //OrgID, taskID, taskName, STID, STname, Attribute, Acode
+                    processTable.Rows.Add("1", i,  task , subtaskID, subtask, attrib, attribCode);
                 }
             }
 
