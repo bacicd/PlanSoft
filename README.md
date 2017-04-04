@@ -5,7 +5,7 @@ Details:
 
 * USI senior project building an HR solution software regarding incentive plans.  
 
-## Demo
+## Website
 
 http://www.hresonance.com
 
