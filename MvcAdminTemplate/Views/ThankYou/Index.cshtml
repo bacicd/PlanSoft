@@ -2,6 +2,8 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Landing.cshtml";
 }
+
+
 <a href="/">Go Back</a>
 <!DOCTYPE html>
 <html>
@@ -38,18 +40,6 @@
             font-family: 'Roboto', sans-serif;
         }
     </style>
-    <style>
-        input.styling {
-            background-color: rgba(245, 245, 245, 0.498039);
-            border: none;
-            border-bottom: solid 2px #c9c9c9;
-        }
-        textarea.styling{
-            background-color: rgba(245, 245, 245, 0.498039);
-            border: none;
-            border-bottom: solid 2px #c9c9c9;
-        }
-    </style>
 
 </head>
 <body class="bootstrap-admin-with-small-navbar">
@@ -72,27 +62,12 @@
             </div>
         </div>
     </nav>
-    <h2 style="text-align:center; font-size:200%; margin-bottom:2%;">Do you have an Issue? Tell us About It!</h2>
-    <p style="float:left; margin-top:0%; margin-left:20%;">Tell us a little about yourself:</p>
-    <p style="float:left; margin-top:22%; margin-left:-15%;">What seems to be the issue?:</p>
-    <div style="width:24%; margin-left:42%;">
-        <form>
-            <input class="styling" placeholder="First Name" type="text" id="fname">
-            <input class="styling" placeholder="Last Name" type="text" id="lname">
-            <input class="styling" placeholder="Title" type="text" id="title">
-            <input class="styling" placeholder="Company Name" type="text" id="companyname">
-            <input class="styling" placeholder="E-mail" type="text" id="email">
-            <input class="styling" placeholder="Phone" type="text" id="phone">
-            <input class="styling" placeholder="Street Address" type="text" id="address">
-            <input class="styling" placeholder="City" type="text" id="city">
-            <input class="styling" placeholder="ST" type="text" id="state">
-            <input class="styling" placeholder="ZIP" type="text" id="zip"><br /><br />
+
+    <h1 style="text-align:center;">Thank You for your Submission!</h1>
+    <p style="text-align:center;">Thank you for taking the interest in our project, and you will be contacted shortly by a representative.</p>
 
 
-            <textarea class="styling" placeholder="What is your Issue?" form="usrform" rows="4" cols="50"></textarea><br /><br />
-
-            <button class="btn btn-info" id="save" type="submit">Send</button>
-        </form>
-    </div>
 </body>
 </html>
+
+
