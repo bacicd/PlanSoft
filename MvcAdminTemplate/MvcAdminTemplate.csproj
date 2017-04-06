@@ -157,19 +157,24 @@
     <Compile Include="Controllers\ElementsController.cs" />
     <Compile Include="Controllers\ElementsVariablesController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\FeaturesController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstanceController.cs" />
     <Compile Include="Controllers\InterfaceController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\LandingController.cs" />
+    <Compile Include="Controllers\OpenTicketController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\PlanReportController.cs" />
     <Compile Include="Controllers\ProcessesController.cs" />
     <Compile Include="Controllers\ResetPasswordController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\RulesController.cs" />
+    <Compile Include="Controllers\SignUpController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\SurveyController.cs" />
     <Compile Include="Controllers\TablesController.cs" />
     <Compile Include="Controllers\TestElementController.cs" />
     <Compile Include="Controllers\TestOrganizationController.cs" />
@@ -218,6 +223,9 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlansViewModel.cs" />
+    <Compile Include="Models\Process.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Rules.cs" />
     <Compile Include="Models\UserRole.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
@@ -1796,6 +1804,14 @@
     <Content Include="Views\Title\Index.cshtml" />
     <Content Include="Views\ViewEditPlan\Index.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Features\Index.cshtml" />
+    <Content Include="Views\Landing\Index.cshtml" />
+    <Content Include="Views\OpenTicket\Index.cshtml" />
+    <Content Include="Views\SignUp\Index.cshtml" />
+    <Content Include="Views\Survey\Index.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Account\Role.cshtml" />
+    <Content Include="Views\Account\Reset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

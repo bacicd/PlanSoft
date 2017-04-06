@@ -18,6 +18,9 @@
         <AssociationConnector Association="hresonanceModel.fk_elementattr" ManuallyRouted="false" />
         <AssociationConnector Association="hresonanceModel.fk_element" ManuallyRouted="false" />
         <AssociationConnector Association="hresonanceModel.fk_elementorg" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="hresonanceModel.Process" Width="1.5" PointX="7.5" PointY="3.125" />
+        <AssociationConnector Association="hresonanceModel.fk_attribute_process" />
+        <AssociationConnector Association="hresonanceModel.fk_organization_process" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

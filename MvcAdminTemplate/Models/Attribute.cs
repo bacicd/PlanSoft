@@ -18,6 +18,7 @@ namespace MvcAdminTemplate.Models
         public Attribute()
         {
             this.AttributeVariables = new HashSet<AttributeVariable>();
+            this.Processes = new HashSet<Process>();
         }
     
         public int Code { get; set; }
@@ -33,5 +34,7 @@ namespace MvcAdminTemplate.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttributeVariable> AttributeVariables { get; set; }
         public virtual Element Element { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Process> Processes { get; set; }
     }
 }

@@ -74,6 +74,16 @@
           <Property Name="City" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="State" Type="varchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Process">
+          <Key>
+            <PropertyRef Name="SelectedID" />
+          </Key>
+          <Property Name="TabName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SubName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OrgID" Type="int" Nullable="false" />
+          <Property Name="SelectedID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ACode" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserRole">
           <Key>
             <PropertyRef Name="Name" />
@@ -91,6 +101,18 @@
               <PropertyRef Name="Code" />
             </Principal>
             <Dependent Role="AttributeVariable">
+              <PropertyRef Name="ACode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_attribute_process">
+          <End Role="Attribute" Type="Self.Attribute" Multiplicity="1" />
+          <End Role="Process" Type="Self.Process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Process">
               <PropertyRef Name="ACode" />
             </Dependent>
           </ReferentialConstraint>
@@ -151,6 +173,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_organization_process">
+          <End Role="Organization" Type="Self.Organization" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Process" Type="Self.Process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Process">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_role">
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
           <End Role="Account" Type="Self.Account" Multiplicity="*" />
@@ -170,10 +206,15 @@
           <EntitySet Name="Element" EntityType="Self.Element" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ElementVariable" EntityType="Self.ElementVariable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Process" EntityType="Self.Process" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="fk_attribute" Association="Self.fk_attribute">
             <End Role="Attribute" EntitySet="Attribute" />
             <End Role="AttributeVariable" EntitySet="AttributeVariable" />
+          </AssociationSet>
+          <AssociationSet Name="fk_attribute_process" Association="Self.fk_attribute_process">
+            <End Role="Attribute" EntitySet="Attribute" />
+            <End Role="Process" EntitySet="Process" />
           </AssociationSet>
           <AssociationSet Name="fk_element" Association="Self.fk_element">
             <End Role="Element" EntitySet="Element" />
@@ -190,6 +231,10 @@
           <AssociationSet Name="fk_organization" Association="Self.fk_organization">
             <End Role="Organization" EntitySet="Organization" />
             <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+          <AssociationSet Name="fk_organization_process" Association="Self.fk_organization_process">
+            <End Role="Organization" EntitySet="Organization" />
+            <End Role="Process" EntitySet="Process" />
           </AssociationSet>
           <AssociationSet Name="fk_role" Association="Self.fk_role">
             <End Role="UserRole" EntitySet="UserRole" />
@@ -230,6 +275,7 @@
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="AttributeVariables" Relationship="Self.fk_attribute" FromRole="Attribute" ToRole="AttributeVariable" />
           <NavigationProperty Name="Element" Relationship="Self.fk_elementattr" FromRole="Attribute" ToRole="Element" />
+          <NavigationProperty Name="Processes" Relationship="hresonanceModel.fk_attribute_process" FromRole="Attribute" ToRole="Process" />
         </EntityType>
         <EntityType Name="AttributeVariable">
           <Key>
@@ -279,6 +325,7 @@
           <Property Name="State" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Accounts" Relationship="Self.fk_organization" FromRole="Organization" ToRole="Account" />
           <NavigationProperty Name="Elements" Relationship="Self.fk_elementorg" FromRole="Organization" ToRole="Element" />
+          <NavigationProperty Name="Processes" Relationship="hresonanceModel.fk_organization_process" FromRole="Organization" ToRole="Process" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -402,7 +449,54 @@
             <End Role="Organization" EntitySet="Organizations" />
             <End Role="Element" EntitySet="Elements" />
           </AssociationSet>
+          <EntitySet Name="Processes" EntityType="hresonanceModel.Process" />
+          <AssociationSet Name="fk_attribute_process" Association="hresonanceModel.fk_attribute_process">
+            <End Role="Attribute" EntitySet="Attributes" />
+            <End Role="Process" EntitySet="Processes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_organization_process" Association="hresonanceModel.fk_organization_process">
+            <End Role="Organization" EntitySet="Organizations" />
+            <End Role="Process" EntitySet="Processes" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Process">
+          <Key>
+            <PropertyRef Name="SelectedID" />
+          </Key>
+          <Property Name="TabName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrgID" Type="Int32" Nullable="false" />
+          <Property Name="SelectedID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ACode" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Attribute" Relationship="hresonanceModel.fk_attribute_process" FromRole="Process" ToRole="Attribute" />
+          <NavigationProperty Name="Organization" Relationship="hresonanceModel.fk_organization_process" FromRole="Process" ToRole="Organization" />
+        </EntityType>
+        <Association Name="fk_attribute_process">
+          <End Type="hresonanceModel.Attribute" Role="Attribute" Multiplicity="1" />
+          <End Type="hresonanceModel.Process" Role="Process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Process">
+              <PropertyRef Name="ACode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_organization_process">
+          <End Type="hresonanceModel.Organization" Role="Organization" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="hresonanceModel.Process" Role="Process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Process">
+              <PropertyRef Name="OrgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -489,6 +583,17 @@
               <MappingFragment StoreEntitySet="UserRole">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Processes">
+            <EntityTypeMapping TypeName="hresonanceModel.Process">
+              <MappingFragment StoreEntitySet="Process">
+                <ScalarProperty Name="ACode" ColumnName="ACode" />
+                <ScalarProperty Name="SelectedID" ColumnName="SelectedID" />
+                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+                <ScalarProperty Name="SubName" ColumnName="SubName" />
+                <ScalarProperty Name="TabName" ColumnName="TabName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

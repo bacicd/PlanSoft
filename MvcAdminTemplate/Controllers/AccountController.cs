@@ -53,6 +53,9 @@ namespace MvcAdminTemplate.Controllers
             return View();
         }
 
+
+        // ADD CHECK FOR IF USERNAME IS TAKEN
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -109,6 +112,69 @@ namespace MvcAdminTemplate.Controllers
             return View();
         }
 
+        //
+        // GET: /Account/Rest
+        [AllowAnonymous]
+        public ActionResult Reset()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Reset
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Reset(string username, string password)
+        {
+            DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities();
+            var user = db.Accounts.FirstOrDefault(u => u.Username == username);
+            if (user != null)
+            {
+                var crypto = new SimpleCrypto.PBKDF2();
+                var hashedPass = crypto.Compute(user.Password); // Hashes user password
+                user.Password = hashedPass;
+                user.PasswordSalt = crypto.Salt;
+                db.SaveChanges();
+                return RedirectToAction("Reset", "Account");
+            }
+
+            else
+            {
+                ModelState.AddModelError("", "Data is incorrect");
+                return View();
+            }
+        }
+
+        //
+        // GET: /Account/Delete
+        [AllowAnonymous]
+        public ActionResult Delete()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Delete(string username)
+        {
+            DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities();
+            var user = db.Accounts.FirstOrDefault(u => u.Username == username);
+            if (user != null)
+            {
+                db.Accounts.Remove(user);
+                db.SaveChanges();
+                return RedirectToAction("Delete", "Account");
+            }
+
+            else
+            {
+                ModelState.AddModelError("", "User does not exist");
+                return View();
+            }
+        }
+
         // Logs out and redirects to Home Page
         public ActionResult Logout()
         {
@@ -145,7 +211,6 @@ namespace MvcAdminTemplate.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-        }
-      
+        }   
       }
 }

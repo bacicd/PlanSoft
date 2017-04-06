@@ -1,0 +1,22 @@
+﻿@model MvcAdminTemplate.Models.Account
+
+@{
+    ViewBag.Title = "Delete";
+}
+@Html.Partial("_LeftMenu")
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Deletion Failed");
+    <div>
+        <fieldset>
+            <legend>Delete User</legend>
+            <div class="editor-label">@Html.LabelFor(u => u.Username)</div>
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Username)
+                @Html.ValidationMessageFor(u => u.Username)
+            </div>
+            <input type="submit" value="Delete" />
+        </fieldset>
+    </div>
+}
