@@ -124,14 +124,14 @@ namespace MvcAdminTemplate.Controllers
         // POST: /Account/Reset
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Reset(string username, string password)
+        public ActionResult Reset(string username, string password1, string password2)
         {
             DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities();
             var user = db.Accounts.FirstOrDefault(u => u.Username == username);
-            if (user != null)
+            if (user != null && password1 == password2)
             {
                 var crypto = new SimpleCrypto.PBKDF2();
-                var hashedPass = crypto.Compute(password); // Hashes user password
+                var hashedPass = crypto.Compute(password1); // Hashes user password
                 user.Password = hashedPass;
                 user.PasswordSalt = crypto.Salt;
                 db.SaveChanges();
