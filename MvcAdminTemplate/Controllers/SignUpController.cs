@@ -23,7 +23,7 @@ namespace MvcAdminTemplate.Controllers
         {
             MailMessage mail = new MailMessage();
 
-            mail.To.Add("dbacic@usi.edu");
+            mail.To.Add("dehassman@eagles.usi.edu");
 
             mail.IsBodyHtml = true;
 
