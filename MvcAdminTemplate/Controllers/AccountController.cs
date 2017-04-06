@@ -113,7 +113,7 @@ namespace MvcAdminTemplate.Controllers
         }
 
         //
-        // GET: /Account/Rest
+        // GET: /Account/Reset
         [AllowAnonymous]
         public ActionResult Reset()
         {
@@ -131,11 +131,42 @@ namespace MvcAdminTemplate.Controllers
             if (user != null)
             {
                 var crypto = new SimpleCrypto.PBKDF2();
-                var hashedPass = crypto.Compute(user.Password); // Hashes user password
+                var hashedPass = crypto.Compute(password); // Hashes user password
                 user.Password = hashedPass;
                 user.PasswordSalt = crypto.Salt;
                 db.SaveChanges();
                 return RedirectToAction("Reset", "Account");
+            }
+
+            else
+            {
+                ModelState.AddModelError("", "Data is incorrect");
+                return View();
+            }
+        }
+
+        //
+        // GET: /Account/Role
+        [AllowAnonymous]
+        public ActionResult Role()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Role
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Role(string username, string role)
+        {
+            DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities();
+            var user = db.Accounts.FirstOrDefault(u => u.Username == username);
+            if (user != null)
+            {
+
+                user.Role = role;
+                db.SaveChanges();
+                return RedirectToAction("Role", "Account");
             }
 
             else

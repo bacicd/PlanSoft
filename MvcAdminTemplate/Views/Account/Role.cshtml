@@ -16,7 +16,22 @@
                 @Html.TextBoxFor(u => u.Username)
                 @Html.ValidationMessageFor(u => u.Username)
             </div>
-            <input type="submit" value="Delete" />
+            @{
+                List<SelectListItem> listItems = new List<SelectListItem>();
+                listItems.Add(new SelectListItem
+                {
+                    Text = "User",
+                    Value = "User"
+                });
+                listItems.Add(new SelectListItem
+                {
+                    Text = "Admin",
+                    Value = "Admin"
+                });
+            }
+
+            @Html.DropDownListFor(u => u.Role, listItems, "-- Select Role --")
+            <input type="submit" value="Update Role" />
         </fieldset>
     </div>
 }
