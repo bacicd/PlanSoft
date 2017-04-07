@@ -1,4 +1,4 @@
-Codename Plansoft project
+Codename Plansoft
 ==============================
 
 Details:
