@@ -13,6 +13,11 @@ namespace MvcAdminTemplate.Controllers
 
         public ActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                //send them to the AuthenticatedIndex page instead of the index page
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
