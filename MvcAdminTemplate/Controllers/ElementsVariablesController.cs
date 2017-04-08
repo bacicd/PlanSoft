@@ -93,21 +93,33 @@ namespace MvcAdminTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(string EleCode, string EleName, string varCode, string varName, string varCID, string Creator)
+        public ActionResult Add(/*string EleCode, */string EleName, string varCode, string varName, string varCID, string Creator)
         {
             var elementvarContext = new DBModelEntities();
             IList<ElementVariable> elementvars = elementvarContext.ElementVariables.ToList();
+            IList<Element> elementList = elementvarContext.Elements.ToList();
             //ElementsVariablesViewModel.ElementsVariablesList.Add(new ElementsVariablesViewModel { ElementCode = EleCode, ElementName = EleName, VariableCID = varCID, VariableCode = varCode, VariableName = varName, DateSet = DateTime.Today, CreatedBy = Creator });
-            elementvars.Add(new ElementVariable { ECode = Convert.ToInt32(EleCode), CID = Convert.ToDecimal(varCID), Name = varName, CreatedOn = DateTime.Today, CreatedBy = Creator });
+            //elementvars.Add(new ElementVariable { ECode = Convert.ToInt32(EleCode), CID = Convert.ToDecimal(varCID), Name = varName, CreatedOn = DateTime.Today, CreatedBy = Creator });
 
-            ElementVariable addElementVar = new ElementVariable();
-            addElementVar.ECode = Convert.ToInt32(EleCode);
-            addElementVar.CID = Convert.ToDecimal(varCID);
-            addElementVar.Name = varName;
-            addElementVar.CreatedOn = DateTime.Today;
-            addElementVar.CreatedBy = Creator;
-            db.ElementVariables.Add(addElementVar);
-            db.SaveChanges();
+            foreach (var element in elementList)
+            {
+                if (element.Name == EleName)
+                {
+                    string EleCode = element.Code.ToString();
+                    ElementVariable addElementVar = new ElementVariable();
+                    addElementVar.ECode = Convert.ToInt32(EleCode);
+                    addElementVar.CID = Convert.ToDecimal(varCID);
+                    addElementVar.Name = varName;
+                    addElementVar.CreatedOn = DateTime.Today;
+                    addElementVar.CreatedBy = Creator;
+                    db.ElementVariables.Add(addElementVar);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    continue;
+                }
+            }
 
             return Json(new
             {

@@ -100,27 +100,39 @@ namespace MvcAdminTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(string EleCode, string EleName, string AttribCode, string AttribName, string Creator)
+        public ActionResult Add(/*string EleCode,*/ string EleName, string AttribCode, string AttribName, string Creator)
         {
             var attributeContext = new DBModelEntities();
             IList<Models.Attribute> attributes = attributeContext.Attributes.ToList();
+            IList<Element> elementList = attributeContext.Elements.ToList();
             //AttributesViewModel.AttributesList.Add(new AttributesViewModel { ElementCode = EleCode, ElementName = EleName, AttributeCode = AttribCode, AttributeName = AttribName, DateSet = DateTime.Today, CreatedBy = Creator });
 
             //Models.Attribute.AttributesList.Add(new Models.Attribute { ECode = Convert.ToInt32(EleCode), Code = Convert.ToInt32(AttribCode), Name = AttribName, CreatedOn = DateTime.Today, CreatedBy = Creator });
 
-            Models.Attribute addAttribute = new Models.Attribute();
-            addAttribute.Code = Convert.ToInt32(AttribCode);
-            addAttribute.Name = AttribName;
-            addAttribute.ECode = Convert.ToInt32(EleCode);
-            //addAttribute.Element.Name = EleName;
-            addAttribute.CreatedOn = DateTime.Today;
-            addAttribute.CreatedBy = Creator;
-            addAttribute.Field = "test";
-            addAttribute.Flag = "test";
-            addAttribute.Input = "test";
-            addAttribute.Format = "test";
-            db.Attributes.Add(addAttribute);
-            db.SaveChanges();
+            foreach (var element in elementList)
+            {
+                if (element.Name == EleName)
+                {
+                    string EleCode = element.Code.ToString();
+                    Models.Attribute addAttribute = new Models.Attribute();
+                    addAttribute.Code = Convert.ToInt32(AttribCode);
+                    addAttribute.Name = AttribName;
+                    addAttribute.ECode = Convert.ToInt32(EleCode);
+                    //addAttribute.Element.Name = EleName;
+                    addAttribute.CreatedOn = DateTime.Today;
+                    addAttribute.CreatedBy = Creator;
+                    addAttribute.Field = "test";
+                    addAttribute.Flag = "test";
+                    addAttribute.Input = "test";
+                    addAttribute.Format = "test";
+                    db.Attributes.Add(addAttribute);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    continue;
+                }
+            }
 
             return Json(new
             {

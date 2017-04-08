@@ -97,20 +97,32 @@ namespace MvcAdminTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(string AttribCode, string AttribName, string varCode, string varName, string Creator)
+        public ActionResult Add(/*string AttribCode,*/ string AttribName, string varCode, string varName, string Creator)
         {
             var attributeContext = new DBModelEntities();
             IList<AttributeVariable> attributeVars = attributeContext.AttributeVariables.ToList();
+            IList<Models.Attribute> attributeList = attributeContext.Attributes.ToList();
             //AttributesVariablesViewModel.AttributesVariablesList.Add(new AttributesVariablesViewModel { AttributeCode = AttribCode, AttributeName = AttribName, VariableCode = varCode, VariableName = varName, DateSet = DateTime.Today, CreatedBy = Creator });
             //AttributeVariable.AttributesVariablesList.Add(new AttributeVariable { ACode = Convert.ToInt32(AttribCode), Name = varName, CreatedOn = DateTime.Today, CreatedBy = Creator });
 
-            AttributeVariable addAttributeVar = new AttributeVariable();
-            addAttributeVar.ACode = Convert.ToInt32(AttribCode);
-            addAttributeVar.Name = varName;
-            addAttributeVar.CreatedOn = DateTime.Today;
-            addAttributeVar.CreatedBy = Creator;
-            db.AttributeVariables.Add(addAttributeVar);
-            db.SaveChanges();
+            foreach (var attribute in attributeList)
+            {
+                if (attribute.Name == AttribName)
+                {
+                    string AttribCode = attribute.Code.ToString();
+                    AttributeVariable addAttributeVar = new AttributeVariable();
+                    addAttributeVar.ACode = Convert.ToInt32(AttribCode);
+                    addAttributeVar.Name = varName;
+                    addAttributeVar.CreatedOn = DateTime.Today;
+                    addAttributeVar.CreatedBy = Creator;
+                    db.AttributeVariables.Add(addAttributeVar);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    continue;
+                }
+            }
 
             return Json(new
             {
