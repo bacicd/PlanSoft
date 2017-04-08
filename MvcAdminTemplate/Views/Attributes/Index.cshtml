@@ -16,6 +16,7 @@
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
+    
     <style>
         .tooLong {
             width: 100%;
@@ -31,6 +32,22 @@
 
         input:focus {
             border-color: lightblue;
+        }
+
+        #example tbody tr:hover{
+            background-color: #f1f1f1;
+        }
+
+        #example tbody tr{
+            background-color:#fafafa
+        }
+
+        #example tbody tr.odd > .sorting_1 {
+            background-color: #fafafa;
+        }
+
+        #example tbody tr.odd:hover > .sorting_1 {
+            background-color: #f1f1f1;
         }
 
     </style>
@@ -105,7 +122,10 @@
             $.ajax({
                 url: "/Attributes/Add",
                 datatype: "text",
-                data: { /*'EleCode': $('#ruleCode').val(), */'EleName': $('#ruleName').val(), 'AttribCode': $('#attribCode').val(), 'AttribName': $('#attribName').val(), 'Creator': $('#ruleCreator').val() },
+                data: { /*'EleCode': $('#ruleCode').val(), */'EleName': $('#ruleName').val(), 'AttribCode': $('#attribCode').val(),
+                    'AttribName': $('#attribName').val(), 'Creator': $('#ruleCreator').val(), 'fieldFlag': $('#fieldFlag').val(),
+                    'fieldFormat': $('#fieldFormat').val(), 'fieldType': $('#fieldType').val(), 'inputType':$('#inputType').val()
+                },
                 type: "POST",
                 success: function (data) {
                     drawTable();
@@ -296,6 +316,54 @@
                 @*Attribute Code: <input id="attribCode" />
                 <br />*@
                 Attribute Name: <input id="attribName" style="display:inline-block; margin-left:2%;" />
+                <br /><br />
+                Field Type: <select id="fieldType" style="margin-left:7.5%;">
+                                <option>Currency</option>
+                                <option>Number</option>
+                                <option>Text</option>
+                                <option>Date Time</option>
+                                <option>Email</option>
+                                <option>Signature</option>
+                                <option>Image</option>
+                                <option>Attachment</option>
+                                <option>Icon</option>
+                                <option>Phone Number</option>
+                                <option>Address</option>
+                                <option>ZIP Code/Postal Code</option>
+                                <option>State/Province</option>
+                                <option>Country/Region</option>
+                            </select>
+                <br/><br/>
+                Field Format: <select id="fieldFormat" style="margin-left:4.5%;">
+                                  <option>N/A</option>
+                                  <option>Currency(decimal)</option>
+                                  <option>Currency(integer)</option>
+                                  <option>Number(decimal)</option>
+                                  <option>Number(integer)</option>
+                                  <option>Text(short)</option>
+                                  <option>Text(long)</option>
+                                  <option>Date Time(MM/DD/YYYY)</option>
+                                  <option>Date Time(MM/DD/YY)</option>
+                                  <option>Date Time(DD/MM/YY)</option>
+                                  <option>Email(XXX@XXX.XXX)</option>
+                                  <option>Image(.jpg)</option>
+                                  <option>Image(.png)</option>
+                                  <option>Image(.tif)</option>
+                                  <option>Phone(+X (XXX)-XXX-XXXX)</option>
+                                  <option>ZIP Code(XXXXX)</option>
+                                  <option>ZIP Code(XXXXX-XXXX)</option>
+                            </select>
+                <br /><br />
+                Field Flag: <select id="fieldFlag" style="margin-left:8%;">
+                                <option>Calculated</option>
+                                <option>Inputed</option>
+                                <option>Calculated with option to input</option>
+                            </select>
+                <br /><br />
+                Input Type: <select id="inputType" style="margin-left:7%;">
+                                <option>Dropdown</option>
+                                <option>Text Field</option>
+                            </select>
                 <br /><br />
                 Created By: <input id="ruleCreator" style="display:inline-block; margin-left:7%;" />
 

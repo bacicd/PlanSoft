@@ -31,7 +31,8 @@ namespace MvcAdminTemplate.Models
         public virtual DbSet<Element> Elements { get; set; }
         public virtual DbSet<ElementVariable> ElementVariables { get; set; }
         public virtual DbSet<Organization> Organizations { get; set; }
-        public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<Plan> Plans { get; set; }
         public virtual DbSet<Process> Processes { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
     }
 }

@@ -100,7 +100,8 @@ namespace MvcAdminTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(/*string EleCode,*/ string EleName, string AttribCode, string AttribName, string Creator)
+        public ActionResult Add(/*string EleCode,*/ string EleName, string AttribCode, string AttribName, string Creator,
+                                string fieldFlag, string fieldFormat, string fieldType, string inputType)
         {
             var attributeContext = new DBModelEntities();
             IList<Models.Attribute> attributes = attributeContext.Attributes.ToList();
@@ -121,10 +122,10 @@ namespace MvcAdminTemplate.Controllers
                     //addAttribute.Element.Name = EleName;
                     addAttribute.CreatedOn = DateTime.Today;
                     addAttribute.CreatedBy = Creator;
-                    addAttribute.Field = "test";
-                    addAttribute.Flag = "test";
-                    addAttribute.Input = "test";
-                    addAttribute.Format = "test";
+                    addAttribute.Field = fieldType;
+                    addAttribute.Flag = fieldFlag;
+                    addAttribute.Input = inputType;
+                    addAttribute.Format = fieldFormat;
                     db.Attributes.Add(addAttribute);
                     db.SaveChanges();
                 }

@@ -74,14 +74,24 @@
           <Property Name="City" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="State" Type="varchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Plan">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProcessID" Type="int" Nullable="false" />
+          <Property Name="PlanName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Selected" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Process">
           <Key>
-            <PropertyRef Name="SelectedID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="TabID" Type="int" Nullable="false" />
           <Property Name="TabName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SubID" Type="int" Nullable="false" />
           <Property Name="SubName" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="OrgID" Type="int" Nullable="false" />
-          <Property Name="SelectedID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ACode" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserRole">
@@ -106,7 +116,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_attribute_process">
-          <End Role="Attribute" Type="Self.Attribute" Multiplicity="1" />
+          <End Role="Attribute" Type="Self.Attribute" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Process" Type="Self.Process" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Attribute">
@@ -173,17 +185,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_organization_process">
-          <End Role="Organization" Type="Self.Organization" Multiplicity="1">
+        <Association Name="fk_process_plan">
+          <End Role="Process" Type="Self.Process" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Process" Type="Self.Process" Multiplicity="*" />
+          <End Role="Plan" Type="Self.Plan" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Organization">
+            <Principal Role="Process">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Process">
-              <PropertyRef Name="OrgID" />
+            <Dependent Role="Plan">
+              <PropertyRef Name="ProcessID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -206,6 +218,7 @@
           <EntitySet Name="Element" EntityType="Self.Element" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ElementVariable" EntityType="Self.ElementVariable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plan" EntityType="Self.Plan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Process" EntityType="Self.Process" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="fk_attribute" Association="Self.fk_attribute">
@@ -232,9 +245,9 @@
             <End Role="Organization" EntitySet="Organization" />
             <End Role="Account" EntitySet="Account" />
           </AssociationSet>
-          <AssociationSet Name="fk_organization_process" Association="Self.fk_organization_process">
-            <End Role="Organization" EntitySet="Organization" />
+          <AssociationSet Name="fk_process_plan" Association="Self.fk_process_plan">
             <End Role="Process" EntitySet="Process" />
+            <End Role="Plan" EntitySet="Plan" />
           </AssociationSet>
           <AssociationSet Name="fk_role" Association="Self.fk_role">
             <End Role="UserRole" EntitySet="UserRole" />
@@ -245,20 +258,63 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="hresonanceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DBModelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="hresonanceModel.Account" />
+          <EntitySet Name="Attributes" EntityType="hresonanceModel.Attribute" />
+          <EntitySet Name="AttributeVariables" EntityType="hresonanceModel.AttributeVariable" />
+          <EntitySet Name="Elements" EntityType="hresonanceModel.Element" />
+          <EntitySet Name="ElementVariables" EntityType="hresonanceModel.ElementVariable" />
+          <EntitySet Name="Organizations" EntityType="hresonanceModel.Organization" />
+          <EntitySet Name="Plans" EntityType="hresonanceModel.Plan" />
+          <EntitySet Name="Processes" EntityType="hresonanceModel.Process" />
+          <EntitySet Name="UserRoles" EntityType="hresonanceModel.UserRole" />
+          <AssociationSet Name="fk_organization" Association="hresonanceModel.fk_organization">
+            <End Role="Organization" EntitySet="Organizations" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_role" Association="hresonanceModel.fk_role">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_attribute" Association="hresonanceModel.fk_attribute">
+            <End Role="Attribute" EntitySet="Attributes" />
+            <End Role="AttributeVariable" EntitySet="AttributeVariables" />
+          </AssociationSet>
+          <AssociationSet Name="fk_attribute_process" Association="hresonanceModel.fk_attribute_process">
+            <End Role="Attribute" EntitySet="Attributes" />
+            <End Role="Process" EntitySet="Processes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_elementattr" Association="hresonanceModel.fk_elementattr">
+            <End Role="Element" EntitySet="Elements" />
+            <End Role="Attribute" EntitySet="Attributes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_element" Association="hresonanceModel.fk_element">
+            <End Role="Element" EntitySet="Elements" />
+            <End Role="ElementVariable" EntitySet="ElementVariables" />
+          </AssociationSet>
+          <AssociationSet Name="fk_elementorg" Association="hresonanceModel.fk_elementorg">
+            <End Role="Organization" EntitySet="Organizations" />
+            <End Role="Element" EntitySet="Elements" />
+          </AssociationSet>
+          <AssociationSet Name="fk_process_plan" Association="hresonanceModel.fk_process_plan">
+            <End Role="Process" EntitySet="Processes" />
+            <End Role="Plan" EntitySet="Plans" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="Username" />
           </Key>
-          <Property Name="Username" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="OrgID" Type="Int32" Nullable="false" />
-          <Property Name="First" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Last" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="First" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Last" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Role" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Organization" Relationship="Self.fk_organization" FromRole="Account" ToRole="Organization" />
-          <NavigationProperty Name="UserRole" Relationship="Self.fk_role" FromRole="Account" ToRole="UserRole" />
           <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Organization" Relationship="hresonanceModel.fk_organization" FromRole="Account" ToRole="Organization" />
+          <NavigationProperty Name="UserRole" Relationship="hresonanceModel.fk_role" FromRole="Account" ToRole="UserRole" />
         </EntityType>
         <EntityType Name="Attribute">
           <Key>
@@ -266,16 +322,16 @@
           </Key>
           <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ECode" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Field" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Format" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Flag" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Input" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="AttributeVariables" Relationship="Self.fk_attribute" FromRole="Attribute" ToRole="AttributeVariable" />
-          <NavigationProperty Name="Element" Relationship="Self.fk_elementattr" FromRole="Attribute" ToRole="Element" />
+          <NavigationProperty Name="AttributeVariables" Relationship="hresonanceModel.fk_attribute" FromRole="Attribute" ToRole="AttributeVariable" />
           <NavigationProperty Name="Processes" Relationship="hresonanceModel.fk_attribute_process" FromRole="Attribute" ToRole="Process" />
+          <NavigationProperty Name="Element" Relationship="hresonanceModel.fk_elementattr" FromRole="Attribute" ToRole="Element" />
         </EntityType>
         <EntityType Name="AttributeVariable">
           <Key>
@@ -283,10 +339,10 @@
           </Key>
           <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ACode" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Attribute" Relationship="Self.fk_attribute" FromRole="AttributeVariable" ToRole="Attribute" />
+          <NavigationProperty Name="Attribute" Relationship="hresonanceModel.fk_attribute" FromRole="AttributeVariable" ToRole="Attribute" />
         </EntityType>
         <EntityType Name="Element">
           <Key>
@@ -294,12 +350,12 @@
           </Key>
           <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrgID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Attributes" Relationship="Self.fk_elementattr" FromRole="Element" ToRole="Attribute" />
-          <NavigationProperty Name="ElementVariables" Relationship="Self.fk_element" FromRole="Element" ToRole="ElementVariable" />
-          <NavigationProperty Name="Organization" Relationship="Self.fk_elementorg" FromRole="Element" ToRole="Organization" />
+          <NavigationProperty Name="Attributes" Relationship="hresonanceModel.fk_elementattr" FromRole="Element" ToRole="Attribute" />
+          <NavigationProperty Name="ElementVariables" Relationship="hresonanceModel.fk_element" FromRole="Element" ToRole="ElementVariable" />
+          <NavigationProperty Name="Organization" Relationship="hresonanceModel.fk_elementorg" FromRole="Element" ToRole="Organization" />
         </EntityType>
         <EntityType Name="ElementVariable">
           <Key>
@@ -307,39 +363,61 @@
           </Key>
           <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ECode" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CID" Type="Decimal" Precision="16" Scale="0" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="CID" Type="Decimal" Nullable="false" Precision="16" Scale="0" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Element" Relationship="Self.fk_element" FromRole="ElementVariable" ToRole="Element" />
+          <NavigationProperty Name="Element" Relationship="hresonanceModel.fk_element" FromRole="ElementVariable" ToRole="Element" />
         </EntityType>
         <EntityType Name="Organization">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="City" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Accounts" Relationship="Self.fk_organization" FromRole="Organization" ToRole="Account" />
-          <NavigationProperty Name="Elements" Relationship="Self.fk_elementorg" FromRole="Organization" ToRole="Element" />
-          <NavigationProperty Name="Processes" Relationship="hresonanceModel.fk_organization_process" FromRole="Organization" ToRole="Process" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Accounts" Relationship="hresonanceModel.fk_organization" FromRole="Organization" ToRole="Account" />
+          <NavigationProperty Name="Elements" Relationship="hresonanceModel.fk_elementorg" FromRole="Organization" ToRole="Element" />
+        </EntityType>
+        <EntityType Name="Plan">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProcessID" Type="Int32" Nullable="false" />
+          <Property Name="PlanName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Selected" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Process" Relationship="hresonanceModel.fk_process_plan" FromRole="Plan" ToRole="Process" />
+        </EntityType>
+        <EntityType Name="Process">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="TabID" Type="Int32" Nullable="false" />
+          <Property Name="TabName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubID" Type="Int32" Nullable="false" />
+          <Property Name="SubName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ACode" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Attribute" Relationship="hresonanceModel.fk_attribute_process" FromRole="Process" ToRole="Attribute" />
+          <NavigationProperty Name="Plans" Relationship="hresonanceModel.fk_process_plan" FromRole="Process" ToRole="Plan" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
             <PropertyRef Name="Name" />
           </Key>
-          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Accounts" Relationship="Self.fk_role" FromRole="UserRole" ToRole="Account" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Accounts" Relationship="hresonanceModel.fk_role" FromRole="UserRole" ToRole="Account" />
         </EntityType>
         <Association Name="fk_organization">
-          <End Role="Organization" Type="Self.Organization" Multiplicity="1">
+          <End Type="hresonanceModel.Organization" Role="Organization" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <End Type="hresonanceModel.Account" Role="Account" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Organization">
               <PropertyRef Name="ID" />
@@ -350,8 +428,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_role">
-          <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
-          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <End Type="hresonanceModel.UserRole" Role="UserRole" Multiplicity="0..1" />
+          <End Type="hresonanceModel.Account" Role="Account" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserRole">
               <PropertyRef Name="Name" />
@@ -362,10 +440,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_attribute">
-          <End Role="Attribute" Type="Self.Attribute" Multiplicity="1">
+          <End Type="hresonanceModel.Attribute" Role="Attribute" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AttributeVariable" Type="Self.AttributeVariable" Multiplicity="*" />
+          <End Type="hresonanceModel.AttributeVariable" Role="AttributeVariable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Attribute">
               <PropertyRef Name="Code" />
@@ -375,11 +453,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_elementattr">
-          <End Role="Element" Type="Self.Element" Multiplicity="1">
+        <Association Name="fk_attribute_process">
+          <End Type="hresonanceModel.Attribute" Role="Attribute" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Attribute" Type="Self.Attribute" Multiplicity="*" />
+          <End Type="hresonanceModel.Process" Role="Process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Process">
+              <PropertyRef Name="ACode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_elementattr">
+          <End Type="hresonanceModel.Element" Role="Element" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="hresonanceModel.Attribute" Role="Attribute" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Element">
               <PropertyRef Name="Code" />
@@ -390,10 +482,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_element">
-          <End Role="Element" Type="Self.Element" Multiplicity="1">
+          <End Type="hresonanceModel.Element" Role="Element" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ElementVariable" Type="Self.ElementVariable" Multiplicity="*" />
+          <End Type="hresonanceModel.ElementVariable" Role="ElementVariable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Element">
               <PropertyRef Name="Code" />
@@ -404,10 +496,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_elementorg">
-          <End Role="Organization" Type="Self.Organization" Multiplicity="1">
+          <End Type="hresonanceModel.Organization" Role="Organization" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Element" Type="Self.Element" Multiplicity="*" />
+          <End Type="hresonanceModel.Element" Role="Element" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Organization">
               <PropertyRef Name="ID" />
@@ -417,87 +509,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DBModelEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Accounts" EntityType="Self.Account" />
-          <EntitySet Name="Attributes" EntityType="Self.Attribute" />
-          <EntitySet Name="AttributeVariables" EntityType="Self.AttributeVariable" />
-          <EntitySet Name="Elements" EntityType="Self.Element" />
-          <EntitySet Name="ElementVariables" EntityType="Self.ElementVariable" />
-          <EntitySet Name="Organizations" EntityType="Self.Organization" />
-          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
-          <AssociationSet Name="fk_organization" Association="Self.fk_organization">
-            <End Role="Organization" EntitySet="Organizations" />
-            <End Role="Account" EntitySet="Accounts" />
-          </AssociationSet>
-          <AssociationSet Name="fk_role" Association="Self.fk_role">
-            <End Role="UserRole" EntitySet="UserRoles" />
-            <End Role="Account" EntitySet="Accounts" />
-          </AssociationSet>
-          <AssociationSet Name="fk_attribute" Association="Self.fk_attribute">
-            <End Role="Attribute" EntitySet="Attributes" />
-            <End Role="AttributeVariable" EntitySet="AttributeVariables" />
-          </AssociationSet>
-          <AssociationSet Name="fk_elementattr" Association="Self.fk_elementattr">
-            <End Role="Element" EntitySet="Elements" />
-            <End Role="Attribute" EntitySet="Attributes" />
-          </AssociationSet>
-          <AssociationSet Name="fk_element" Association="Self.fk_element">
-            <End Role="Element" EntitySet="Elements" />
-            <End Role="ElementVariable" EntitySet="ElementVariables" />
-          </AssociationSet>
-          <AssociationSet Name="fk_elementorg" Association="Self.fk_elementorg">
-            <End Role="Organization" EntitySet="Organizations" />
-            <End Role="Element" EntitySet="Elements" />
-          </AssociationSet>
-          <EntitySet Name="Processes" EntityType="hresonanceModel.Process" />
-          <AssociationSet Name="fk_attribute_process" Association="hresonanceModel.fk_attribute_process">
-            <End Role="Attribute" EntitySet="Attributes" />
-            <End Role="Process" EntitySet="Processes" />
-          </AssociationSet>
-          <AssociationSet Name="fk_organization_process" Association="hresonanceModel.fk_organization_process">
-            <End Role="Organization" EntitySet="Organizations" />
-            <End Role="Process" EntitySet="Processes" />
-          </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="Process">
-          <Key>
-            <PropertyRef Name="SelectedID" />
-          </Key>
-          <Property Name="TabName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SubName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OrgID" Type="Int32" Nullable="false" />
-          <Property Name="SelectedID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ACode" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Attribute" Relationship="hresonanceModel.fk_attribute_process" FromRole="Process" ToRole="Attribute" />
-          <NavigationProperty Name="Organization" Relationship="hresonanceModel.fk_organization_process" FromRole="Process" ToRole="Organization" />
-        </EntityType>
-        <Association Name="fk_attribute_process">
-          <End Type="hresonanceModel.Attribute" Role="Attribute" Multiplicity="1" />
-          <End Type="hresonanceModel.Process" Role="Process" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Attribute">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="Process">
-              <PropertyRef Name="ACode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_organization_process">
-          <End Type="hresonanceModel.Organization" Role="Organization" Multiplicity="1">
+        <Association Name="fk_process_plan">
+          <End Type="hresonanceModel.Process" Role="Process" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="hresonanceModel.Process" Role="Process" Multiplicity="*" />
+          <End Type="hresonanceModel.Plan" Role="Plan" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Organization">
+            <Principal Role="Process">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Process">
-              <PropertyRef Name="OrgID" />
+            <Dependent Role="Plan">
+              <PropertyRef Name="ProcessID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -507,82 +533,84 @@
             <EntityTypeMapping TypeName="hresonanceModel.Account">
               <MappingFragment StoreEntitySet="Account">
                 <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
-                <ScalarProperty Name="First" ColumnName="First" />
-                <ScalarProperty Name="Last" ColumnName="Last" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Last" ColumnName="Last" />
+                <ScalarProperty Name="First" ColumnName="First" />
+                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Attributes">
             <EntityTypeMapping TypeName="hresonanceModel.Attribute">
               <MappingFragment StoreEntitySet="Attribute">
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="ECode" ColumnName="ECode" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Field" ColumnName="Field" />
-                <ScalarProperty Name="Format" ColumnName="Format" />
-                <ScalarProperty Name="Flag" ColumnName="Flag" />
-                <ScalarProperty Name="Input" ColumnName="Input" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Input" ColumnName="Input" />
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="Format" ColumnName="Format" />
+                <ScalarProperty Name="Field" ColumnName="Field" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ECode" ColumnName="ECode" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AttributeVariables">
             <EntityTypeMapping TypeName="hresonanceModel.AttributeVariable">
               <MappingFragment StoreEntitySet="AttributeVariable">
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="ACode" ColumnName="ACode" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ACode" ColumnName="ACode" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Elements">
             <EntityTypeMapping TypeName="hresonanceModel.Element">
               <MappingFragment StoreEntitySet="Element">
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ElementVariables">
             <EntityTypeMapping TypeName="hresonanceModel.ElementVariable">
               <MappingFragment StoreEntitySet="ElementVariable">
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="ECode" ColumnName="ECode" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CID" ColumnName="CID" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CID" ColumnName="CID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ECode" ColumnName="ECode" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Organizations">
             <EntityTypeMapping TypeName="hresonanceModel.Organization">
               <MappingFragment StoreEntitySet="Organization">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserRoles">
-            <EntityTypeMapping TypeName="hresonanceModel.UserRole">
-              <MappingFragment StoreEntitySet="UserRole">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
+          <EntitySetMapping Name="Plans">
+            <EntityTypeMapping TypeName="hresonanceModel.Plan">
+              <MappingFragment StoreEntitySet="Plan">
+                <ScalarProperty Name="Selected" ColumnName="Selected" />
+                <ScalarProperty Name="PlanName" ColumnName="PlanName" />
+                <ScalarProperty Name="ProcessID" ColumnName="ProcessID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -590,10 +618,19 @@
             <EntityTypeMapping TypeName="hresonanceModel.Process">
               <MappingFragment StoreEntitySet="Process">
                 <ScalarProperty Name="ACode" ColumnName="ACode" />
-                <ScalarProperty Name="SelectedID" ColumnName="SelectedID" />
-                <ScalarProperty Name="OrgID" ColumnName="OrgID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="SubName" ColumnName="SubName" />
+                <ScalarProperty Name="SubID" ColumnName="SubID" />
                 <ScalarProperty Name="TabName" ColumnName="TabName" />
+                <ScalarProperty Name="TabID" ColumnName="TabID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="hresonanceModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -612,7 +649,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="true" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

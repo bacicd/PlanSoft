@@ -5,22 +5,23 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="530e670aadb1444eb43b8b13029574d3" Name="Diagram1">
-        <EntityTypeShape EntityType="hresonanceModel.Account" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="hresonanceModel.Attribute" Width="1.5" PointX="5.25" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="hresonanceModel.AttributeVariable" Width="1.5" PointX="7.5" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="hresonanceModel.Element" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="hresonanceModel.ElementVariable" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="hresonanceModel.Organization" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="hresonanceModel.UserRole" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
-        <AssociationConnector Association="hresonanceModel.fk_organization" ManuallyRouted="false" />
-        <AssociationConnector Association="hresonanceModel.fk_role" ManuallyRouted="false" />
-        <AssociationConnector Association="hresonanceModel.fk_attribute" ManuallyRouted="false" />
-        <AssociationConnector Association="hresonanceModel.fk_elementattr" ManuallyRouted="false" />
-        <AssociationConnector Association="hresonanceModel.fk_element" ManuallyRouted="false" />
-        <AssociationConnector Association="hresonanceModel.fk_elementorg" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="hresonanceModel.Process" Width="1.5" PointX="7.5" PointY="3.125" />
+        <EntityTypeShape EntityType="hresonanceModel.Account" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="hresonanceModel.Attribute" Width="1.5" PointX="5.25" PointY="11.125" />
+        <EntityTypeShape EntityType="hresonanceModel.AttributeVariable" Width="1.5" PointX="7.5" PointY="10.125" />
+        <EntityTypeShape EntityType="hresonanceModel.Element" Width="1.5" PointX="3" PointY="10" />
+        <EntityTypeShape EntityType="hresonanceModel.ElementVariable" Width="1.5" PointX="5.25" PointY="7" />
+        <EntityTypeShape EntityType="hresonanceModel.Organization" Width="1.5" PointX="0.75" PointY="6.25" />
+        <EntityTypeShape EntityType="hresonanceModel.Plan" Width="1.5" PointX="9.75" PointY="13.25" />
+        <EntityTypeShape EntityType="hresonanceModel.Process" Width="1.5" PointX="7.5" PointY="13" />
+        <EntityTypeShape EntityType="hresonanceModel.UserRole" Width="1.5" PointX="0.75" PointY="3.75" />
+        <AssociationConnector Association="hresonanceModel.fk_organization" />
+        <AssociationConnector Association="hresonanceModel.fk_role" />
+        <AssociationConnector Association="hresonanceModel.fk_attribute" />
         <AssociationConnector Association="hresonanceModel.fk_attribute_process" />
-        <AssociationConnector Association="hresonanceModel.fk_organization_process" />
+        <AssociationConnector Association="hresonanceModel.fk_elementattr" />
+        <AssociationConnector Association="hresonanceModel.fk_element" />
+        <AssociationConnector Association="hresonanceModel.fk_elementorg" />
+        <AssociationConnector Association="hresonanceModel.fk_process_plan" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

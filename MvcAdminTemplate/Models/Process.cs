@@ -14,13 +14,21 @@ namespace MvcAdminTemplate.Models
     
     public partial class Process
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Process()
+        {
+            this.Plans = new HashSet<Plan>();
+        }
+    
+        public int TabID { get; set; }
         public string TabName { get; set; }
+        public int SubID { get; set; }
         public string SubName { get; set; }
-        public int OrgID { get; set; }
-        public int SelectedID { get; set; }
+        public int ID { get; set; }
         public int ACode { get; set; }
     
         public virtual Attribute Attribute { get; set; }
-        public virtual Organization Organization { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Plan> Plans { get; set; }
     }
 }
