@@ -2,7 +2,6 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Landing.cshtml";
 }
-<a href="/">Go Back</a>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,14 +53,21 @@
                         <span class="icon-bar"></span>
                     </button>
                 </div>
-
-                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-left:20%;">
-                    <img src="~/Content/Theme/images/HResonance.jpg" style="width:16%; margin-left:20%;" />
+                <div>
+                    <a class="navbar-brand" style="margin-left:43%;" href="/"><img src="~/Content/Theme/images/HResonance.jpg" width="110" height="60" /></a>
+                </div>
+                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-left:22.5%;margin-top:-4%;">
+                    <ul style="width:72em" class="nav navbar-nav navbar-right">
+                        <li id="menuitems">@Html.ActionLink("Sign Up", "Index", "SignUp")</li>
+                        <li id="menuitems">@Html.ActionLink("Survey", "Index", "Survey")</li>
+                        <li id="menuitems">@Html.ActionLink("Request Features", "Index", "Features")</li>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
                 </div>
             </div>
         </div>
     </nav>
-    <h2 style="text-align:center; font-size:250%;">Before We Launch</h2>
+    <h2 style="text-align:center; font-size:250%; margin-top:7%;">Before We Launch</h2>
     <p style="text-align:center;font-size:110%">To successfully launch Resonance we need your help, we are very thankful to everyone who completes our <br /> survey.
     This is the best way how you can help us build our amazing product. Please, take few minutes to <br /> COMPLETE OUR SURVEY
     or share this page with anyone who you think might be interested in<br /> Resonance. Thanks!</p><br />

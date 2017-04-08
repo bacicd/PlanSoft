@@ -2,7 +2,6 @@
 	ViewBag.Title = "Index";
 	Layout = "~/Views/Shared/_Landing.cshtml";
 }
-<a href="/">Go Back</a>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,25 +71,33 @@
 </head>
 <body class="bootstrap-admin-with-small-navbar">
 
-	<!-- main / large navbar -->
-	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="row">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-navbar-collapse">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-				</div>
-				<div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-left:20%;">
-					<img src="~/Content/Theme/images/HResonance.jpg" style="width:15%; margin-left:20%;" />
-				</div>
-			</div>
-		</div>
-	</nav>
-	<h2 style="text-align:center; font-size:200%; margin-bottom:2%;">Sign-up to be part of an exciting new venture!</h2>
+    <!-- main / large navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div>
+                    <a class="navbar-brand" style="margin-left:43%;" href="/"><img src="~/Content/Theme/images/HResonance.jpg" width="110" height="60" /></a>
+                </div>
+                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-left:22.5%;margin-top:-4%;">
+                    <ul style="width:72em" class="nav navbar-nav navbar-right">
+                        <li id="menuitems">@Html.ActionLink("Sign Up", "Index", "SignUp")</li>
+                        <li id="menuitems">@Html.ActionLink("Survey", "Index", "Survey")</li>
+                        <li id="menuitems">@Html.ActionLink("Request Features", "Index", "Features")</li>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+	<h2 style="text-align:center; font-size:200%; margin-bottom:2%; margin-top:7%;">Sign-up to be part of an exciting new venture!</h2>
 	<p style="float:left; margin-top:22%; margin-left:20%;">How would you be willing to help? <br /> (Check all that apply)</p>
 	<div style="width:24%; margin-left:42%;">
 		<form>

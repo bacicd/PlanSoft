@@ -21,7 +21,7 @@
         }
 
         .group2 {
-            margin-left: 5%;
+            margin-left: 2%;
         }
         #menuitems a:hover { border-bottom:2px solid #00accd !important;}
         *{
@@ -48,14 +48,15 @@
                 <div>
                     <a class="navbar-brand" style="margin-left:42%;" href="/"><img src="~/Content/Theme/images/HResonance.jpg" width="110" height="60" /></a>
                 </div>
-                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-right:20%;margin-top:-4%;">
+                <div class="collapse navbar-collapse bootstrap-admin-navbar-sm" style="width:100%;margin-right:25%;margin-top:-4%;">
                     <ul style="width:72em" class="nav navbar-nav navbar-right">
                         <li id="menuitems"class="group3">@Html.ActionLink("HOME", "Index", "Home")</li>
                         
                         <li id="menuitems">@Html.ActionLink("INVENTORY", "Index","Inventory")</li>
                         <li id="menuitems">@Html.ActionLink("DOCUMENTS", "Index")</li>
                         <li id="menuitems">@Html.ActionLink("ANALYSIS", "Index")</li>
-                        <li id="menuitems" class="group1">@Html.ActionLink("ADMINISTRATION", "Index", "Roles")</li>
+                        <li id="menuitems">@Html.ActionLink("OPEN TICKET", "Index", "OpenTicket")</li>
+                        <li id="menuitems" class="group1">@Html.ActionLink("ADMINISTRATION", "Role", "Account")</li>
                         <li id="menuitems" class="group2"><a href="#">Reminders <i class="glyphicon glyphicon-bell"></i></a></li>
                         <li id="menuitems"><a href="#">Settings <i class="glyphicon glyphicon-cog"></i></a></li>
                         @Html.Partial("_LoginPartial")
