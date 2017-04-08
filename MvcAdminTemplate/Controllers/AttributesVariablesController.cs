@@ -25,7 +25,7 @@ namespace MvcAdminTemplate.Controllers
             IList<AttributeVariable> attributeVars = attributeContext.AttributeVariables.ToList();
             return Json(new
             {
-               aaData = attributeVars.Select(x => new[] { x.Attribute.Code.ToString(), x.Attribute.Name, x.Name, x.Code.ToString(), x.CreatedOn.ToString(), x.CreatedBy })
+               aaData = attributeVars.Select(x => new[] { x.Attribute.Code.ToString(), x.Attribute.Name, x.Name, x.Code.ToString(), x.CreatedOn.ToString().Substring(0, 9), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 

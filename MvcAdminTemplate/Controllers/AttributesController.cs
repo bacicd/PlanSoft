@@ -27,7 +27,7 @@ namespace MvcAdminTemplate.Controllers
             return Json(new
             {
                 //aaData = AttributesViewModel.AttributesList.Select(x => new[] { x.ElementCode, x.ElementName, x.AttributeCode, x.AttributeName, x.DateSet.ToString(), x.CreatedBy })
-                aaData = attributes.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString(), x.CreatedBy })
+                aaData = attributes.Select(x => new[] { x.Element.Code.ToString(), x.Element.Name, x.Code.ToString(), x.Name, x.CreatedOn.ToString().Substring(0, 9), x.CreatedBy })
             }, JsonRequestBehavior.AllowGet);
         }
 
