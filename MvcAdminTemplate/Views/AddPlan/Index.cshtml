@@ -2,7 +2,6 @@
     ViewBag.Title = "AddPlan";
 }
 @Html.Partial("_LeftMenuAddPlan")
-
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <style>
     <!-- Progress with steps -->
@@ -10,6 +9,7 @@
         margin: 0;
         padding: 0;
         list-style-type: none;
+        width: 15%;
     }
 
     ol.progtrckr li {
@@ -101,31 +101,33 @@
         width: 30%;
         margin-left: 37%;
     }
-    form{
-        
-        width:150%;
-        
-    }
-    .regform{
+
+    form {
         width: 150%;
-        padding-top:7%;
-        margin-left:-60%;
+    }
+
+    .regform {
+        width: 150%;
+        padding-top: 7%;
+        margin-left: -60%;
     }
 
     .main {
         float: left;
         width: 120%;
     }
-    .title{
+
+    .title {
         font-size: 150%;
-        text-align:left;
+        text-align: left;
     }
+
     #progressbar {
         margin: 0;
         padding: 0;
         font-size: 150%;
         background: none;
-        width:-120%;
+        width: -120%;
     }
 
     .active {
@@ -136,7 +138,6 @@
         display: none;
         width: 50%;
         padding: 0;
-        
     }
 
     #first {
@@ -144,7 +145,6 @@
         padding: 20px;
         margin-right: -30%;
         border-radius: 5px;
-        
     }
 
     input[type=text],
@@ -154,7 +154,7 @@
         border: none;
         border-bottom: solid 2px #c9c9c9;
         transition: border 0.3s;
-        background-color:rgba(245, 245, 245, 0.498039);
+        background-color: rgba(245, 245, 245, 0.498039);
     }
 
 
@@ -168,7 +168,6 @@
         background-color: #65acf5;
         border: none;
         border-radius: 4px;
-        
         font-family: 'Droid Serif', serif;
     }
 
@@ -240,14 +239,15 @@
         });
 
         var str = getLayoutStr(taskNo);
-        
+
+
     });
 
     $("body").on("click", ".next_btn", nextBtn);
     $("body").on("click", ".pre_btn", preBtn);
     $("body").on("click", ".submit_btn", subBtn);
 
-    
+
 
     function nextBtn()
     {
@@ -301,7 +301,7 @@
         //getLayoutStr(taskNo);
         //$.holdReady(true);
 
-        
+
 
     }
 
@@ -340,7 +340,7 @@
                 var attribIndex = nthIndexOf(data[i], "ATTRIBUTE:", j);
                 //Attribute is string[attribIndex, jth index of "\n"]
                 attrib = data[i].slice(attribIndex + 10, data[i].indexOf("\\n", nthIndexOf(data[i], "ATTRIBUTE", j)));
-                //string parsing spagetti 
+                //string parsing spagetti
                 subtask = data[i].slice(data[i].lastIndexOf("SUBTASK:", data[i].indexOf(attrib)) +8, data[i].indexOf("\\n", data[i].indexOf("\\n", data[i].lastIndexOf("SUBTASK:", data[i].indexOf(attrib)))));
                 //task is from string[0] to string.firstindexof(\n)
                 task = data[i].slice(0, data[i].indexOf("\\n"));
@@ -348,7 +348,7 @@
                 arr.push([task, subtask, attrib]);
             }
         }
-        
+
         //array of just tasks, just subtasks
         var taskArr = [];
         for (i = 0; i < arr.length; i++)
@@ -358,24 +358,24 @@
                 taskArr.push(arr[i][0]);
             }
         }
-       
+
         //setup tasks
         setProgtrackr(taskArr);
 
         //populate subtask heads
         populateSubtask(arr, num);
 
-        //populate attributes inputs 
+        //populate attributes inputs
         populateAttribs(arr,num);
 
-        
+
         //return arr (to where?)
         return arr;
     }
 
     function populateAttribs(arr, taskNo)
     {
-        
+
         subtaskArr = getSubtaskList(arr, taskNo);
 
         //collect names of attributes by subtask
@@ -392,7 +392,7 @@
                 //else is normal fieldset
             else htmlStr += "<fieldset>";
 
-            //for each attribute 
+            //for each attribute
             for (j = 0; j < arr.length; j++)
             {
                 //if attribute in subtask
@@ -401,7 +401,7 @@
                     //put attrib name, attrib datainput, populate datainput with attrib vars
                     htmlStr += "<label id=\"" + arr[j][2] + "\"> " + arr[j][2] + "</label><br />";
                     //dummy data
-                    htmlStr += "<select class=\"options\"> \
+                    htmlStr += "<select class=\"options attribVars \"> \
                                 <option>--Funding Approach--</option> \
                                 <option>Post Graduate</option> \
                                 <option>Graduate</option> \
@@ -409,6 +409,8 @@
                                 <option>SSC</option> \
                             </select><br />";
                 }
+
+
             }
 
 
@@ -417,7 +419,7 @@
             {
                 htmlStr += "<input class=\"submit_btn\" type=\"submit\" value=\"Submit\">";
             }
-            //If first subtask, add only next button, 
+            //If first subtask, add only next button,
             else if (i == 0) {
                 htmlStr += "<input class=\"next_btn\" name=\"next\" type=\"button\" value=\"Next\">";
             }
@@ -437,6 +439,8 @@
         }
         //set content of fieldsets to htmlstr
         $("#fieldsets").html(htmlStr);
+
+        populateAttributeVars();
     }
 
     //get nth index of substring in string
@@ -460,10 +464,10 @@
             if (i == 0)
             {
                 //If first tracker, make it in progress
-                str += "<li class=\"progtrckr-todo\">" + tasks[i] + "</li>";
+                str += "<li class=\"progtrckr-todo\" style=\"width:15%\">" + tasks[i] + "</li>";
             }
             ///Otherwise todo
-            else str += "<li class=\"progtrckr-todo\">" + tasks[i] + "</li>";
+            else str += "<li class=\"progtrckr-todo\" style=\"width:15%\">" + tasks[i] + "</li>";
         }
         //Set progtrckr content to str
         $(".progtrckr").html(str);
@@ -482,7 +486,7 @@
 
         //get list of all tasks
         tasks = getTasksList(arr);
-         
+
         //get subtasks under tasks[num] (under current task)
         var subtasks = []
         for (i = 0; i < arr.length; i++)
@@ -499,11 +503,11 @@
             {
                 htmlStr += "<li class=\"active\" style=\"display:inline; padding:10%;\">" + subtasks[i] + "</li>";
             }
-            else 
+            else
             {
                 htmlStr += "<li style=\"display:inline; padding:10%;\">" + subtasks[i] + "</li>";
             }
-            
+
         }
 
         $("#progressbar").html(htmlStr);
@@ -511,7 +515,7 @@
 
     function getTasksList(arr)
     {
-        var taskArr = [];        
+        var taskArr = [];
         for (i = 0; i < arr.length; i++)
         {
             if (taskArr.indexOf(arr[i][0]) == -1)
@@ -538,9 +542,33 @@
         return subtasks;
     }
 
-    function getAttribute(name)
-    {
-        
+    function populateAttributeVars() {
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DropDownAttributeVars", "AddPlan")',
+            dataType: 'json',
+            success: function (attribute) {
+                var items = '';
+                var obj = '';
+                $.each(attribute, function (i, word) {
+                    $.each(word, function (i, obj) {
+                        items += "<option>" + obj + "</option>";
+                    });
+                });
+
+                $(".attribVars").each(function () {
+                    var temp = $(this).html()
+                    if (temp == "") {
+                        $(this).html(items);
+                    }
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
     }
 
 
@@ -556,85 +584,83 @@
         <li class="progtrckr-todo">Evaluation</li>
     </ol>
 </div>
-
 <div class="content">
     <!-- Multistep Form -->
     <div class="main">
         <form action="" class="regform" method="get">
             <!-- Progress Bar-->
-
             <ul id="progressbar" style="margin-right:150%;color:#c1c5cc;font-family: 'Droid Serif', serif;list-style-type:none; margin:0; padding:0;">
-                    <li class="active" style="display:inline; padding:10%;">Funding</li>
-                    <li style="display:inline; padding:10%;">Metrics</li>
-                    <li style="display:inline; padding:10%;">Approach</li>
+                <li class="active" style="display:inline; padding:10%;">Funding</li>
+                <li style="display:inline; padding:10%;">Metrics</li>
+                <li style="display:inline; padding:10%;">Approach</li>
             </ul>
-   
+
             <div id="fieldsets">
             </div>
-    <!-- Fieldsets -->
-    <!--
-    <fieldset id="first" style="display:block">
+            <!-- Fieldsets -->
+            <!--
+            <fieldset id="first" style="display:block">
 
-        <select class="options">
-            <option>--Funding Approach--</option>
-            <option>Post Graduate</option>
-            <option>Graduate</option>
-            <option>HSC</option>
-            <option>SSC</option>
-        </select><br />
-        <input class="text_field" name="email" placeholder="List Funding Components" type="text"><br />
-        <select class="options">
-            <option>--Funding Level--</option>
-            <option>Post Graduate</option>
-            <option>Graduate</option>
-            <option>HSC</option>
-            <option>SSC</option>
-        </select><br />
-        <select class="options">
-            <option>--Funding Mechanism--</option>
-            <option>Post Graduate</option>
-            <option>Graduate</option>
-            <option>HSC</option>
-            <option>SSC</option>
-        </select><br />
-        <select class="options">
-            <option>--Pool Funding Mechanism--</option>
-            <option>Post Graduate</option>
-            <option>Graduate</option>
-            <option>HSC</option>
-            <option>SSC</option>
-        </select><br />
-        <input class="text_field" name="email" placeholder="Target Funding Basis" type="text">
-        <input class="text_field" name="email" placeholder="Funding Threshold" type="text">
-        <textarea rows="4" cols="50" name="comment" placeholder="Funding Comment" form="usrform" style="background-color:rgba(245, 245, 245, 0.498039);border:none; border-bottom: solid 2px #c9c9c9;"></textarea>
-        <input class="next_btn" name="next" type="button" value="Next">
-    </fieldset>
-    <fieldset>
+                <select class="options">
+                    <option>--Funding Approach--</option>
+                    <option>Post Graduate</option>
+                    <option>Graduate</option>
+                    <option>HSC</option>
+                    <option>SSC</option>
+                </select><br />
+                <input class="text_field" name="email" placeholder="List Funding Components" type="text"><br />
+                <select class="options">
+                    <option>--Funding Level--</option>
+                    <option>Post Graduate</option>
+                    <option>Graduate</option>
+                    <option>HSC</option>
+                    <option>SSC</option>
+                </select><br />
+                <select class="options">
+                    <option>--Funding Mechanism--</option>
+                    <option>Post Graduate</option>
+                    <option>Graduate</option>
+                    <option>HSC</option>
+                    <option>SSC</option>
+                </select><br />
+                <select class="options">
+                    <option>--Pool Funding Mechanism--</option>
+                    <option>Post Graduate</option>
+                    <option>Graduate</option>
+                    <option>HSC</option>
+                    <option>SSC</option>
+                </select><br />
+                <input class="text_field" name="email" placeholder="Target Funding Basis" type="text">
+                <input class="text_field" name="email" placeholder="Funding Threshold" type="text">
+                <textarea rows="4" cols="50" name="comment" placeholder="Funding Comment" form="usrform" style="background-color:rgba(245, 245, 245, 0.498039);border:none; border-bottom: solid 2px #c9c9c9;"></textarea>
+                <input class="next_btn" name="next" type="button" value="Next">
+            </fieldset>
+            <fieldset>
 
-        <select class="options">
-            <option>--Select Education--</option>
-            <option>Post Graduate</option>
-            <option>Graduate</option>
-            <option>HSC</option>
-            <option>SSC</option>
-        </select>
-        <input class="text_field" name="marks" placeholder="Marks Obtained" type="text">
-        <input class="text_field" name="pyear" placeholder="Passing Year" type="text">
-        <input class="text_field" name="univ" placeholder="University" type="text">
-        <input class="pre_btn" name="previous" type="button" value="Previous">
-        <input class="next_btn" name="next" type="button" value="Next">
-    </fieldset>
-    <fieldset>
+                <select class="options">
+                    <option>--Select Education--</option>
+                    <option>Post Graduate</option>
+                    <option>Graduate</option>
+                    <option>HSC</option>
+                    <option>SSC</option>
+                </select>
+                <input class="text_field" name="marks" placeholder="Marks Obtained" type="text">
+                <input class="text_field" name="pyear" placeholder="Passing Year" type="text">
+                <input class="text_field" name="univ" placeholder="University" type="text">
+                <input class="pre_btn" name="previous" type="button" value="Previous">
+                <input class="next_btn" name="next" type="button" value="Next">
+            </fieldset>
+            <fieldset>
 
 
-        <input class="text_field" name="fname" placeholder="First Name" type="text">
-        <input class="text_field" name="lname" placeholder="Last Name" type="text">
-        <input class="text_field" name="cont" placeholder="Contact" type="text">
+                <input class="text_field" name="fname" placeholder="First Name" type="text">
+                <input class="text_field" name="lname" placeholder="Last Name" type="text">
+                <input class="text_field" name="cont" placeholder="Contact" type="text">
 
-        <input class="pre_btn" type="button" value="Previous">
-        <input class="submit_btn" type="submit" value="Submit">
-    </fieldset>
-    -->
-    </form>
-</div>
+                <input class="pre_btn" type="button" value="Previous">
+                <input class="submit_btn" type="submit" value="Submit">
+            </fieldset>
+            -->
+        </form>
+    </div>
 </div>
