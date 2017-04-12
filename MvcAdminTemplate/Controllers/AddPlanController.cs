@@ -69,12 +69,13 @@ namespace MvcAdminTemplate.Controllers
             //For each attrib
             for (int i = 0; i < arr.GetLength(0); i++)
             {
-                //In beggining, print all
+                //Edge case handling (default processes)
                 if (arr.Length == 3)
                 {
                     str2 += "  TASK: " + arr[i, 0] + " \n SUBTASK: " + arr[i, 1] + "\n ATTRIBUTE: " + arr[i, 2];
                     break;
                 }
+                //If string empty, need task, subtask, attrib
                 if (str2 == "")
                 {
                     str2 += "  TASK: " + arr[i, 0] + " \n SUBTASK: " + arr[i, 1] + "\n ATTRIBUTE: " + arr[i, 2];
