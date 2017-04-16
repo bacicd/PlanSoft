@@ -47,25 +47,57 @@
 		}
 	</style>
 	<script>
-		$(document).on("click", "#save", function () {
-			$.ajax({
-				url: "/SignUp/emailSignUp",
-				datatype: "text",
-				data: {
-					'fname': $("#fname").val(), 'lname': $("#lname").val(), 'title': $("#title").val(),
-					'companyname': $("#companyname").val(), 'email': $("#email").val(), 'phone': $("#phone").val(),
-					'address': $("#address").val(), 'city': $("#city").val(), 'state': $("#state").val(), 'zip': $("#zip").val()
-				},
-				type: "POST",
-				success: function (data) {
-					console.log(data.message);
-					window.location.href = '/ThankYou';
-					return true;
-				},
-				error: function () {
-					return false;
-				}
-			});
+        $(document).on("click", "#save", function () {
+            var fname = $("#fname").val();
+            var lname = $("#lname").val();
+            var title = $("#title").val();
+            var companyname = $("#companyname").val();
+            var email = $("#email").val();
+            var phone = $("#phone").val()
+            var address = $("#address").val();
+            var city = $("#city").val();
+            var state = $("#state").val();
+            var zip = $("#zip").val();
+            var test = "";
+            var survey = "";
+            var recommend = "";
+            var implement = "";
+            var discuss = "";
+            if ($("#Test").is(':checked'))
+                test = $("#Test").val()
+            if ($("#Survey").is(':checked'))
+                survey = $("#Survey").val();
+            if ($("#Recommend").is(':checked'))
+                recommend = $("#Recommend").val();
+            if ($("#Implement").is(':checked'))
+                implement = $("#Implement").val();
+            if ($("#Discuss").is(':checked'))
+                discuss = $("#Discuss").val();
+            if (fname == "" || lname == "" || title == "" || companyname == "" || email == ""
+                || phone == "" || address == "" || city == "" || state == "" || zip == "") {
+                $('#mymodal').modal('toggle');
+            }
+            else {
+                $.ajax({
+                    url: "/SignUp/emailSignUp",
+                    datatype: "text",
+                    data: {
+                        'fname': $("#fname").val(), 'lname': $("#lname").val(), 'title': $("#title").val(),
+                        'companyname': $("#companyname").val(), 'email': $("#email").val(), 'phone': $("#phone").val(),
+                        'address': $("#address").val(), 'city': $("#city").val(), 'state': $("#state").val(), 'zip': $("#zip").val(),
+                        'Test': test, 'Survey': survey, 'Recommend': recommend, "Implement": implement, 'Discuss': discuss
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        console.log(data.message);
+                        window.location.href = '/ThankYou';
+                        return true;
+                    },
+                    error: function () {
+                        return false;
+                    }
+                });
+            }
 		});
 	</script>
 </head>
@@ -97,6 +129,26 @@
             </div>
         </div>
     </nav>
+    <!-- Modal -->
+    <div class="modal fade" id="mymodal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Input Validation Error!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>No items must be empty when filling out this form!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 	<h2 style="text-align:center; font-size:200%; margin-bottom:2%; margin-top:7%;">Sign-up to be part of an exciting new venture!</h2>
 	<p style="float:left; margin-top:22%; margin-left:20%;">How would you be willing to help? <br /> (Check all that apply)</p>
 	<div style="width:24%; margin-left:42%;">
@@ -113,11 +165,11 @@
 			<input class="styling" placeholder="ZIP" type="text" id="zip"><br /><br />
 
 
-			<input type="checkbox" name="feature" /> Test drive the system <br />
-			<input type="checkbox" name="feature" /> Complete Survey <br />
-			<input type="checkbox" name="feature" /> Recommended Features <br />
-			<input type="checkbox" name="feature" /> Implement the System at my Workplace <br />
-			<input type="checkbox" name="feature" /> Discuss System in Person or over Phone <br /> <br />
+			<input type="checkbox" name="feature" id="Test" value="Test drive the system" /> Test drive the system <br />
+			<input type="checkbox" name="feature" id="Survey" value="Complete Survey" /> Complete Survey <br />
+			<input type="checkbox" name="feature" id="Recommend" value="Recommended Features" /> Recommended Features <br />
+			<input type="checkbox" name="feature" id="Implement" value="Implement the System at my Workplace" /> Implement the System at my Workplace <br />
+			<input type="checkbox" name="feature" id="Discuss" value="Discuss System in Person or over Phone" /> Discuss System in Person or over Phone <br /> <br />
 
 			<button class="btn btn-info" id="save" type="submit" data-toggle="modal">Send</button>
 		</form>
