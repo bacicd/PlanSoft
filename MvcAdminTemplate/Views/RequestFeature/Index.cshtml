@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HResonance</title>
     <link href="~/Content/Theme/images/favicon.ico" rel="icon" type="image/x-icon" />
+
     <!--@Styles.Render("~/Content/Theme")
     @Scripts.Render("~/bundles/modernizr")-->
     <link href="/Content/bootstrap.css" rel="stylesheet" />
@@ -16,8 +17,9 @@
     <link href="/Content/Theme/css/bootstrap-admin-theme.css" rel="stylesheet" />
     <link href="/Content/Theme/css/site.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="/Scripts/modernizr-2.6.2.js"></script>
+
 
     <style>
         .group1 {
@@ -37,7 +39,39 @@
             font-family: 'Roboto', sans-serif;
         }
     </style>
-
+    <style>
+        input.styling {
+            background-color: rgba(245, 245, 245, 0.498039);
+            border: none;
+            border-bottom: solid 2px #c9c9c9;
+        }
+    </style>
+    <script>
+        $(document).on("click", "#save", function () {
+            var comment = $("#comment").val();
+            if (comment == "") {
+                $('#mymodal').modal('toggle');
+            }
+            else {
+                $.ajax({
+                    url: "/RequestFeature/requestFeature",
+                    datatype: "text",
+                    data: {
+                        'comment': comment
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        console.log(data.message);
+                        window.location.href = '/ThankYou';
+                        return true;
+                    },
+                    error: function () {
+                        return false;
+                    }
+                });
+            }
+		});
+    </script>
 </head>
 <body class="bootstrap-admin-with-small-navbar">
 
@@ -67,13 +101,34 @@
             </div>
         </div>
     </nav>
-    <h2 style="text-align:center; font-size:250%; margin-top:7%;">Before We Launch</h2>
-    <p style="text-align:center;font-size:110%">To successfully launch Resonance we need your help, we are very thankful to everyone who completes our <br /> survey.
-    This is the best way how you can help us build our amazing product. Please, take few minutes to <br /> COMPLETE OUR SURVEY
-    or share this page with anyone who you think might be interested in<br /> Resonance. Thanks!</p><br />
-    <img src="~/Content/Theme/images/Launching_Your_Business.jpg" width="700" height="300"style="margin-left:19%;"/><br /><br />
-    <form>
-        <button class="btn btn-info" style="margin-left:45%;" type="submit" onclick="window.open('https://www.surveymonkey.com/r/6K72SX7')">Complete Survey</button>
-    </form>
-    </body>
+    <!-- Modal -->
+    <div class="modal fade" id="mymodal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Input Validation Error!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You can't have any empty request!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <h2 style="text-align:center; font-size:200%; margin-bottom:2%; margin-top:7%;">Please tell us what kind of features you desire!</h2>
+    <div style="width:24%; margin-left:35%;">
+        <form>
+            <textarea class="styling" placeholder="Request a Feature!" form="usrform" rows="4" cols="50" id="comment"></textarea><br /><br />
+
+            <button class="btn btn-info" id="save" type="submit" data-toggle="modal">Send</button>
+        </form>
+    </div>
+
+</body>
 </html>
