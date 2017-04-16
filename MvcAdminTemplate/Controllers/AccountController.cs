@@ -14,7 +14,7 @@ namespace MvcAdminTemplate.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-
+        private DBModelEntities db = new DBModelEntities();
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -242,6 +242,14 @@ namespace MvcAdminTemplate.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+        
+        public ActionResult accountInfo()
+        {
+            var accountContext = new DBModelEntities();
+            IList<Account> accountList = accountContext.Accounts.ToList();
+            Account accountModel = db.Accounts.Find(User.Identity.Name);
+            return PartialView("_LoginPartial",accountModel);
         }   
       }
 }
