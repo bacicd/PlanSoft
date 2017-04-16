@@ -14,12 +14,123 @@
                 $('<div id="subTasks" style="margin-top:2%;"><span id="subtask" style="margin-left:3%;">Sub Task</span><input id="subtaskentry" style="display:none;" /><a id="addSubTask" class="glyphicon glyphicon-plus" style="margin-left:.5%;"></a><br /><div class="col-md-3" style="margin-left:5%; margin-top:2%;"><select id="attributes" class="form-control attributes" style="display:inline-block;"></select></div><a id="addAttribute" class="glyphicon glyphicon-plus" style="margin-top:2.8%;"></a></div>'
              ).insertAfter('#subTasks');
             });
-            populateAttributes();
+            getFromDB();
+            //populateAttributes();
             //fakeAttribs();
             hideTextbox();
         });
     </script>
     <script>
+
+        function getFromDB() {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("getFromDB", "Processes")',
+                dataType: 'json',
+                success: function (string) {
+                    var str = string.layoutStr;
+                    arr = str.split("\n");
+                    attribList = [];
+                    for(var i = 0; i < arr.length; i++)
+                    {
+                        //If empty, continue
+                        if (arr[i] == "") continue;
+                        //First three lines must be task, subtask, attrib, in that order. Take care of all three in here
+                        if (i == 0)
+                        {
+                            var task1 = arr[0].slice(arr[0].indexOf(": ")+2, arr[0].lengh);
+                            var subtask1 = arr[1].slice(arr[1].indexOf(": ")+2, arr[1].lengh);
+                            var attrib1 = arr[2].slice(arr[2].indexOf(": ") + 2, arr[2].lengh);
+                            attribList.push(attrib1.trim());
+                            htmlStr = "<!--TASK 1-->\r\n    <div id=\"TASK1\" class=\"TASK\">\r\n        <label class=\"EDITABLE\">" + task1 + "<\/label>\r\n        <input class=\"clickedit\" type=\"text\" \/>\r\n        <a id=\"addTask\" class=\"glyphicon glyphicon-plus addTask\" style=\"margin-left:.5%;\"><\/a>\r\n        <br \/>\r\n        <!--SUBTAK 1-->\r\n        <div id=\"SUBTASK1\" class=\"SUBTASK\" style=\"margin-left:13%;margin-top:2%\">\r\n            <label class=\"EDITABLE\">" + subtask1 + "<\/label>\r\n            <input class=\"clickedit\" type=\"text\" \/>\r\n            <a id=\"addTask\" class=\"glyphicon glyphicon-plus addSubtask\" style=\"margin-left:.5%;\"><\/a>\r\n            <br \/>\r\n            <!--ATTRIBUTE SELECTOR 1-->\r\n            <div id=\"attributeElements\" class=\"ATTRIBUTESELECTOR\" style=\"margin-left:9%; margin-top:2%;\">\r\n                <div class=\"col-md-4\">\r\n                    <select id=\"attributes\" class=\"form-control attributes\" style=\"display:inline-block;\"><\/select>\r\n                <\/div>\r\n                <a id=\"addAttribute\" class=\"glyphicon glyphicon-plus addAttribute\" style=\"margin-top:.8%;\"><\/a>\r\n            <\/div>\r\n            <!--END ATRIBUTE SELECTOR-->\r\n\r\n        <\/div>\r\n        <!--END SUBTASK 1-->\r\n    <\/div>\r\n<!--END TASK 1-->"
+
+                            $("#CONTAINER").html(htmlStr);
+
+                            hideTextbox();
+                            populateAttributes();
+
+                            continue;
+                        }
+                        //Then skip two lines
+                        if (i == 1 || i == 2) {
+
+                            continue;
+                        }
+                        //If task
+                        if (arr[i].includes(" TASK:"))
+                        {
+                            var task = arr[i].slice(arr[i].indexOf(": ") + 2, arr[i].lengh);
+
+                            html = "<div class=\"TASK\"> \
+                                    <br \> \
+                                    <label class=\"EDITABLE\">" + task + "</label> \
+                                    <input class=\"clickedit\" type=\"text\" /> \
+                                    <a id=\"addTask\" class=\"glyphicon glyphicon-plus addTask\" style=\"margin-left:.5%;\"></a> \
+                                    <a class=\"glyphicon glyphicon-minus subTask\" style=\"margin-top:.8%;\"></a> \
+                                    <br /> \
+                                    </div>"
+
+                            $("#CONTAINER").append(html);
+
+
+                        }
+                        if (arr[i].includes("SUBTASK:")) {
+                            var subtask = arr[i].slice(arr[i].indexOf(": ") + 2, arr[i].lengh);
+
+                            html = "<div id=\"SUBTASK1\" class=\"SUBTASK\" style=\"margin-left:13%;margin-top:2%\"> \
+                                        <label class=\"EDITABLE\">" + subtask + "</label> \
+                                        <input class=\"clickedit\" type=\"text\" /> \
+                                        <a id=\"addTask\" class=\"glyphicon glyphicon-plus addSubtask\" style=\"margin-left:.5%;\"></a> \
+                                        <a class=\"glyphicon glyphicon-minus subSubtask\" style=\"margin-top:.8%;\"></a> \
+                                        <br /> \
+                                    </div>"
+
+                            $("#CONTAINER").children().last().append(html);
+
+                        }
+                        if (arr[i].includes("ATTRIBUTE:")) {
+                            var attrib = arr[i].slice(arr[i].indexOf(": ") + 2, arr[i].lengh);
+                            attribList.push(attrib.trim());
+
+                            html = "<div id=\"attributeElements\" class=\"ATTRIBUTESELECTOR\" style=\"margin-left:9%; margin-top:2%;\"> \
+                                        <div class=\"col-md-4\"> \
+                                            <select id=\"attributes\" class=\"form-control attributes\" style=\"display:inline-block;\"></select> \
+                                        </div> \
+                                        <a id=\"addAttribute\" class=\"glyphicon glyphicon-plus addAttribute\" style=\"margin-top:.8%;\"></a> \
+                                        <a class=\"glyphicon glyphicon-minus subAttribute\" style=\"margin-top:.8%;\"></a> \
+                                    </div>"
+
+                            //$("#CONTAINER").last().append(html);
+                            $("#CONTAINER").children().last().children().last().append(html);
+                            //$("#CONTAINER").last().val(attrib);
+                        }
+                    }
+
+                    hideTextbox();
+                    
+                    populateAttributes();
+
+                    setTimeout(function () {
+                        $(".attributes").each(function (index) {
+                            var herp = attribList[index];
+                            $(this).val(attribList[index]);
+                            //$(this).val("Period");
+
+                        });
+                    }, 200);
+                    
+
+
+                    
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
+
+
         function populateAttributes() {
             $.ajax({
                 cache: false,
@@ -37,7 +148,7 @@
 
                     $(".attributes").each(function () {
                         var temp = $(this).html()
-                        if (temp == "")
+                        if (temp != items)
                         {
                             $(this).html(items);
                         }

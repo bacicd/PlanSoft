@@ -21,6 +21,75 @@ namespace MvcAdminTemplate.Controllers
             return View();
         }
 
+        public JsonResult getFromDB()
+        {
+            string str = "";
+            var procContext = new DBModelEntities();
+            IList<Models.Process> procList = procContext.Processes.ToList();
+            //IList<Attribute> attribute = procContext.Attributes.ToList();
+
+            string[,] arr = new string[procList.Count, 3];
+
+            for (int i = 0; i < procList.Count; i++)
+            {
+                int aCode = procList[i].ACode;
+                string tabName = procList[i].TabName;
+                string subName = procList[i].SubName;
+
+                Models.Attribute attrib = db.Attributes.Find(aCode);
+
+                string attribName = attrib.Name;
+                
+                arr[i, 2] = attribName;
+                arr[i, 1] = subName;
+                arr[i, 0] = tabName;
+            }
+
+            string str2 = "";
+
+            //For each attrib
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                //Edge case handling (default processes)
+                if (arr.Length == 3)
+                {
+                    str2 += "  TASK: " + arr[i, 0] + " \n SUBTASK: " + arr[i, 1] + "\n ATTRIBUTE: " + arr[i, 2];
+                    break;
+                }
+                //If string empty, need task, subtask, attrib
+                if (str2 == "")
+                {
+                    str2 += "  TASK: " + arr[i, 0] + " \n SUBTASK: " + arr[i, 1] + "\n ATTRIBUTE: " + arr[i, 2];
+                    continue;
+                }
+                //if tab and subtab same, only add attribute
+                else if (arr[i - 1, 0] == arr[i, 0] && arr[i - 1, 1] == arr[i, 1])
+                {
+                    str2 += "\n ATTRIBUTE: " + arr[i, 2];
+                }
+                //If just tab matching, add subtab and attrib
+                else if (arr[i - 1, 0] == arr[i, 0])
+                {
+                    str2 += " \n SUBTASK: " + arr[i, 1] + "\n ATTRIBUTE: " + arr[i, 2];
+                }
+                //otherwise add all to string
+                else
+                {
+                    str2 += "\n  TASK: " + arr[i, 0] + " \n SUBTASK: " + arr[i, 1] + "\n ATTRIBUTE: " + arr[i, 2];
+                }
+
+            }
+            str2 += "\n";
+
+            //var attributeContext = new DBModelEntities();
+            //IList<Models.Attribute> attributelist = attributeContext.Attributes.ToList();
+            return Json(new
+            {
+                layoutStr = str2
+                //attribute = attributelist.Select(x => new[] { x.Name })
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult getData(string data)
         {
             string processesData = data;
