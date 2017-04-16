@@ -15,7 +15,7 @@
     <link href="/Content/Theme/css/bootstrap-admin-theme.css" rel="stylesheet" />
     <link href="/Content/Theme/css/site.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="/Scripts/modernizr-2.6.2.js"></script>
 
     <style>
@@ -30,9 +30,88 @@
             border-bottom: solid 2px #c9c9c9;
         }
     </style>
+    <script>
+        $(document).on("click", "#save", function () {
+            var fname = $("#fname").val();
+            var lname = $("#lname").val();
+            var title = $("#title").val();
+            var companyname = $("#companyname").val();
+            var email = $("#email").val();
+            var phone = $("#phone").val()
+            var address = $("#address").val();
+            var city = $("#city").val();
+            var state = $("#state").val();
+            var zip = $("#zip").val();
+            var comment = $("#comment").val();
+            if (fname == "" || lname == "" || title == "" || companyname == "" || email == "" || phone == "" ||
+                address == "" || city == "" || state == "" || zip == "" || comment == "") {
+                $('#mymodal').modal('toggle');
+            }
+            else {
+                $.ajax({
+                    url: "/OpenTicket/openTicket",
+                    datatype: "text",
+                    data: {
+                        'fname': fname, 'lname': lname, 'title': title, 'companyname': companyname, 'email': email, 'phone': phone,
+                        'address': address, 'city': city, 'state': state, 'zip': zip, 'comment': comment
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        $("#mymodal2").modal('toggle');
+                        $("#returnHome").click(function () {
+                            window.location.href = '/Home';
+                        });
+                        return true;
+                    },
+                    error: function () {
+                        return false;
+                    }
+                });
+            }
+            });
+    </script>
 
 </head>
 <body>
+    <!-- Modal -->
+    <div class="modal fade" id="mymodal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Input Validation Error!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>No items must be empty when filling out this form!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="mymodal2" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Success!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Close this to return to the homepage!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="returnHome" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <h2 style="text-align:center; font-size:200%; margin-bottom:2%;">Do you have an Issue? Tell us About It!</h2>
     <p style="float:left; margin-top:0%; margin-left:20%;">Tell us a little about yourself:</p>
     <p style="float:left; margin-top:22%; margin-left:-15%;">What seems to be the issue?:</p>
@@ -50,9 +129,9 @@
             <input class="styling" placeholder="ZIP" type="text" id="zip"><br /><br />
 
 
-            <textarea class="styling" placeholder="What is your Issue?" form="usrform" rows="4" cols="50"></textarea><br /><br />
+            <textarea class="styling" placeholder="What is your Issue?" form="usrform" rows="4" cols="50" id="comment"></textarea><br /><br />
 
-            <button class="btn btn-info" id="save" type="submit">Send</button>
+            <button href="#myModal" data-toggle="modal" class="btn btn-info" id="save" type="submit">Send</button>
         </form>
     </div>
 </body>

@@ -20,6 +20,7 @@ INCLUDE YOUR IDENTITY CHECK HERE!
 else
 {
 *@
+@*model IEnumerable<MvcAdminTemplate.Models.Account>*@
 <style>
     
         #menuitems a:hover { border-bottom:3px solid #808080;}
@@ -27,7 +28,7 @@ else
 @if (Request.IsAuthenticated)
 {
     <li id="menuitems">@Html.ActionLink("Log Out", "Logout", "Account")</li>
-    <li id="menuitems"><strong>@Html.Encode(User.Identity.Name)</strong></li>  
+    <li id="menuitems" style="margin-top:1.4%"><strong>@Html.Encode(User.Identity.Name)</strong></li>
 }
 else
 {
