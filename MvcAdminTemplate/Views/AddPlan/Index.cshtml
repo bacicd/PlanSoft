@@ -399,7 +399,7 @@
                 if (arr[j][1] == subtaskArr[i])
                 {
                     //put attrib name, attrib datainput, populate datainput with attrib vars
-                    htmlStr += "<label id=\"" + arr[j][2] + "\"> " + arr[j][2] + "</label><br />";
+                    htmlStr += "<label id=\"" + arr[j][2] + "\" class=\"attribVarLabel\"> " + arr[j][2] + "</label><br />";
                     //dummy data
                     htmlStr += "<select class=\"options attribVars \"> \
                                 <option>--Funding Approach--</option> \
@@ -548,22 +548,59 @@
             type: "GET",
             url: '@Url.Action("DropDownAttributeVars", "AddPlan")',
             dataType: 'json',
-            success: function (attribute) {
+            success: function (arrays) {
                 var items = '';
                 var obj = '';
+                /*
                 $.each(attribute, function (i, word) {
                     $.each(word, function (i, obj) {
                         items += "<option>" + obj + "</option>";
                     });
                 });
+                */
 
+                $(".attribVarLabel").each(function () {
+                    var attrib = $(this).text().trim();
+                    var aCode = 0;
+                    var inputType = "";
+                    for(var i = 0; i < arrays.attribute.length; i++)
+                    {
+                        if(attrib == arrays.attribute[i].Name)
+                        {
+                            aCode = arrays.attribute[i].Code;
+                            inputType = arrays.attribute[i].Input;
+                        }
+                    }
+
+                    options = "";
+                    for (var i = 0; i < arrays.attributeVar.length; i++)
+                    {
+                        if (aCode == arrays.attributeVar[i].ACode)
+                        {
+                            options += "<option>" + arrays.attributeVar[i].Name + "</option>"
+                        }
+                    }
+
+                    if (inputType == "Dropdown")
+                    {
+                        $(this).next().next().html(options);
+                    }
+                    else $(this).next().next().replaceWith("<input class=attribVars />");
+                    
+
+
+                    
+                });
+
+                /*
                 $(".attribVars").each(function () {
                     var temp = $(this).html()
-                    if (temp == "") {
+                    if (temp != items) {
                         $(this).html(items);
                     }
 
                 });
+                */
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('Failed to retrieve data.');
