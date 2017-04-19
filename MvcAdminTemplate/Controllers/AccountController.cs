@@ -66,24 +66,33 @@ namespace MvcAdminTemplate.Controllers
             {
                 if(ModelState.IsValid)
                 {
-                    using(DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities())
+                    if (db.Accounts.Where(u => u.Username == user.Username).Any())
                     {
-                        // Hashes using SimpleCrypto Lib
-                        // Will be changed to Argon2 in the future
-                        var crypto = new SimpleCrypto.PBKDF2();
-                        var hashedPass = crypto.Compute(user.Password); // Hashes user password
-                        var newUser = db.Accounts.Create();
-                        newUser.Username = user.Username;
-                        newUser.Password = hashedPass;
-                        newUser.PasswordSalt = crypto.Salt;
-                        newUser.OrgID = 10; // hardcoded for now (should be user.Organization)
-                        newUser.First = user.First;
-                        newUser.Last = user.Last;
-                        newUser.Role = "User";
-                        newUser.CreatedOn = DateTime.Now;
-                        db.Accounts.Add(newUser);
-                        db.SaveChanges();
-                        return RedirectToAction("Register", "Account");
+                        ModelState.AddModelError("Username", "Username is already taken");
+                        return View();
+                    }
+
+                    else
+                    {
+                        using (DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities())
+                        {
+                            // Hashes using SimpleCrypto Lib
+                            // Will be changed to Argon2 in the future
+                            var crypto = new SimpleCrypto.PBKDF2();
+                            var hashedPass = crypto.Compute(user.Password); // Hashes user password
+                            var newUser = db.Accounts.Create();
+                            newUser.Username = user.Username;
+                            newUser.Password = hashedPass;
+                            newUser.PasswordSalt = crypto.Salt;
+                            newUser.OrgID = 10; // hardcoded for now (should be user.Organization)
+                            newUser.First = user.First;
+                            newUser.Last = user.Last;
+                            newUser.Role = "User";
+                            newUser.CreatedOn = DateTime.Now;
+                            db.Accounts.Add(newUser);
+                            db.SaveChanges();
+                            return RedirectToAction("Register", "Account");
+                        }
                     }
                 }
 
