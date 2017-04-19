@@ -38,8 +38,11 @@ namespace MvcAdminTemplate.Controllers
 
         public JsonResult saveToDB(string data)
         {
-            var procContext = new DBModelEntities();
-            IList<Models.Process> procList = procContext.Processes.ToList();
+            var db = new DBModelEntities();
+            IList<Models.Process> procList = db.Processes.ToList();
+            IList<Models.Attribute> attribList = db.Attributes.ToList();
+            IList<Models.AttributeVariable> attribVarList = db.AttributeVariables.ToList();
+
 
 
             string herp = data;
@@ -48,14 +51,46 @@ namespace MvcAdminTemplate.Controllers
             for(int i = 1; i < arr.Length; i++)
             {
                 Plan plan = new Plan();
-                //plan.ID = 1;
-                plan.ProcessID = procList[i].ID;
-                plan.PlanName = "TestPlan";
-                plan.Selected = arr[i];
 
-                db.Plans.Add(plan);
-                db.SaveChanges();
+                //If free text variable
+                if(arr[i].Contains(":"))
+                {
+                    string model = arr[i].Substring(0, arr[i].IndexOf(":"));
+                    Models.Attribute textAttrib = attribList.Single(x => x.Name == model);
+                    Models.Process textProc = procList.Single(x => x.ACode == textAttrib.Code);
 
+                    plan.ProcessID = textProc.ID;
+                    plan.PlanName = "TestPlan";
+                    plan.Selected = arr[i];
+
+                    db.Plans.Add(plan);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    //Find attribVar where name == data[i]
+                    //AttributeVariable attribVar = attribVarList.Single(x => x.Name == "FreeText");
+                    //try { 
+                    AttributeVariable attribVar = attribVarList.Single(x => x.Name == arr[i]);
+                    //}
+                    //catch
+                    //{
+                    
+                    //}
+                    //Find attrib containing attribVar
+                    Models.Attribute attrib = attribList.Single(x => x.AttributeVariables.Contains(attribVar));
+
+                    //Find process with where acode == attrib.acode
+                    Models.Process proc = procList.Single(x => x.ACode == attrib.Code);
+
+
+                    plan.ProcessID = proc.ID;
+                    plan.PlanName = "TestPlan";
+                    plan.Selected = arr[i];
+
+                    db.Plans.Add(plan);
+                    db.SaveChanges();
+                }
             }
 
 
