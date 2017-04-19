@@ -186,6 +186,7 @@
         var count = 0; // To Count Blank Fields
         /*------------ Validation Function-----------------*/
         $(".submit_btn").click(function (event) {
+            /*
             var radio_check = $('.rad'); // Fetching Radio Button By Class Name
             var input_field = $('.text_field'); // Fetching All Inputs With Same Class Name text_field & An HTML Tag textarea
             var text_area = $('textarea');
@@ -210,6 +211,7 @@
             } else {
                 return true;
             }
+            */
         });
         /*---------------------------------------------------------*/
         //$(".next_btn").click(function () { // Function Runs On NEXT Button Click
@@ -274,9 +276,29 @@
 
     function subBtn()
     {
-        //Validate data
-
+        var vars = "";
+        //get data
+        $(".attribVars").each(function () {
+            vars += "|" + $(this).val();
+        });
+        //Validate data...eventually
+        
         //Save data
+        var data = JSON.stringify(arr);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("saveToDB", "AddPlan")',
+            data: JSON.stringify({ data: vars }),
+            dataType: 'text',
+            contentType: "application/json; charset=utf-8",
+            success: function (attribute) {
+
+            },
+            error: function () {
+                alert('Failed to store data.');
+            }
+        });
+
 
         //Update progress tracker
 

@@ -36,6 +36,34 @@ namespace MvcAdminTemplate.Controllers
         }
 
 
+        public JsonResult saveToDB(string data)
+        {
+            var procContext = new DBModelEntities();
+            IList<Models.Process> procList = procContext.Processes.ToList();
+
+
+            string herp = data;
+            string[] arr = herp.Split('|');
+
+            for(int i = 1; i < arr.Length; i++)
+            {
+                Plan plan = new Plan();
+                //plan.ID = 1;
+                plan.ProcessID = procList[i].ID;
+                plan.PlanName = "TestPlan";
+                plan.Selected = arr[i];
+
+                db.Plans.Add(plan);
+                db.SaveChanges();
+
+            }
+
+
+
+
+            return Json(true);
+        }
+
         public JsonResult getLayoutStr()
         {
             string str = "  TASK: TASK1\n SUBTASK: SUBTASK1\n ATTRIBUTE: Payment Occurrence\n ATTRIBUTE: Payment Amount\n SUBTASK: SUBTASK2\n ATTRIBUTE: Bonus Amount\n ATTRIBUTE: Bonus Metric\n ATTRIBUTE: Bonuses\n TASK: TASK2\n SUBTASK: SUBATSK3\n ATTRIBUTE: Compensation Benefits\n ATTRIBUTE: Commercial\n TASK: TASK3\n SUBTASK: SUBATSK4\n ATTRIBUTE: ATTRIBNAME\n ATTRIBUTE: ALSO AN ATTRIB NAME\n ";
