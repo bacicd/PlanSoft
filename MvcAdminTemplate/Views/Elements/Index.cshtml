@@ -112,7 +112,7 @@
             test1 = regex.test(ruleID);
             test2 = regex.test(ruleName);
             test3 = regex.test(ruleCreator);
-            if (!test1 || !test2 || !test3)
+            if (!test1 || !test2)
             {
                 $('#addmessage').html("Fields must not be empty or have special characters");
                 return false;
@@ -193,6 +193,20 @@
                 });
             });
 
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("firstNameLastName", "Home")',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.fname, data.lname);
+                    $("#ruleCreator").html(data.fname + " " + data.lname);
+                    $("#ruleCreator").val(data.fname + " " + data.lname);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                }
+            });
+
             $(document).ready(function () {
                 $('tbody tr').addClass('visible');
                 $('thead tr th input:text').keyup(function (event) {
@@ -246,7 +260,7 @@
                 <br />*@
                 Element Name: <input id="ruleName" style="display:inline-block; margin-left:2%;"/>
                 <br /><br />
-                Created By: <input id="ruleCreator" style="display:inline-block; margin-left:6%;"/>
+                Created By: <label id="ruleCreator" style="display:inline-block; margin-left:6%;"/>
 
             </div>
             <div class="modal-footer">

@@ -114,8 +114,7 @@
             test2 = regex.test(eleName);
             test3 = regex.test(attribCode);
             test4 = regex.test(attribName);
-            test5 = regex.test(ruleCreator);
-            if (!test1 || !test2 || !test3 || !test4 || !test5) {
+            if (!test1 || !test2 || !test3 || !test4) {
                 $('#addmessage').html("Fields must not be empty or have special characters");
                 return false;
             }
@@ -251,6 +250,20 @@
             }
         });
 
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("firstNameLastName", "Home")',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.fname, data.lname);
+                $("#ruleCreator").html(data.fname + " " + data.lname);
+                $("#ruleCreator").val(data.fname + " " + data.lname);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+
         $(document).ready(function () {
             $('tbody tr').addClass('visible');
             $('thead tr th input:text').keyup(function (event) {
@@ -365,7 +378,7 @@
                                 <option>Text Field</option>
                             </select>
                 <br /><br />
-                Created By: <input id="ruleCreator" style="display:inline-block; margin-left:7%;" />
+                Created By: <label id="ruleCreator" style="display:inline-block; margin-left:7%;" />
 
             </div>
             <div class="modal-footer">
