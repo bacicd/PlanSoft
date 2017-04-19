@@ -169,8 +169,8 @@
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\PlanReportController.cs" />
     <Compile Include="Controllers\ProcessesController.cs" />
+    <Compile Include="Controllers\RequestFeatureController.cs" />
     <Compile Include="Controllers\ResetPasswordController.cs" />
-    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\RulesController.cs" />
     <Compile Include="Controllers\SignUpController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
@@ -178,6 +178,7 @@
     <Compile Include="Controllers\TablesController.cs" />
     <Compile Include="Controllers\TestElementController.cs" />
     <Compile Include="Controllers\TestOrganizationController.cs" />
+    <Compile Include="Controllers\ThankYouController.cs" />
     <Compile Include="Controllers\TitleController.cs" />
     <Compile Include="Controllers\ViewEditPlanController.cs" />
     <Compile Include="Global.asax.cs">
@@ -220,6 +221,9 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Organization.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Plan.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlansViewModel.cs" />
@@ -1812,6 +1816,8 @@
     <Content Include="Views\Account\Delete.cshtml" />
     <Content Include="Views\Account\Role.cshtml" />
     <Content Include="Views\Account\Reset.cshtml" />
+    <Content Include="Views\RequestFeature\Index.cshtml" />
+    <Content Include="Views\ThankYou\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

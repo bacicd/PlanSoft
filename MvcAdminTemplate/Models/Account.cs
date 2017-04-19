@@ -11,15 +11,32 @@ namespace MvcAdminTemplate.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Account
     {
+        [Required(AllowEmptyStrings = false, ErrorMessage = "You must enter a Username")]
+        [StringLength(16, MinimumLength = 6, ErrorMessage = "Username must be 6-16 characters")]
         public string Username { get; set; }
+
+        [Required]
         public int OrgID { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "You must enter a First Name")]
+        [StringLength(16, MinimumLength = 6, ErrorMessage = "First Name must be 6-16 characters")]
         public string First { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "You must enter a Last Name")]
+        [StringLength(16, MinimumLength = 6, ErrorMessage = "Last Name must be 6-16 characters")]
         public string Last { get; set; }
+
+        [Required]
         public string Role { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "You must enter a Password")]
+        [StringLength(16, MinimumLength = 6, ErrorMessage = "Password must be 6-16 characters")]
         public string Password { get; set; }
+
         public System.DateTime CreatedOn { get; set; }
         public string PasswordSalt { get; set; }
     
