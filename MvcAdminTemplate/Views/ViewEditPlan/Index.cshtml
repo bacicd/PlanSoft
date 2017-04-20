@@ -20,121 +20,226 @@
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
 
     <script>
-        $(document).ready(function () { drawTable() });
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DefineHTMLTable", "ViewEditPlan")',
+            datatype: "json",
+            success: function (data) {
+                console.log(data.attributeNames);
+                $(".display > thead > tr").append("<th class=\"sorting\" tabindex=\"0\" aria-controls=\"example\" rowspan=\"1\" colspan=\"1\"> Plan Name <br /> <input type=\"text\" name=\"filterfname\" value=\"\"> </th>");
+                for (x in data.attributeNames) {
+                    $(".display > thead > tr").append("<th class=\"sorting\" tabindex=\"0\" aria-controls=\"example\" rowspan=\"1\" colspan=\"1\">" + data.attributeNames[x] + " <br /> <input type=\"text\" name=\"filterfname\" value=\"\"> </th>");
+                    //$(".display").find("thead").find("tr").append("<th> \
+                    //            " + data.attributeNames[x] + " \
+                    //            <br /> \
+                    //            <input type=\"text\" name=\"filterfname\" value=\"\"> \
+                    //        </th>"
+                    //);
+                    drawTable()
+                    $(document).ready(function () {
+                        $('tbody tr').addClass('visible');
+                        $('thead tr th input:text').keyup(function (event) {
+                            if (event.keyCode == 27 || $(this).val() == '') {
+
+                                $('tbody tr td ').show();
+
+                            }
+                            else {
+                                for (var i = 1 ; i < 10 ; i++) {
+                                    if ($("thead tr th:nth-child(" + i + ") input:text").val().length > 0) {
+                                        var fn = filter("tbody>tr > :nth-child(" + i + ")", $(this).val());
+                                    }
+                                }
+                            }
+                        });
+                    });
+
+                    function filter(selector, query) {
+                        var z = null;
+                        query = $.trim(query);
+                        query = query.replace(/ /gi, '|');
+                        $(selector).each(function () {
+                            if ($(this).text().search(new RegExp(query, "i")) < 0) {
+                                $(this).siblings().hide();
+                                $(this).hide();
+                            }
+                            else {
+                                $(this).siblings().show();
+                                $(this).show();
+                            }
+                        });
+                    }
+            }
+            },
+            error: function () {
+
+            }
+        });
+        //$(document).ready(function () { drawTable() });
 
         function drawTable() {
-            dataTable = $('#example').dataTable({
-                destroy: true,
-                bProcessing: true,
-                sAjaxSource: '@Url.Action("LoadPlans", "ViewEditPlan")',
-                "columnDefs": [{
-                    "targets": -1,
-                    "data": null,
-                    "defaultContent": "<button class =\"glyphicon glyphicon-pencil edit\"></button> <button class =\"glyphicon glyphicon-eye-open view\"></button>"
-                }],
-                dom: 'Bfrtip',
-                buttons: [
-                     {
-                         extend: 'excel',
-                         text:      '<i class="fa fa-file-excel-o"></i>',
-                         titleAttr: 'Excel',
-                         exportOptions: {
-                             columns: ':visible'
-                         }
-                     },
-                      {
-                          extend: 'csv',
-                          text:      '<i class="fa fa-file-text-o"></i>',
-                          titleAttr: 'CSV',
-                          exportOptions: {
-                              columns: ':visible'
-                          }
-                      },
-                      {
-                          extend: 'pdf',
-                          text:      '<i class="fa fa-file-pdf-o"></i>',
-                          titleAttr: 'PDF',
-                          exportOptions: {
-                              columns: ':visible'
-                          }
-                      }
-                ]
+            var myJSON = null;
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("LoadPlans", "ViewEditPlan")',
+                datatype: "json",
+                success: function (data) {
+                    console.log(data.aaData);
+                    myJSON = data.aaData;
+                    var outer = [];
+                    var inner = [];
 
+                    for (var i = 0; i < myJSON.length; i++) {
+                        if (inner[0] == null) {
+                            inner.push(myJSON[i][0]);
+                            inner.push(myJSON[i][1]);
+                        }
+                        else {
+                            if (myJSON[i][0] == inner[0]) {
+                                inner.push(myJSON[i][1]);
+                            }
+                            else {
+                                outer.push(inner);
+                                inner = [];
+                                inner.push(myJSON[i][0]);
+                                inner.push(myJSON[i][1]);
+                            }
+                        }
+                    }
+
+                    outer.push(inner);
+
+                    console.log(outer);
+
+                    myJSON = outer;
+
+
+                    dataTable = $('#example').dataTable({
+                        destroy: true,
+                        bProcessing: true,
+                        "scrollX": true,
+                        aaData: myJSON,
+                        "columnDefs": [{
+                            "targets": null,
+                            "data": null,
+                        }],
+                        dom: 'Bfrtip',
+                        buttons: [
+                             {
+                                 extend: 'excel',
+                                 text: '<i class="fa fa-file-excel-o"></i>',
+                                 titleAttr: 'Excel',
+                                 exportOptions: {
+                                     columns: ':visible'
+                                 }
+                             },
+                              {
+                                  extend: 'csv',
+                                  text: '<i class="fa fa-file-text-o"></i>',
+                                  titleAttr: 'CSV',
+                                  exportOptions: {
+                                      columns: ':visible'
+                                  }
+                              },
+                              {
+                                  extend: 'pdf',
+                                  text: '<i class="fa fa-file-pdf-o"></i>',
+                                  titleAttr: 'PDF',
+                                  exportOptions: {
+                                      columns: ':visible'
+                                  }
+                              },
+                                  {
+                                      extend: 'colvis',
+                                      text: '<i class="fa fa-eye"></i>',
+                                      titleAttr: "Columns"
+                                  }
+                        ]
+
+                    });
+                },
+                error: function () {
+
+                }
             });
             return true;
         }
 
-        $("tbody").on("click", ".edit", function () {
-            ID = $(this).closest("tr").children('td:eq(0)').text();
-            Name = $(this).closest("tr").children('td:eq(1)').text();
-            Manager = $(this).closest("tr").children('td:eq(2)').text
-            Advisor = $(this).closest("tr").children('td:eq(3)').text();
-            Admin = $(this).closest("tr").children('td:eq(4)').text();
-            Status = $(this).closest("tr").children('td:eq(5)').text();
-            $('#editModal').modal('show');
-            $("#updatePlanID").val(ID);
-            $("#updatePlanName").val(Name);
-            $("#updateCompMan").val(Manager);
-            $("#updateCompAdv").val(Advisor);
-            $("#updatePlanAdmin").val(Admin);
-            $("#updatePlanStatus").val(Status);
-            
-            $(document).on("click", ".update", function () {
-                $.ajax({
-                    url: "/ViewEditPlans/Update",
-                    datatype: "text",
-                    data: { 'PlanID': ID, 'NewPlanID': $('#updatePlanID').val(), 'NewPlanName': $('#updatePlanName').val(), 'NewCompMan': $('#updateCompMan').val(), 'NewCompAdv': $('#updateCompAdv').val(), 'NewPlanAdmin': $('#updatePlanAdmin').val(), 'NewPlanStatus': $('#updatePlanStatus').val() },
-                    type: "POST",
-                    success: function (data) {
-                        $('#testarea').html("UPDATED");
-                        drawTable();
-                        return true;
-                      },
-                        error: function () {
-                        $("#testarea").html("DID NOT UPDATE");
-                        return false;
-                      }
-                  });
-              });
-        });
+        //$("tbody").on("click", ".edit", function () {
+        //    ID = $(this).closest("tr").children('td:eq(0)').text();
+        //    Name = $(this).closest("tr").children('td:eq(1)').text();
+        //    Manager = $(this).closest("tr").children('td:eq(2)').text
+        //    Advisor = $(this).closest("tr").children('td:eq(3)').text();
+        //    Admin = $(this).closest("tr").children('td:eq(4)').text();
+        //    Status = $(this).closest("tr").children('td:eq(5)').text();
+        //    $('#editModal').modal('show');
+        //    $("#updatePlanID").val(ID);
+        //    $("#updatePlanName").val(Name);
+        //    $("#updateCompMan").val(Manager);
+        //    $("#updateCompAdv").val(Advisor);
+        //    $("#updatePlanAdmin").val(Admin);
+        //    $("#updatePlanStatus").val(Status);
 
-        $("tbody").on("click", ".view", function () {
-            ID = $(this).closest("tr").children('td:eq(0)').text();
-            Name = $(this).closest("tr").children('td:eq(1)').text();
-            Manager = $(this).closest("tr").children('td:eq(2)').text
-            Advisor = $(this).closest("tr").children('td:eq(3)').text();
-            Admin = $(this).closest("tr").children('td:eq(4)').text();
-            Status = $(this).closest("tr").children('td:eq(5)').text();
-            $('#viewModal').modal('show');
-            $("#viewPlanID").val(ID);
-            $("#viewPlanName").val(Name);
-            $("#viewCompMan").val(Manager);
-            $("#viewCompAdv").val(Advisor);
-            $("#viewPlanAdmin").val(Admin);
-            $("#viewPlanStatus").val(Status);
+        //    $(document).on("click", ".update", function () {
+        //        $.ajax({
+        //            url: "/ViewEditPlan/Update",
+        //            datatype: "text",
+        //            data: { 'PlanID': ID, 'NewPlanID': $('#updatePlanID').val(), 'NewPlanName': $('#updatePlanName').val(), 'NewCompMan': $('#updateCompMan').val(), 'NewCompAdv': $('#updateCompAdv').val(), 'NewPlanAdmin': $('#updatePlanAdmin').val(), 'NewPlanStatus': $('#updatePlanStatus').val() },
+        //            type: "POST",
+        //            success: function (data) {
+        //                $('#testarea').html("UPDATED");
+        //                drawTable();
+        //                return true;
+        //              },
+        //                error: function () {
+        //                $("#testarea").html("DID NOT UPDATE");
+        //                return false;
+        //              }
+        //          });
+        //      });
+        //});
 
-            $(document).on("click", ".view", function () {
-                $.ajax({
-                    url: "/ViewEditPlans/View",
-                    datatype: "text",
-                    data: { 'PlanID': ID, 'ViewPlanID': $('#viewPlanID').val(), 'ViewPlanName': $('#viewPlanName').val(), 'ViewCompMan': $('#viewCompMan').val(), 'ViewCompAdv': $('#viewCompAdv').val(), 'ViewPlanAdmin': $('#viewPlanAdmin').val(), 'ViewPlanStatus': $('#viewPlanStatus').val() },
-                    type: "POST",
-                    success: function (data) {
-                        $('#testarea').html("UPDATED");
-                        drawTable();
-                        return true;
-                    },
-                    error: function () {
-                        $("#testarea").html("DID NOT UPDATE");
-                        return false;
-                    }
-                });
-            });
-        });
+        //$("tbody").on("click", ".view", function () {
+        //    ID = $(this).closest("tr").children('td:eq(0)').text();
+        //    Name = $(this).closest("tr").children('td:eq(1)').text();
+        //    Manager = $(this).closest("tr").children('td:eq(2)').text
+        //    Advisor = $(this).closest("tr").children('td:eq(3)').text();
+        //    Admin = $(this).closest("tr").children('td:eq(4)').text();
+        //    Status = $(this).closest("tr").children('td:eq(5)').text();
+        //    $('#viewModal').modal('show');
+        //    $("#viewPlanID").val(ID);
+        //    $("#viewPlanName").val(Name);
+        //    $("#viewCompMan").val(Manager);
+        //    $("#viewCompAdv").val(Advisor);
+        //    $("#viewPlanAdmin").val(Admin);
+        //    $("#viewPlanStatus").val(Status);
+
+        //    $(document).on("click", ".view", function () {
+        //        $.ajax({
+        //            url: "/ViewEditPlans/View",
+        //            datatype: "text",
+        //            data: { 'PlanID': ID, 'ViewPlanID': $('#viewPlanID').val(), 'ViewPlanName': $('#viewPlanName').val(), 'ViewCompMan': $('#viewCompMan').val(), 'ViewCompAdv': $('#viewCompAdv').val(), 'ViewPlanAdmin': $('#viewPlanAdmin').val(), 'ViewPlanStatus': $('#viewPlanStatus').val() },
+        //            type: "POST",
+        //            success: function (data) {
+        //                $('#testarea').html("UPDATED");
+        //                drawTable();
+        //                return true;
+        //            },
+        //            error: function () {
+        //                $("#testarea").html("DID NOT UPDATE");
+        //                return false;
+        //            }
+        //        });
+        //    });
+        //});
+
+        
    </script>
     }
 
-        <!--BEGIN EDIT MODAL-->
+        @*<!--BEGIN EDIT MODAL-->
         <div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -190,40 +295,44 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 
- <div class="col-md-10" style="margin-top:-1.3%;">
+ <div class="col-md-10" style="margin-top:-1.3%;" width="100%">
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="text-muted bootstrap-admin-box-title">Plans Table</div>
             </div>
             <div class="bootstrap-admin-panel-content">
-                <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+                <table cellpadding="0" cellspacing="0" border="0" class="display"id="example">
                     <thead>
                         <tr>
-                            <th>
-                                Plan ID
-                            </th>
-                            <th>
+                            @*<th>
                                 Plan Name
+                                <br />
+                                <input type="text" name="filterfname" value="">
                             </th>
                             <th>
-                                Compensation Manager
+                                Date
+                                <br />
+                                <input type="text" name="filterfname" value="">
                             </th>
                             <th>
-                                Compensation Advisor
+                                Period
+                                <br />
+                                <input type="text" name="filterfname" value="">
                             </th>
                             <th>
-                                Plan Administrator
+                                Amount
+                                <br />
+                                <input type="text" name="filterfname" value="">
                             </th>
                             <th>
-                                Plan Status
-                            </th>
-                            <th>
-                                Actions
-                            </th>
+                                Compensation
+                                <br />
+                                <input type="text" name="filterfname" value="">
+                            </th>*@
                         </tr>
                     </thead>
                     <tbody></tbody>

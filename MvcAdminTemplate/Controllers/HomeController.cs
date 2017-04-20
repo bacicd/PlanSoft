@@ -33,7 +33,6 @@ namespace MvcAdminTemplate.Controllers
         {
             var accountContext = new DBModelEntities();
             IList<Account> accountlist = accountContext.Accounts.ToList();
-            Account acc = new Account();
 
             var userNameList = accountlist.Select(x => x.Username);
 

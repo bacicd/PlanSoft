@@ -295,7 +295,7 @@
         $.ajax({
             type: "POST",
             url: '@Url.Action("saveToDB", "AddPlan")',
-            data: JSON.stringify({ data: vars }),
+            data: JSON.stringify({ data: vars, myPlan: $("#myPlan").val() }),
             dataType: 'text',
             contentType: "application/json; charset=utf-8",
             success: function (attribute) {
@@ -639,6 +639,8 @@
 
 
 </script>
+<label>Plan Name:</label>
+<input id="myPlan"/>
 <div>
     <ol class="progtrckr" id="progtracker" data-progtrckr-steps="8">
         <li class="progtrckr-done">Plan Description</li>

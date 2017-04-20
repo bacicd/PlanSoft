@@ -36,7 +36,7 @@ namespace MvcAdminTemplate.Controllers
         }
 
 
-        public JsonResult saveToDB(string data)
+        public JsonResult saveToDB(string data, string myPlan)
         {
             var db = new DBModelEntities();
             IList<Models.Process> procList = db.Processes.ToList();
@@ -60,7 +60,7 @@ namespace MvcAdminTemplate.Controllers
                     Models.Process textProc = procList.Single(x => x.ACode == textAttrib.Code);
 
                     plan.ProcessID = textProc.ID;
-                    plan.PlanName = "TestPlan";
+                    plan.PlanName = myPlan;
                     plan.Selected = arr[i];
 
                     db.Plans.Add(plan);
@@ -85,7 +85,7 @@ namespace MvcAdminTemplate.Controllers
 
 
                     plan.ProcessID = proc.ID;
-                    plan.PlanName = "TestPlan";
+                    plan.PlanName = myPlan;
                     plan.Selected = arr[i];
 
                     db.Plans.Add(plan);
