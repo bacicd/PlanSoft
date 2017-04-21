@@ -48,8 +48,19 @@
     </style>
     <script>
         $(document).on("click", "#save", function () {
+            var fname = $("#fname").val();
+            var lname = $("#lname").val();
+            var title = $("#title").val();
+            var companyname = $("#companyname").val();
+            var email = $("#email").val();
+            var phone = $("#phone").val()
+            var address = $("#address").val();
+            var city = $("#city").val();
+            var state = $("#state").val();
+            var zip = $("#zip").val();
             var comment = $("#comment").val();
-            if (comment == "") {
+            if (fname == "" || lname == "" || comment == "" || title == "" || companyname == "" || email == ""
+                || phone == "" || address == "" || city == "" || state == "" || zip == "") {
                 $('#mymodal').modal('toggle');
             }
             else {
@@ -57,7 +68,9 @@
                     url: "/RequestFeature/requestFeature",
                     datatype: "text",
                     data: {
-                        'comment': comment
+                        'fname': fname, 'lname': lname, 'comment': comment, 'title': title,
+                        'companyname': companyname, 'email': email, 'phone': phone,
+                        'address': address, 'city': city, 'state': state, 'zip': zip
                     },
                     type: "POST",
                     success: function (data) {
@@ -124,6 +137,17 @@
     <h2 style="text-align:center; font-size:200%; margin-bottom:2%; margin-top:7%;">Please tell us what kind of features you desire!</h2>
     <div style="width:24%; margin-left:35%;">
         <form>
+            <input class="styling" placeholder="First Name" type="text" id="fname">
+            <input class="styling" placeholder="Last Name" type="text" id="lname">
+            <input class="styling" placeholder="Title" type="text" id="title">
+            <input class="styling" placeholder="Company Name" type="text" id="companyname">
+            <input class="styling" placeholder="E-mail" type="text" id="email">
+            <input class="styling" placeholder="Phone" type="text" id="phone">
+            <input class="styling" placeholder="Street Address" type="text" id="address">
+            <input class="styling" placeholder="City" type="text" id="city">
+            <input class="styling" placeholder="ST" type="text" id="state">
+            <input class="styling" placeholder="ZIP" type="text" id="zip">
+            <br /><br />
             <textarea class="styling" placeholder="Request a Feature!" form="usrform" rows="4" cols="50" id="comment"></textarea><br /><br />
 
             <button class="btn btn-info" id="save" type="submit" data-toggle="modal">Send</button>

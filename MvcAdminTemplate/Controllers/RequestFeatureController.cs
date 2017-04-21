@@ -17,7 +17,9 @@ namespace MvcAdminTemplate.Controllers
             return View();
         }
 
-        public ActionResult requestFeature(string comment)
+        public ActionResult requestFeature(string fname, string lname, string comment, string title,
+                                        string companyname, string email, string phone,
+                                        string address, string city, string state, string zip)
         {
             MailMessage mail = new MailMessage();
 
@@ -31,6 +33,16 @@ namespace MvcAdminTemplate.Controllers
 
             mail.Subject = "Requested Features from HResonance";
             mail.Body = "<div style=\"font: 15px Calibri, arial;\">";
+            mail.Body += "<p>" + "First Name: " + fname + "</p>";
+            mail.Body += "<p>" + "Last Name: " + lname + "</p>";
+            mail.Body += "<p>" + "Title: " + title + "</p>";
+            mail.Body += "<p>" + "Company: " + companyname + "</p>";
+            mail.Body += "<p>" + "Email: " + email + "</p>";
+            mail.Body += "<p>" + "Phone Number: " + phone + "</p>";
+            mail.Body += "<p>" + "Address: " + address + "</p>";
+            mail.Body += "<p>" + "City: " + city + "</p>";
+            mail.Body += "<p>" + "State: " + state + "</p>";
+            mail.Body += "<p>" + "ZIP: " + zip + "</p></br>";
             mail.Body += "<h3> Requested Features:</h3>";
             mail.Body += "<p>" + comment + "</p>";
             mail.Body += "</div>";

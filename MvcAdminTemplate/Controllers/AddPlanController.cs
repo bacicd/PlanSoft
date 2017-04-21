@@ -35,6 +35,16 @@ namespace MvcAdminTemplate.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult DropDownElementVars(string element)
+        {
+            var Context = new DBModelEntities();
+            IList<ElementVariable> VarList = Context.ElementVariables.ToList();
+            return Json(new
+            {
+                element = VarList.Where(x=>x.Element.Name.Equals("Plan")).Select(x=>x.Name)
+            }, JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult saveToDB(string data, string myPlan)
         {

@@ -289,13 +289,13 @@
             else vars += "|" + $(this).val();
         });
         //Validate data...eventually
-        
+
         //Save data
         var data = JSON.stringify(arr);
         $.ajax({
             type: "POST",
             url: '@Url.Action("saveToDB", "AddPlan")',
-            data: JSON.stringify({ data: vars, myPlan: $("#myPlan").val() }),
+            data: JSON.stringify({ data: vars, myPlan: $(".elementVars").val() }),
             dataType: 'text',
             contentType: "application/json; charset=utf-8",
             success: function (attribute) {
@@ -571,6 +571,33 @@
         return subtasks;
     }
 
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: '@Url.Action("DropDownElementVars", "AddPlan")',
+            dataType: 'json',
+            success: function (element) {
+                var items = '';
+                var obj = '';
+                $.each(element, function (i, word) {
+                    $.each(word, function (i, obj) {
+                        items += "<option>" + obj + "</option>";
+                    });
+                });
+
+                $(".elementVars").each(function () {
+                    var temp = $(this).html()
+                    if (temp != items) {
+                        $(this).html(items);
+                    }
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve data.');
+            }
+        });
+
     function populateAttributeVars() {
         $.ajax({
             cache: false,
@@ -615,10 +642,10 @@
                         $(this).next().next().html(options);
                     }
                     else $(this).next().next().replaceWith("<input class=attribVars />");
-                    
 
 
-                    
+
+
                 });
 
                 /*
@@ -640,7 +667,7 @@
 
 </script>
 <label>Plan Name:</label>
-<input id="myPlan"/>
+<select class="elementVars"></select>
 <div>
     <ol class="progtrckr" id="progtracker" data-progtrckr-steps="8">
         <li class="progtrckr-done">Plan Description</li>
