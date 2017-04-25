@@ -66,12 +66,17 @@ namespace MvcAdminTemplate.Controllers
                 if(arr[i].Contains(":"))
                 {
                     string model = arr[i].Substring(0, arr[i].IndexOf(":"));
+                    
                     Models.Attribute textAttrib = attribList.Single(x => x.Name == model);
                     Models.Process textProc = procList.Single(x => x.ACode == textAttrib.Code);
 
+
+                    string selected = arr[i].Substring(arr[i].IndexOf(":")+1);
+
                     plan.ProcessID = textProc.ID;
                     plan.PlanName = myPlan;
-                    plan.Selected = arr[i];
+                    //plan.Selected = arr[i];
+                    plan.Selected = selected;
 
                     db.Plans.Add(plan);
                     db.SaveChanges();

@@ -279,14 +279,13 @@
         var vars = "";
         //get data
         $(".attribVars").each(function () {
-            if ($(this).prop("tagName") == "INPUT")
-            {
+            
                 //get attribute
                 var attrib = $(this).prev().prev().html();
 
                 vars += "|" + attrib.trim() + ":" + $(this).val();
-            }
-            else vars += "|" + $(this).val();
+            
+            
         });
         //Validate data...eventually
 
