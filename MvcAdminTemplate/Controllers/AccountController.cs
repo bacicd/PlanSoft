@@ -60,11 +60,12 @@ namespace MvcAdminTemplate.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Register(Models.Account user)
+        public ActionResult Register(Models.Account user, string passwordconfirm)
         {
+
             try
             {
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     if (db.Accounts.Where(u => u.Username == user.Username).Any())
                     {
@@ -76,22 +77,30 @@ namespace MvcAdminTemplate.Controllers
                     {
                         using (DBModelEntities db = new MvcAdminTemplate.Models.DBModelEntities())
                         {
-                            // Hashes using SimpleCrypto Lib
-                            // Will be changed to Argon2 in the future
-                            var crypto = new SimpleCrypto.PBKDF2();
-                            var hashedPass = crypto.Compute(user.Password); // Hashes user password
-                            var newUser = db.Accounts.Create();
-                            newUser.Username = user.Username;
-                            newUser.Password = hashedPass;
-                            newUser.PasswordSalt = crypto.Salt;
-                            newUser.OrgID = 10; // hardcoded for now (should be user.Organization)
-                            newUser.First = user.First;
-                            newUser.Last = user.Last;
-                            newUser.Role = "User";
-                            newUser.CreatedOn = DateTime.Now;
-                            db.Accounts.Add(newUser);
-                            db.SaveChanges();
-                            return RedirectToAction("Register", "Account");
+                            if (user.Password == passwordconfirm)
+                            {
+                                // Hashes using SimpleCrypto Lib
+                                // Will be changed to Argon2 in the future
+                                var crypto = new SimpleCrypto.PBKDF2();
+                                var hashedPass = crypto.Compute(user.Password); // Hashes user password
+                                var newUser = db.Accounts.Create();
+                                newUser.Username = user.Username;
+                                newUser.Password = hashedPass;
+                                newUser.PasswordSalt = crypto.Salt;
+                                newUser.OrgID = 10; // hardcoded for now (should be user.Organization)
+                                newUser.First = user.First;
+                                newUser.Last = user.Last;
+                                newUser.Role = "User";
+                                newUser.CreatedOn = DateTime.Now;
+                                db.Accounts.Add(newUser);
+                                db.SaveChanges();
+                                return RedirectToAction("Register", "Account");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("Password", "Passwords must match");
+                                return View();
+                            }
                         }
                     }
                 }
@@ -102,14 +111,14 @@ namespace MvcAdminTemplate.Controllers
                 }
             }
 
-            catch(DbEntityValidationException e)
+            catch (DbEntityValidationException e)
             {
                 foreach (var eve in e.EntityValidationErrors)
                 {
                     Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
                         eve.Entry.Entity.GetType().Name, eve.Entry.State);
 
-                    foreach(var ve in eve.ValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
                     {
                         Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
                             ve.PropertyName, ve.ErrorMessage);
@@ -118,6 +127,7 @@ namespace MvcAdminTemplate.Controllers
 
                 throw;
             }
+
             return View();
         }
 

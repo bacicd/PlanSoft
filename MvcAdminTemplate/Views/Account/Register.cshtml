@@ -31,7 +31,14 @@
 
             <div class="editor-label">@Html.LabelFor(u => u.Password)</div>
             <div class="editor-field">
+                <input type="password" 
                 @Html.TextBoxFor(u => u.Password)
+                @Html.ValidationMessageFor(u => u.Password)
+            </div>
+
+            <div class="editor-label"><b>Confirm Password</b></div>
+            <div class="editor-field">
+                <input type="password" name="passwordconfirm" />
                 @Html.ValidationMessageFor(u => u.Password)
             </div>
 
