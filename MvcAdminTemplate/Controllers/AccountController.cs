@@ -180,7 +180,7 @@ namespace MvcAdminTemplate.Controllers
 
             else
             {
-                ModelState.AddModelError("", "Data is incorrect");
+                ModelState.AddModelError("", "User does not exist");
                 return View();
             }
         }
